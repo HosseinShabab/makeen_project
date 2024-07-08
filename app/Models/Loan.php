@@ -15,4 +15,5 @@ class Loan extends Model
         'type',
         'user_id',
     ];
+
 }
