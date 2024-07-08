@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+            $table->text('discription');
+            $table->timestamp('time');
+            $table->text('response');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
