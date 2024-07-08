@@ -24,13 +24,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
     Route::post('store', [TicketController::class, 'store'])->name('store');
-    Route::put('update/{id}', [TicketController::class, 'update'])->name('edit');
+    Route::put('update/{id}', [TicketController::class, 'update'])->name('update');
     Route::delete('delete/{id}', [TicketController::class, 'delete'])->name('delete');
 });
 //Route Messages
 Route::group(['prefix' => 'messages','as' => 'messages.'], function(){
     Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
     Route::post('store', [MessageController::class, 'store'])->name('store');
-    Route::put('update/{id}', [MessageController::class, 'update'])->name('edit');
+    Route::put('update/{id}', [MessageController::class, 'update'])->name('update');
     Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
 });

@@ -28,7 +28,7 @@ class TicketController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function delete(string $id)
     {
         $ticket = ticket::where('id' , $id)->delete();
         return response()->json($ticket);
