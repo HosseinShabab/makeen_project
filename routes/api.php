@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 // Route Tickets
-Route::group(['prefix' => 'tickets','as' => 'tickets.','middleware'=>'auth:sanctum'], function(){
+Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
     Route::post('store', [TicketController::class, 'store'])->name('store');
     Route::put('update/{id}', [TicketController::class, 'update'])->name('edit');
