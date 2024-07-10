@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
 
-    Route::get('index/{id?}', [LoanController::class, 'index'])->name('index');
+    Route::post('index/{id?}', [LoanController::class, 'index'])->name('index');
     Route::put('edit/{id}', [LoanController::class, 'update'])->name('edit');
     Route::post('create', [LoanController::class, 'store'])->name('store');
     Route::delete('delete/{id}', [LoanController::class, 'destroy'])->name('destroy');
