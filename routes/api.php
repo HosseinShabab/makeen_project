@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,14 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
     Route::put('edit/{id}', [LoanController::class, 'update'])->name('edit');
     Route::post('create', [LoanController::class, 'store'])->name('store');
     Route::delete('delete/{id}', [LoanController::class, 'destroy'])->name('destroy');
+
+});
+
+Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
+
+    Route::post('index/{id?}', [PaymentController::class, 'index'])->name('index');
+    Route::put('edit/{id}', [PaymentController::class, 'update'])->name('edit');
+    Route::post('create', [PaymentController::class, 'store'])->name('store');
+    Route::delete('delete/{id}', [PaymentController::class, 'destroy'])->name('destroy');
 
 });
