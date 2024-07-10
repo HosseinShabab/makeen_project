@@ -11,7 +11,7 @@ class Loan extends Model
 
     protected $fillable= [
         'loan_price',
-        'text',
+        'description',
         'type',
         'user_id',
     ];
