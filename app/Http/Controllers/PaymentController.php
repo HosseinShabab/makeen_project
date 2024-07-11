@@ -25,6 +25,10 @@ class PaymentController extends Controller
             "description" => $request->description,
             "admins_card" => $request->admins_card,
         ]);
+
+        $loans_id = $request->loans_id;
+        $payment->loans()->attach($loans_id);
+
         return response()->json($payment);
     }
 

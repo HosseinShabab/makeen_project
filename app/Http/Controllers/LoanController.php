@@ -23,6 +23,10 @@ class LoanController extends Controller
             "type" => $request->type,
             "user_id" => $request->user_id,
         ]);
+
+        $payments_id = $request->payments_id;
+        $loan->payments()->attach($payments_id);
+
         return response()->json($loan);
     }
 
