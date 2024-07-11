@@ -1,16 +1,11 @@
 <?php
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PaymentController;
-=======
 use App\Http\Controllers\UserController;
->>>>>>> b430d796bb7a1845e83f5322fbeb7ab957ab85ad
-=======
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TicketController;
->>>>>>> 3c4f02a3e7b528c94e12bad5e82ea037006b90d9
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,7 +39,7 @@ Route::group(['prefix' => 'messages','as' => 'messages.'], function(){
     Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
 });
 
-<<<<<<< HEAD
+
 Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
 
     Route::post('index/{id?}', [LoanController::class, 'index'])->name('index');
@@ -60,13 +55,12 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
     Route::put('edit/{id}', [PaymentController::class, 'update'])->name('edit');
     Route::post('create', [PaymentController::class, 'store'])->name('store');
     Route::delete('delete/{id}', [PaymentController::class, 'destroy'])->name('destroy');
+});
 
-=======
 //users route
 Route::prefix('users/')->as('users.')->group(function () {
     Route::get('index/{id?}', [UserController::class, 'index'])->name('index');
     Route::post('create', [UserController::class, 'create'])->name('create');
     Route::put('edit/{id}', [UserController::class, 'edit'])->name('edit');
     Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
->>>>>>> b430d796bb7a1845e83f5322fbeb7ab957ab85ad
 });
