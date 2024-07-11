@@ -57,5 +57,10 @@ class User extends Authenticatable
         return $this->hasMany(Ticket::class);
     }
 
+    public function Loans(): HasMany
+    {
+        return $this->hasMany(Loan::class);
+    }
+
 
 }
