@@ -63,9 +63,6 @@ class User extends Authenticatable
         return $this->hasMany(Loan::class);
     }
 
-    public function payments(): BelongsToMany
-    {
-        return $this->belongsToMany(Payment::class);
-    }
+
 
 }

@@ -21,8 +21,8 @@ class Payment extends Model
 
     ];
 
-    public function users(): BelongsToMany
+    public function loans(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Loan::class);
     }
 }

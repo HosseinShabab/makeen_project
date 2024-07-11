@@ -58,7 +58,7 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
 });
 
 //users route
-Route::prefix('users/')->as('users.')->group(function () {
+    Route::prefix('users/')->as('users.')->group(function () {
     Route::get('index/{id?}', [UserController::class, 'index'])->name('index');
     Route::post('create', [UserController::class, 'create'])->name('create');
     Route::put('edit/{id}', [UserController::class, 'edit'])->name('edit');
