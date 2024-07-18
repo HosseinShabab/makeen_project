@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -16,8 +17,8 @@ class PermissionSeeder extends Seeder
     {
 
         //Roles
-         $super_admin = Role::create(['name' =>'super-admin']);
-        $admi = Role ::create(['name' => 'admin']);
+         $super_admin = Role::create(['name' =>'super_admin']);
+        $admin = Role ::create(['name' => 'admin']);
         $user = Role::create(['name' =>'user']);
 
 
@@ -53,5 +54,28 @@ class PermissionSeeder extends Seeder
 
         //
         $super_admin->syncPermissions((Permission::all()));
+        $admin->syncPermissions(["user.index","user.create", "user.delete",
+        "user.update"
+        ]);
+        $user->syncPermissions([
+         "user.index","user.delete","user.update",
+        "message.create",
+        "create.loan"
+        ]);
+        $super_admin = User::create([
+            'username' => 'Arman',
+            'phone_number' => '09021111111',
+            'password' => 'Aa12345678'
+        ]);
+
+        $super_admin->assignRole('super_admin');
+
+        $admin = User::create([
+            'username' => 'Arman',
+            'phone_number' => '09121111111',
+            'password' => 'Aa12345678'
+        ]);
+
+        $admin->assignRole('admin');
     }
 }
