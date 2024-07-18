@@ -168,7 +168,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+<<<<<<< HEAD
+        Spatie\Permission\PermissionServiceProvider::class,
+
+=======
         App\Providers\TelescopeServiceProvider::class,
+>>>>>>> 16f3c9b2e97c1542c0331363c35d0867117bce87
     ])->toArray(),
 
     /*

@@ -31,6 +31,7 @@ Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
     Route::put('update/{id}', [TicketController::class, 'update'])->name('update');
     Route::delete('delete/{id}', [TicketController::class, 'delete'])->name('delete');
 });
+
 //Route Messages
 Route::group(['prefix' => 'messages','as' => 'messages.'], function(){
     Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
