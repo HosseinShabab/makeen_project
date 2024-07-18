@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->unsignedBigInteger('phone_number')->unique();
-            $table->unsignedBigInteger('emergency_number')->unique();
+            $table->unsignedBigInteger('emergency_number');
             $table->unsignedBigInteger('home_number');
             $table->unsignedBigInteger('national_code')->unique();
             $table->unsignedBigInteger('card_number');
