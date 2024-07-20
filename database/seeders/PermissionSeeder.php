@@ -52,6 +52,9 @@ class PermissionSeeder extends Seeder
         $payment_index = Permission::create(['name' => 'payment.index']);
         $payment_delete = Permission::create(['name' => 'payment.delete']);
 
+        // user banned
+        $user_banned = Permission::create(['name' => 'user.banned']);
+        $admin->givePermissionTo($user_banned);
         //
         $super_admin->syncPermissions((Permission::all()));
         $admin->syncPermissions(["user.index","user.create", "user.delete",
