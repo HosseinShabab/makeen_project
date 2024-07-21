@@ -38,7 +38,7 @@ class PaymentController extends Controller
         return response()->json($payment);
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
         $payment = Payment::destroy($id);
         return response()->json($payment);

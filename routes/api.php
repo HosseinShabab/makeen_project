@@ -46,7 +46,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
     Route::post('index/{id?}', [LoanController::class, 'index'])->name('index');
     Route::put('edit/{id}', [LoanController::class, 'update'])->name('edit');
     Route::post('create', [LoanController::class, 'store'])->name('store');
-    Route::delete('delete/{id}', [LoanController::class, 'destroy'])->name('destroy');
+    Route::delete('delete/{id}', [LoanController::class, 'delete'])->name('destroy');
 
 });
 
@@ -55,13 +55,13 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
     Route::post('index/{id?}', [PaymentController::class, 'index'])->name('index');
     Route::put('edit/{id}', [PaymentController::class, 'update'])->name('edit');
     Route::post('create', [PaymentController::class, 'store'])->name('store');
-    Route::delete('delete/{id}', [PaymentController::class, 'destroy'])->name('destroy');
+    Route::delete('delete/{id}', [PaymentController::class, 'delete'])->name('destroy');
 });
 
 //users route
     Route::prefix('users/')->as('users.')->group(function () {
     Route::get('index/{id?}', [UserController::class, 'index'])->name('index');
-    Route::post('create', [UserController::class, 'create'])->name('create');
-    Route::put('edit/{id}', [UserController::class, 'edit'])->name('edit');
+    Route::post('create', [UserController::class, 'store'])->name('create');
+    Route::put('edit/{id}', [UserController::class, 'update'])->name('edit');
     Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
 });
