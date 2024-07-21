@@ -168,14 +168,14 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-<<<<<<< HEAD
+
 
         Spatie\Permission\PermissionServiceProvider::class,
 
 
-=======
+
         Spatie\Permission\PermissionServiceProvider::class,
->>>>>>> 88d3cc56c379989651db2d977614e6c8292a46db
+
         App\Providers\TelescopeServiceProvider::class,
 
     ])->toArray(),
