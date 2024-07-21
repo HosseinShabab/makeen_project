@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
@@ -27,16 +27,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route Tickets
 Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
-    Route::post('store', [TicketController::class, 'store'])->name('store');
-    Route::put('update/{id}', [TicketController::class, 'update'])->name('update');
+    Route::post('create', [TicketController::class, 'store'])->name('create');
+    Route::put('edit/{id}', [TicketController::class, 'update'])->name('edit');
     Route::delete('delete/{id}', [TicketController::class, 'delete'])->name('delete');
 });
 
 //Route Messages
 Route::group(['prefix' => 'messages','as' => 'messages.'], function(){
     Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
-    Route::post('store', [MessageController::class, 'store'])->name('store');
-    Route::put('update/{id}', [MessageController::class, 'update'])->name('update');
+    Route::post('create', [MessageController::class, 'store'])->name('create');
+    Route::put('edit/{id}', [MessageController::class, 'update'])->name('edit');
     Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
 });
 
@@ -45,8 +45,8 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
 
     Route::post('index/{id?}', [LoanController::class, 'index'])->name('index');
     Route::put('edit/{id}', [LoanController::class, 'update'])->name('edit');
-    Route::post('create', [LoanController::class, 'store'])->name('store');
-    Route::delete('delete/{id}', [LoanController::class, 'delete'])->name('destroy');
+    Route::post('create', [LoanController::class, 'store'])->name('create');
+    Route::delete('delete/{id}', [LoanController::class, 'delete'])->name('delete');
 
 });
 
@@ -54,8 +54,8 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
 
     Route::post('index/{id?}', [PaymentController::class, 'index'])->name('index');
     Route::put('edit/{id}', [PaymentController::class, 'update'])->name('edit');
-    Route::post('create', [PaymentController::class, 'store'])->name('store');
-    Route::delete('delete/{id}', [PaymentController::class, 'delete'])->name('destroy');
+    Route::post('create', [PaymentController::class, 'store'])->name('create');
+    Route::delete('delete/{id}', [PaymentController::class, 'delete'])->name('delete');
 });
 
 //users route
@@ -64,4 +64,13 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
     Route::post('create', [UserController::class, 'store'])->name('create');
     Route::put('edit/{id}', [UserController::class, 'update'])->name('edit');
     Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
+});
+
+//auth routs
+Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
+
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('me', [AuthController::class, 'me'])->name('me');
+
 });
