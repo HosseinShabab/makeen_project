@@ -36,7 +36,7 @@ class LoanController extends Controller
         return response()->json($loan);
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
         $loan = Loan::destroy($id);
         return response()->json($loan);

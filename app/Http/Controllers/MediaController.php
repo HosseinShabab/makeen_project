@@ -13,16 +13,18 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         $type = $request->type;
+        $typable_id = $request->typable_id;
+        $collection = $request->collection;
+
         if ($type == 'users') {
-            $user = new User();
-            $user->find($request->id)->addMediaFromRequest('media')->toMediaCollection('profile', 'local');
-            $user->find($request->id)->addMediaFromRequest('media')->toMediaCollection('national_card', 'local');
+            $user = User::find($typable_id);
+            $user->find($request->id)->addMediaFromRequest('media')->toMediaCollection("$collection", 'local');
         } else if ($type == 'payments') {
-            $payment = new Payment();
-            $payment->find($request->id)->addMediaFromRequest('media')->toMediaCollection('payment_image', 'local');
+            $payment = Payment::find($typable_id);
+            $payment->find($request->id)->addMediaFromRequest('media')->toMediaCollection("$collection", 'local');
         } else if ($type == 'messages') {
-            $message = new Message();
-            $message->find($request->id)->addMediaFromRequest('media')->toMediaCollection('file_message', 'local');
+            $message = Message::find($typable_id);
+            $message->find($request->id)->addMediaFromRequest('media')->toMediaCollection("$collection", 'local');
         }
         return response()->json('uploaded');
     }
