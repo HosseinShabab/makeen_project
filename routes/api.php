@@ -70,6 +70,7 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 
     Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('me', [AuthController::class, 'me'])->name('me');
 
