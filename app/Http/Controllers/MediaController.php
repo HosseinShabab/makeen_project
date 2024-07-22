@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 namespace App\Http\Controllers;
@@ -44,3 +45,5 @@ class MediaController extends Controller
         return response()->download($user->getpath());
     }
 }
+=======
+>>>>>>> 85640adc9d3ff646cfab050287cf202e017307be
