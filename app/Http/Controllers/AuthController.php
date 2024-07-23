@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use SebastianBergmann\Diff\Diff;
 
 class AuthController extends Controller
 {
@@ -30,13 +32,32 @@ class AuthController extends Controller
         }
     }
 
-    public function verification(Request $request){
+    public function verificationSend(Request $request){
         $id = $request->user_id;
-        $code = DB::table('verifications')->create([
+        $code = DB::table('verifications')->insert([
             "user_id"=>$request->user_id,
             "verification_code" => fake()->randomNumber(5,true),
+            "created_at"=>Carbon::now(),
         ]);
         return response()->json($code);
+    }
+
+    public function verificationCheck(Request $request){
+        $code = DB::table('verifications')->where('user_id',$request->user_id)->where('verification_code',$request->verification_code)->first();
+
+        if(!$code){
+            return response()->json("verification code is wrong");
+        }
+
+        $timeDiff= Carbon::now()->diffInMinutes($code->created_at);
+        if($timeDiff>1){
+            return response()->json("time expiered");
+        }
+
+        $user= User::find($code->user_id);
+        $token = $user->createToken($request->gmail)->plainTextToken;
+
+        return response()->json(["token" => $token]);
     }
 
     public function logout(Request $request)
