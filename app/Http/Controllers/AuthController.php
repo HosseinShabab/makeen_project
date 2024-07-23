@@ -23,7 +23,7 @@ class AuthController extends Controller
         }
 
         if ($user->hasRole('Amin')) {
-            return response()->json("user_id : " . $user->id);
+            return  $this->verificationCheck($user->id);
         } else {
 
             $token = $user->createToken($request->gmail)->plainTextToken;
@@ -32,29 +32,31 @@ class AuthController extends Controller
         }
     }
 
-    public function verificationSend(Request $request){
+    public function verificationSend(Request $request)
+    {
         $id = $request->user_id;
         $code = DB::table('verifications')->insert([
-            "user_id"=>$request->user_id,
-            "verification_code" => fake()->randomNumber(5,true),
-            "created_at"=>Carbon::now(),
+            "user_id" => $request->user_id,
+            "verification_code" => fake()->randomNumber(5, true),
+            "created_at" => Carbon::now(),
         ]);
         return response()->json($code);
     }
 
-    public function verificationCheck(Request $request){
-        $code = DB::table('verifications')->where('user_id',$request->user_id)->where('verification_code',$request->verification_code)->first();
+    public function verificationCheck(Request $request)
+    {
+        $code = DB::table('verifications')->where('user_id', $request->user_id)->where('verification_code', $request->verification_code)->first();
 
-        if(!$code){
+        if (!$code) {
             return response()->json("verification code is wrong");
         }
 
-        $timeDiff= Carbon::now()->diffInMinutes($code->created_at);
-        if($timeDiff>1){
+        $timeDiff = Carbon::now()->diffInMinutes($code->created_at);
+        if ($timeDiff > 1) {
             return response()->json("time expiered");
         }
 
-        $user= User::find($code->user_id);
+        $user = User::find($code->user_id);
         $token = $user->createToken($request->gmail)->plainTextToken;
 
         return response()->json(["token" => $token]);
