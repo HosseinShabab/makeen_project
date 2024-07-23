@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('verifications', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger("user_id");
+            $table->bigInteger("verification_code");
             $table->timestamps();
         });
     }

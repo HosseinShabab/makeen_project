@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -13,33 +14,31 @@ class AuthController extends Controller
         $user = User::select('id', 'national_code', 'phone_number')->where('national_code', $request->user_name)->first();
 
         if (!$user) {
-            return response()->json('gmail not exist');
+            return response()->json('username not exist');
         }
-
         if ($request->password != $user->phone_number) {
             return response()->json('password wrong');
         }
 
-        $token = $user->createToken($request->gmail)->plainTextToken;
+        if ($user->hasRole('Amin')) {
+            return response()->json("user_id : " . $user->id);
+        } else {
 
-        return response()->json(["token" => $token]);
+            $token = $user->createToken($request->gmail)->plainTextToken;
+
+            return response()->json(["token" => $token]);
+        }
     }
 
-    public function loginAmdin(Request $request)
-    {
-        $user = User::select('id', 'national_code', 'phone_number')->where('national_code', $request->user_name)->first();
-        if (!$user) {
-            return response()->json('gmail not exist');
-        }
-
-        if ($request->password != $user->phone_number) {
-            return response()->json('password wrong');
-        }
-
-        $token = $user->createToken($request->gmail)->plainTextToken;
-
-        return response()->json(["token" => $token]);
+    public function verification(Request $request){
+        $id = $request->user_id;
+        $code = DB::table('verifications')->create([
+            "user_id"=>$request->user_id,
+            "verification_code" => fake()->randomNumber(5,true),
+        ]);
+        return response()->json($code);
     }
+
     public function logout(Request $request)
     {
 
