@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
+///Route me
+    Route::get('show/{id?}',[AuthController::class, 'show'])->name('show');
+
 });
 // Route Tickets
 Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
