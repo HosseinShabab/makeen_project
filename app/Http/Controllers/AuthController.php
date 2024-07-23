@@ -46,4 +46,14 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return ['message' => 'successfully logged out have fun'];
     }
+
+    public function show(Request $request , string $id)
+    {
+        if ($request->user()->can('user.index') || $request->user()->id == $id) {
+            $user = User::find($id);
+            return response()->json($user);
+        } else {
+            return response()->json('You do not have this permission');
+        }
+    }
 }
