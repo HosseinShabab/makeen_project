@@ -25,8 +25,7 @@ class AuthController extends Controller
         if ($user->hasRole('Amin')) {
             return  $this->verificationCheck($user->id);
         } else {
-
-            $token = $user->createToken($request->gmail)->plainTextToken;
+            $token = $user->createToken($request->user_name)->plainTextToken;
 
             return response()->json(["token" => $token]);
         }
@@ -57,7 +56,7 @@ class AuthController extends Controller
         }
 
         $user = User::find($code->user_id);
-        $token = $user->createToken($request->gmail)->plainTextToken;
+        $token = $user->createToken($user->national_code)->plainTextToken;
 
         return response()->json(["token" => $token]);
     }
