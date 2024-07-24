@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Loan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -55,8 +56,8 @@ class LoanController extends Controller
 
     public function show(Request $request)
     {
-        if($request->accept_status == "pending"){
-            $loans = Loan::where('accept_status',null)->paginate($request->paginate)->get();
+        if ($request->accept_status == "pending") {
+            $loans = Loan::where('accept_status', null)->paginate($request->paginate)->get();
         }
         $loans = Loan::where('accept_status', $request->accept_status)->paginate($request->paginate)->get();
         return response()->json($loans);
@@ -66,18 +67,13 @@ class LoanController extends Controller
     {
         $loan = Loan::find($request->loan_id);
         $loan->admin_accept = $request->admin_accept;
+        $loan->admin_description = $request->admin_description;
         if ($request->admin_accept == "accepted") {
             $temp = $request->installment_count;
             for ($i = 1; $i <= $temp; $i++) {
                 //create installment ;
             }
         }
-    }
-
-    public function index()
-    {
-        $loans = Loan::all();
-        return response()->json($loans);
     }
 
     public function store(Request $request)
@@ -87,7 +83,7 @@ class LoanController extends Controller
         $loan->create([
             "loan_number" => $request->loan_number,
             "price" => $request->price,
-            "description" => $request->description,
+            "user_description" => $request->description,
             "type" => $request->type,
             "guarantors_accept" => "pending",
             "user_id" => $request->user_id,
@@ -106,5 +102,16 @@ class LoanController extends Controller
 
     public function update(Request $request)
     {
+        $loan = Loan::find($request->id);
+        $timeDiff = (Carbon::now() - $loan->created_at) / 36e5;
+        if ($timeDiff > 24) {
+            return "time expierd";
+        }
+        $loan->price = ($request->price) ? $request->price : $loan->price;
+        $loan->user_description = ($request->user_description) ? $request->user_description : $loan->user_description;
+        // if ($request->guarantors_id) {
+        //     DB::table("loan_guarantor")->where("loan_id",$loan->loan_id)->delete();
+        //     $this->;
+        // }
     }
 }

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger("loan_number");
             $table->unsignedBigInteger("price");
-            $table->text("description")->nullable();
+            $table->text("admin_description")->nullable();
+            $table->text("user_description")->nullable();
             $table->enum('type',["normal","necessary"]);
             $table->enum("admin_accept",["accepterd","faild"])->nullable();
             $table->enum("guarantors_accept",["accepterd","faild"])->nullable();
