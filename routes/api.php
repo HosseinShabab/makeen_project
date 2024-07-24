@@ -42,15 +42,19 @@ Route::group(['prefix' => 'messages','as' => 'messages.'], function(){
     Route::post('create', [MessageController::class, 'store'])->name('create');
     Route::put('edit/{id}', [MessageController::class, 'update'])->name('edit');
     Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
+
 });
 
 
 Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
 
-    Route::post('index/{id?}', [LoanController::class, 'index'])->name('index');
-    Route::put('edit/{id}', [LoanController::class, 'update'])->name('edit');
-    Route::post('create', [LoanController::class, 'store'])->name('create');
-    Route::delete('delete/{id}', [LoanController::class, 'delete'])->name('delete');
+    Route::post('showGuarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
+    Route::post('acceptGuarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
+    Route::post('showAdmin', [LoanController::class, 'showAdmin'])->name('showAdmin');
+    Route::post('show', [LoanController::class, 'show'])->name('show');
+    Route::post('acceptAdmin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
+    Route::post('store', [LoanController::class, 'store'])->name('create');
+    Route::post('update', [LoanController::class, 'update'])->name('update');
 
 });
 
