@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger("loan_price");
             $table->text("description");
             $table->enum('type',["normal","necessary"]);
+            $table->enum("accept_status",["accepterd","faild",'update_requierd']);
             $table->unsignedBigInteger("user_id");
             $table->timestamps();
         });
