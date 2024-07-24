@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -47,13 +48,13 @@ class AuthController extends Controller
         return ['message' => 'successfully logged out have fun'];
     }
 
-    public function show(Request $request , string $id)
+    public function show()
     {
-        if ($request->user()->can('user.index') || $request->user()->id == $id) {
-            $user = User::find($id);
-            return response()->json($user);
+        if (Auth()->check()) {
+            return response()->json(auth()->user());
         } else {
-            return response()->json('You do not have this permission');
+            return response()->json(null,status:401);
         }
     }
+
 }

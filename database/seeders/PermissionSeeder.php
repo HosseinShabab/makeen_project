@@ -67,18 +67,19 @@ class PermissionSeeder extends Seeder
         ]);
         $super_admin = User::create([
             'username' => 'Arman',
-            'phone_number' => '09021111111',
-            'password' => 'Aa12345678'
+            'password' => '09021111111',
+
         ]);
 
         $super_admin->assignRole('super_admin');
 
         $admin = User::create([
             'username' => 'Arman',
-            'phone_number' => '09121111111',
-            'password' => 'Aa12345678'
+            'password' => '09121111111',
+
         ]);
 
         $admin->assignRole('admin');
     }
+
 }
