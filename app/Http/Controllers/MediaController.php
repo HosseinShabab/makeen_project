@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> ba26b9e0ed7e0be0cc0aae8109ab597834cffbf5
 <?php
 
 namespace App\Http\Controllers;
@@ -49,7 +45,3 @@ class MediaController extends Controller
         return response()->download($user->getpath());
     }
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> ba26b9e0ed7e0be0cc0aae8109ab597834cffbf5
