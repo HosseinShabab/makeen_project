@@ -17,7 +17,7 @@ class LoanController extends Controller
         return response()->json($gurantors);
     }
 
-    public function guarantorAccept(Request $request)
+    public function acceptGuarantor(Request $request)
     {
         $loan_guarantor = DB::table('laon_guarantor')
             ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->guarantor_id)
@@ -39,6 +39,30 @@ class LoanController extends Controller
         }
 
         return response()->json($loan_guarantor);
+    }
+
+    public function showAdmin(Request $request)
+    {
+        if ($request->count == "checked") {
+            $loans = Loan::where('admin_accept', "!=", null)->where('type', $request->type)
+                ->paginate($request->paginate)->get();
+        } else {
+            $loans = Loan::where('admin_accept', null)->where('type', $request->type)
+                ->paginate($request->paginate)->get();
+        }
+        return response()->json($loans);
+    }
+
+    public function acceptAdmin(Request $request)
+    {
+        $loan = Loan::find($request->loan_id);
+        $loan->admin_accept = $request->admin_accept;
+        if ($request->admin_accept == "accepted") {
+            $temp = $request->installment_count;
+            for ($i = 1; $i <= $temp; $i++) {
+                //create installment ;
+            }
+        }
     }
 
     public function index()
@@ -73,6 +97,5 @@ class LoanController extends Controller
 
     public function update(Request $request)
     {
-
     }
 }
