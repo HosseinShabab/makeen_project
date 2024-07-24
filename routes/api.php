@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TicketController;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 // Route Tickets
-Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
+Route::group(['prefix' => 'tickets','as' => 'tickets.', 'middleware'=> 'auth:sanctum'], function(){
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
     Route::post('create', [TicketController::class, 'store'])->name('create');
     Route::put('edit/{id}', [TicketController::class, 'update'])->name('edit');
@@ -70,6 +71,9 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 
     Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('verification/send', [AuthController::class, 'verificationSend'])->name('verification.send');
+    Route::post('verification/check', [AuthController::class, 'verificationCheck'])->name('verification.check');
+    Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('me', [AuthController::class, 'me'])->name('me');
 
