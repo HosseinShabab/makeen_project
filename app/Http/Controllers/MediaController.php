@@ -44,3 +44,4 @@ class MediaController extends Controller
         return response()->download($user->getpath());
     }
 }
+
