@@ -52,6 +52,9 @@ class PermissionSeeder extends Seeder
         $media_download = Permission::create(["name"=> 'media.download']);
         $media_delete = Permission::create(["name"=> 'media.delete']);
 
+        // user banned
+        $user_banned = Permission::create(['name' => 'user.banned']);
+        $admin->givePermissionTo($user_banned);
         //
         $super_admin->syncPermissions((Permission::all()));
         $admin->syncPermissions(["user.index","user.create", "user.delete",
