@@ -53,6 +53,15 @@ class LoanController extends Controller
         return response()->json($loans);
     }
 
+    public function show(Request $request)
+    {
+        if($request->accept_status == "pending"){
+            $loans = Loan::where('accept_status',null)->paginate($request->paginate)->get();
+        }
+        $loans = Loan::where('accept_status', $request->accept_status)->paginate($request->paginate)->get();
+        return response()->json($loans);
+    }
+
     public function acceptAdmin(Request $request)
     {
         $loan = Loan::find($request->loan_id);
