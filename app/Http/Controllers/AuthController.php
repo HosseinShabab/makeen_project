@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
+=======
+use Illuminate\Support\Facades\DB;
+>>>>>>> 26aea9f7a35b4cb60c5dd11fd0a85f4853ccd5bc
 use Illuminate\Support\Facades\Hash;
+use SebastianBergmann\Diff\Diff;
 
 class AuthController extends Controller
 {
@@ -14,33 +20,51 @@ class AuthController extends Controller
         $user = User::select('id', 'national_code', 'phone_number')->where('national_code', $request->user_name)->first();
 
         if (!$user) {
-            return response()->json('gmail not exist');
+            return response()->json('username not exist');
         }
-
         if ($request->password != $user->phone_number) {
             return response()->json('password wrong');
         }
 
-        $token = $user->createToken($request->gmail)->plainTextToken;
+        if ($user->hasRole('Amin')) {
+            return  $this->verificationCheck($user->id);
+        } else {
+            $token = $user->createToken($request->user_name)->plainTextToken;
 
-        return response()->json(["token" => $token]);
+            return response()->json(["token" => $token]);
+        }
     }
 
-    public function loginAmdin(Request $request)
+    public function verificationSend(Request $request)
     {
-        $user = User::select('id', 'national_code', 'phone_number')->where('national_code', $request->user_name)->first();
-        if (!$user) {
-            return response()->json('gmail not exist');
+        $id = $request->user_id;
+        $code = DB::table('verifications')->insert([
+            "user_id" => $request->user_id,
+            "verification_code" => fake()->randomNumber(5, true),
+            "created_at" => Carbon::now(),
+        ]);
+        return response()->json($code);
+    }
+
+    public function verificationCheck(Request $request)
+    {
+        $code = DB::table('verifications')->where('user_id', $request->user_id)->where('verification_code', $request->verification_code)->first();
+
+        if (!$code) {
+            return response()->json("verification code is wrong");
         }
 
-        if ($request->password != $user->phone_number) {
-            return response()->json('password wrong');
+        $timeDiff = Carbon::now()->diffInMinutes($code->created_at);
+        if ($timeDiff > 1) {
+            return response()->json("time expiered");
         }
 
-        $token = $user->createToken($request->gmail)->plainTextToken;
+        $user = User::find($code->user_id);
+        $token = $user->createToken($user->national_code)->plainTextToken;
 
         return response()->json(["token" => $token]);
     }
+
     public function logout(Request $request)
     {
 
@@ -48,6 +72,7 @@ class AuthController extends Controller
         return ['message' => 'successfully logged out have fun'];
     }
 
+<<<<<<< HEAD
     public function show()
     {
         if (Auth()->check()) {
@@ -56,5 +81,7 @@ class AuthController extends Controller
             return response()->json(null,status:401);
         }
     }
+=======
+>>>>>>> 26aea9f7a35b4cb60c5dd11fd0a85f4853ccd5bc
 
 }
