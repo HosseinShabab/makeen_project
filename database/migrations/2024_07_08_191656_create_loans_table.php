@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("request_number");
-            $table->unsignedBigInteger("loan_price");
-            $table->text("description");
+            $table->bigInteger("loan_number");
+            $table->unsignedBigInteger("price");
+            $table->text("admin_description")->nullable();
+            $table->text("user_description")->nullable();
             $table->enum('type',["normal","necessary"]);
+            $table->enum("admin_accept",["accepterd","faild"])->nullable();
+            $table->enum("guarantors_accept",["accepterd","faild"])->nullable();
             $table->unsignedBigInteger("user_id");
             $table->timestamps();
         });
