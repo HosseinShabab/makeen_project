@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class AuthController extends Controller
             return  $this->verificationCheck($user->id);
         } else {
 
-            $token = $user->createToken($request->gmail)->plainTextToken;
+            $token = $user->createToken($request->user_name)->plainTextToken;
 
             return response()->json(["token" => $token]);
         }
@@ -57,7 +58,7 @@ class AuthController extends Controller
         }
 
         $user = User::find($code->user_id);
-        $token = $user->createToken($request->gmail)->plainTextToken;
+        $token = $user->createToken($user->national_code)->plainTextToken;
 
         return response()->json(["token" => $token]);
     }
@@ -68,4 +69,19 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return ['message' => 'successfully logged out have fun'];
     }
+
+    public function updateprofile(UpdateProfileRequest $request, $id)
+    {
+        $updateprofile = User::where('id', $id)->update([
+            "name" => $request->name,
+            "last_name" => $request->last_name,
+            "home_number" => $request->home_number,
+            "emergency_number" => $request->emergency_number,
+            "address" => $request->address,
+            "sheba_number" => $request->sheba_number,
+            "card_number" => $request->card_nuumber,
+        ]);
+        return response()->json($updateprofile);
+    }
 }
+
