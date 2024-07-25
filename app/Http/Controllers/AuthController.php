@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use SebastianBergmann\Diff\Diff;
 
@@ -84,6 +85,15 @@ class AuthController extends Controller
         return response()->json($updateprofile);
     }
 
+
+    public function show()
+    {
+        if (Auth()->check()) {
+            return response()->json(auth()->user());
+        } else {
+            return response()->json(null,status:401);
+        }
+    }
 
 }
 
