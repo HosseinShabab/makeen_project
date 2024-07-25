@@ -31,7 +31,7 @@ class MessageController extends Controller
 
     public function delete(string $id)
     {
-      $message = Message::where('id' , $id)->delete();
+      $message = Message::destroy($id);
       return response()->json($message);
     }
 }

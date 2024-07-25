@@ -9,7 +9,7 @@ class TicketController extends Controller
 {
     public function index()
     {
-        $ticket = Ticket::orderBy('id','desc')->first();
+        $ticket = Ticket::with('messages','User:id,first_name,last_name')->orderBy('id','desc')->first();
         return response()->json($ticket);
     }
 
