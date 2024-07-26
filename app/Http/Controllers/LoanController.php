@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Installment;
 use App\Models\Loan;
 use App\Models\User;
 use Carbon\Carbon;
@@ -79,9 +80,17 @@ class LoanController extends Controller
         if ($request->admin_accept == "accepted") {
 
             $temp = $request->installment_count;
+            $installment_price = $loan->price ;
+            $installment_price /= $temp;
 
             for ($i = 1; $i <= $temp; $i++) {
-                //create installment ;
+                $due_date = Carbon::now()->addMonths($i)->toDate();
+                $installment = new Installment();
+                $installment->created([
+                    "count" => $i,
+                    "price" => $installment_price,
+                    "due_date"=> $due_date,
+                ]);
             }
         }
         return response()->json($loan);
