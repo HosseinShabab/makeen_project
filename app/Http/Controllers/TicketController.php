@@ -21,16 +21,8 @@ class TicketController extends Controller
     }
 
 
-    public function update(Request $request, string $id)
-    {
-        $ticket = ticket::where('id' , $id)->update($request->toArray());
-        return response()->json($ticket);
-    }
+   
 
 
-    public function delete(string $id)
-    {
-        $ticket = ticket::where('id' , $id)->delete();
-        return response()->json($ticket);
-    }
+
 }

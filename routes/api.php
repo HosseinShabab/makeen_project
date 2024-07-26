@@ -29,11 +29,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 // Route Tickets
-Route::group(['prefix' => 'tickets','as' => 'tickets.', 'middleware'=> 'auth:sanctum'], function(){
+Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
     Route::post('create', [TicketController::class, 'store'])->name('create');
     Route::put('edit/{id}', [TicketController::class, 'update'])->name('edit');
-    Route::delete('delete/{id}', [TicketController::class, 'delete'])->name('delete');
 });
 
 //Route Messages

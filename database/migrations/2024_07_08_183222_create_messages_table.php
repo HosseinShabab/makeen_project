@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('discription');
             $table->unsignedBigInteger('ticket_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }

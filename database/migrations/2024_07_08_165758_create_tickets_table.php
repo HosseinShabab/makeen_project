@@ -12,12 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tickets', function (Blueprint $table) {
-            
+
             $table->id();
+            $table->enum('type',['systemic','unsystematic'])->default('unsystematic');
             $table->string('title');
-            $table->text('discription');
-            $table->timestamp('time');
-            $table->text('response');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

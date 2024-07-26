@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
+
 use Illuminate\Support\Facades\Auth;
-=======
+
 use Illuminate\Support\Facades\DB;
->>>>>>> 26aea9f7a35b4cb60c5dd11fd0a85f4853ccd5bc
+
 use Illuminate\Support\Facades\Hash;
 use SebastianBergmann\Diff\Diff;
 
@@ -72,7 +72,7 @@ class AuthController extends Controller
         return ['message' => 'successfully logged out have fun'];
     }
 
-<<<<<<< HEAD
+
     public function show()
     {
         if (Auth()->check()) {
@@ -81,7 +81,7 @@ class AuthController extends Controller
             return response()->json(null,status:401);
         }
     }
-=======
->>>>>>> 26aea9f7a35b4cb60c5dd11fd0a85f4853ccd5bc
+
+
 
 }

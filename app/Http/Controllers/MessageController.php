@@ -9,7 +9,7 @@ class MessageController extends Controller
 {
     public function index()
     {
-        $message = Message::orderBy('id','desc')->first();
+        $message = Message::with('ticket:user_id')->orderBy('id','desc')->first();
         return response()->json($message);
     }
 

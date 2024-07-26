@@ -34,7 +34,7 @@ class PermissionSeeder extends Seeder
 
         //message permission
         $message_create = Permission::create(['name' =>'message.create']);
-        $mesage_update = Permission::create(['[name' => 'message.update']);
+        $mesage_update = Permission::create(['name' => 'message.update']);
         $message_index = Permission::create(['name' => 'message.index']);
 
         //loan permission
