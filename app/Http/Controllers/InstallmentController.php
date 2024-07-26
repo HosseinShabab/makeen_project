@@ -23,4 +23,13 @@ class InstallmentController extends Controller
         //attach media
         return response()->json($installment);
     }
+
+    public function adminAccept(Request $request){
+
+        $installment = Installment::find($request->installment_id);
+        $installment->admin_accept = $request->admin_accept;
+        $installment->admin_accept = $request->admin_accept;
+        return response()->json($installment);
+
+    }
 }

@@ -63,7 +63,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () 
 
     Route::post('show', [InstallmentController::class, 'show'])->name('show');
     Route::post('pay', [InstallmentController::class, 'pay'])->name('pay');
-
+    Route::post('adminAccept', [InstallmentController::class, 'adminAccept'])->name('adminAccept');
 
 });
 
