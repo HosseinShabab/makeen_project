@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
@@ -57,12 +58,14 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
 
 });
 
-Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
+Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () {
 
-    Route::post('index/{id?}', [PaymentController::class, 'index'])->name('index');
-    Route::put('edit/{id}', [PaymentController::class, 'update'])->name('edit');
-    Route::post('create', [PaymentController::class, 'store'])->name('create');
-    Route::delete('delete/{id}', [PaymentController::class, 'delete'])->name('delete');
+    Route::post('show', [InstallmentController::class, 'show'])->name('show');
+    Route::post('pay', [InstallmentController::class, 'pay'])->name('pay');
+    Route::post('adminAccept', [InstallmentController::class, 'adminAccept'])->name('adminAccept');
+    Route::post('showAdmin', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
+    Route::post('showPyament', [InstallmentController::class, 'showPayment'])->name('showPayment');
+
 });
 
 //users route
