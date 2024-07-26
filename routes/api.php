@@ -33,16 +33,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
     Route::post('create', [TicketController::class, 'store'])->name('create');
-    Route::put('edit/{id}', [TicketController::class, 'update'])->name('edit');
 });
 
 //Route Messages
 Route::group(['prefix' => 'messages','as' => 'messages.'], function(){
     Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
     Route::post('create', [MessageController::class, 'store'])->name('create');
-    Route::put('edit/{id}', [MessageController::class, 'update'])->name('edit');
-    Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
-
 });
 
 

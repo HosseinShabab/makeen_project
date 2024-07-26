@@ -22,17 +22,8 @@ class MessageController extends Controller
 
 
 
-    public function update(Request $request, string $id)
-    {
-        $message = Message::where('id' , $id)->update($request->toArray());
-        return response()->json($message);
-    }
+   
 
 
-    public function delete(string $id)
-    {
-      $message = Message::destroy($id);
-      return response()->json($message);
-    }
 }
 
