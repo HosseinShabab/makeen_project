@@ -24,18 +24,10 @@ class UserController extends Controller
             $user = User::create($request->merge([
                 "password" => Hash::make($request->password)
             ])->toArray());
-        }else{
+        } else {
             $user = "Passwrod Does not match";
         }
 
-        return response()->json($user);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $user = User::where('id', $id)->update($request->merge([
-            "password" => Hash::make($request->password)
-        ])->toArray());
         return response()->json($user);
     }
 

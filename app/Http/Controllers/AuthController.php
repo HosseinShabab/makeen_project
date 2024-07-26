@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,6 +30,9 @@ class AuthController extends Controller
         if ($user->hasRole('Amin')) {
             return  $this->verificationCheck($user->id);
         } else {
+
+
+
             $token = $user->createToken($request->user_name)->plainTextToken;
 
             return response()->json(["token" => $token]);
@@ -85,3 +89,4 @@ class AuthController extends Controller
 
 
 }
+

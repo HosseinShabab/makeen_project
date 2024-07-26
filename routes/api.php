@@ -69,7 +69,7 @@ Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
     Route::prefix('users/')->as('users.')->group(function () {
     Route::get('index/{id?}', [UserController::class, 'index'])->name('index');
     Route::post('create', [UserController::class, 'store'])->name('create');
-    Route::put('edit/{id}', [UserController::class, 'update'])->name('edit');
+    Route::put('edit/{id}', [AuthController::class, 'updateprofile'])->name('edit');
     Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
 });
 
