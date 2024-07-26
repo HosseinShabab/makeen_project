@@ -62,6 +62,8 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
 Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () {
 
     Route::post('show', [InstallmentController::class, 'show'])->name('show');
+    Route::post('pay', [InstallmentController::class, 'pay'])->name('pay');
+
 
 });
 
