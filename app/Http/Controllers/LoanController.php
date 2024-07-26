@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Return_;
 
 class LoanController extends Controller
 {
@@ -102,16 +103,33 @@ class LoanController extends Controller
 
     public function update(Request $request)
     {
+
         $loan = Loan::find($request->id);
         $timeDiff = (Carbon::now() - $loan->created_at) / 36e5;
+
         if ($timeDiff > 24) {
             return "time expierd";
         }
+
         $loan->price = ($request->price) ? $request->price : $loan->price;
         $loan->user_description = ($request->user_description) ? $request->user_description : $loan->user_description;
-        // if ($request->guarantors_id) {
-        //     DB::table("loan_guarantor")->where("loan_id",$loan->loan_id)->delete();
-        //     $this->;
-        // }
+        if ($request->guarantors_id) {
+
+            $past_guarantors = DB::table("loan_guarantor")->where("loan_id", $loan->loan_id)->get();
+
+            foreach ($past_guarantors as $past_guarantor) {
+                DB::table("loan_guarantor")->where("guarantor_id", $past_guarantor)->delete();
+                //yek massage ke bego
+            }
+
+            $guarantors_id = $request->guarantros_id;
+
+            foreach ($guarantors_id as $guarantor_id) {
+                DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
+                //yek massage sakhte beshe baraye on user :
+            }
+        }
+
+        return response()->json($loan , $guarantors_id);
     }
 }
