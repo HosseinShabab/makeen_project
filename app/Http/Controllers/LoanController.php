@@ -88,6 +88,7 @@ class LoanController extends Controller
                 $due_date = Carbon::now()->addMonths($i)->toDate();
                 $installment = new Installment();
                 $installment->created([
+                    "type"=>"installment",
                     "count" => $i,
                     "price" => $installment_price,
                     "due_date"=> $due_date,

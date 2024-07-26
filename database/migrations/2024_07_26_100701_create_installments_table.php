@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('installments', function (Blueprint $table) {
             $table->id();
+            $table->enum("type",["installment","subscription"]);
             $table->bigInteger('count');
             $table->unsignedBigInteger('price');
             $table->date("due_date");
@@ -21,7 +22,8 @@ return new class extends Migration
             $table->text("admin_description")->nullable();
             $table->unsignedBigInteger('paid_price')->nullable();
             $table->text("user_description")->nullable();
-            $table->unsignedBigInteger("loan_id");
+            $table->unsignedBigInteger("loan_id")->nullable();
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->string('user_name');
             $table->timestamps();
         });
