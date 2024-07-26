@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('paid_price')->nullable();
             $table->text("user_description")->nullable();
             $table->unsignedBigInteger("loan_id");
+            $table->string('user_name');
             $table->timestamps();
         });
     }

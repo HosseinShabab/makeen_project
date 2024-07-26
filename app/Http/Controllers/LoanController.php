@@ -82,6 +82,7 @@ class LoanController extends Controller
             $temp = $request->installment_count;
             $installment_price = $loan->price ;
             $installment_price /= $temp;
+            $user = User::select("id","first_name","last_name")->where('id',$loan->user_id)->first();
 
             for ($i = 1; $i <= $temp; $i++) {
                 $due_date = Carbon::now()->addMonths($i)->toDate();
@@ -90,6 +91,8 @@ class LoanController extends Controller
                     "count" => $i,
                     "price" => $installment_price,
                     "due_date"=> $due_date,
+                    "loan_id"=>$loan->id,
+                    "user_name"=>$user->first_name . $user->last_name,
                 ]);
             }
         }
