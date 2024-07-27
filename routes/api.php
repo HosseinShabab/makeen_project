@@ -25,12 +25,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
-///Route me
-    Route::get('show/{id?}',[AuthController::class, 'show'])->name('show');
-
+    ///Route me
+    Route::get('show/{id?}', [AuthController::class, 'show'])->name('show');
 });
 // Route Tickets
-Route::group(['prefix' => 'tickets','as' => 'tickets.', 'middleware'=> 'auth:sanctum'], function(){
+Route::group(['prefix' => 'tickets', 'as' => 'tickets.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
     Route::post('create', [TicketController::class, 'store'])->name('create');
     Route::put('edit/{id}', [TicketController::class, 'update'])->name('edit');
@@ -38,40 +37,37 @@ Route::group(['prefix' => 'tickets','as' => 'tickets.', 'middleware'=> 'auth:san
 });
 
 //Route Messages
-Route::group(['prefix' => 'messages','as' => 'messages.'], function(){
+Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
     Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
     Route::post('create', [MessageController::class, 'store'])->name('create');
     Route::put('edit/{id}', [MessageController::class, 'update'])->name('edit');
     Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
-
 });
 
 
 Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
 
-    Route::post('showGuarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
-    Route::post('acceptGuarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
-    Route::post('showAdmin', [LoanController::class, 'showAdmin'])->name('showAdmin');
+    Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
+    Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');
+    Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
+    Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
     Route::post('show', [LoanController::class, 'show'])->name('show');
-    Route::post('acceptAdmin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
     Route::post('store', [LoanController::class, 'store'])->name('create');
     Route::post('update', [LoanController::class, 'update'])->name('update');
-
 });
 
 Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () {
 
     Route::post('show', [InstallmentController::class, 'show'])->name('show');
     Route::post('pay', [InstallmentController::class, 'pay'])->name('pay');
-    Route::post('adminAccept', [InstallmentController::class, 'adminAccept'])->name('adminAccept');
-    Route::post('showAdmin', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
-    Route::post('showPyament', [InstallmentController::class, 'showPayment'])->name('showPayment');
-    Route::post('showSub', [InstallmentController::class, 'showSubscription'])->name('showSub');
-
+    Route::post('admin/accept', [InstallmentController::class, 'adminAccept'])->name('adminAccept');
+    Route::post('show/admin', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
+    Route::post('show/pyament', [InstallmentController::class, 'showPayment'])->name('showPayment');
+    Route::post('show/sub', [InstallmentController::class, 'showSubscription'])->name('showSub');
 });
 
 //users route
-    Route::prefix('users/')->as('users.')->group(function () {
+Route::prefix('users/')->as('users.')->group(function () {
     Route::get('index/{id?}', [UserController::class, 'index'])->name('index');
     Route::post('create', [UserController::class, 'store'])->name('create');
     Route::put('edit/{id}', [UserController::class, 'update'])->name('edit');
@@ -87,5 +83,4 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('me', [AuthController::class, 'me'])->name('me');
-
 });
