@@ -21,7 +21,11 @@ class TicketController extends Controller
     }
 
 
-   
+    public function show($id)
+    {
+        $ticket = Ticket::with('messages.user')->find($id);
+        return response()->json($ticket);
+    }
 
 
 

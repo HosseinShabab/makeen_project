@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
 
             $table->id();
-            $table->enum('type',['systemic','unsystematic'])->default('unsystematic');
             $table->string('title');
+            $table->enum('type',['systemic','unsystematic'])->default('unsystematic');
+            $table->text('description');
             $table->unsignedBigInteger('user_id');
+            $table->enum('priority', ['smal', 'mid', 'big']);
             $table->timestamps();
         });
     }
