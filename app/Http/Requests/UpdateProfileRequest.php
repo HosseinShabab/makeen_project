@@ -9,10 +9,10 @@ class UpdateProfileRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return false;
-    }
+    // public function authorize(): bool
+    // {
+    //     return false;
+    // }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +22,7 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'first_name' => 'required',
             'last_name' => 'required',
             'home_number' => 'required',
             'emergency_number' => 'required',
