@@ -62,7 +62,7 @@ class PermissionSeeder extends Seeder
         ]);
         $user->syncPermissions([
          "user.index","user.delete",
-        "message.create", "update.profile",
+        "message.create",
         "create.loan"
         ]);
         $super_admin = User::create([
