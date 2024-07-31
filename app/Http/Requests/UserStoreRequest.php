@@ -22,9 +22,8 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'national_code' => 'required',
-            'password' => 'required',
-            'repeat_password' => 'required|same:password'
+            'national_code' => 'required|string|size:10|unique:users,national_code|regex:/^[0-9]+$/',
+            'phone_number' => 'required',
         ];
     }
 }
