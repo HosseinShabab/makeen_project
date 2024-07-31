@@ -81,7 +81,7 @@ class AuthController extends Controller
     }
 
 
-    public function show()
+    public function me()
     {
         if (Auth()->check()) {
             return response()->json(auth()->user());

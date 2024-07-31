@@ -25,15 +25,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
-    ///Route me
-    Route::get('show/{id?}', [AuthController::class, 'show'])->name('show');
+
 });
 // Route Tickets
-<<<<<<< HEAD
-Route::group(['prefix' => 'tickets','as' => 'tickets.'], function(){
-=======
 Route::group(['prefix' => 'tickets', 'as' => 'tickets.', 'middleware' => 'auth:sanctum'], function () {
->>>>>>> ff252bae2aa0bc4fee25975a5320fb08158169b7
     Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
     Route::post('create', [TicketController::class, 'store'])->name('create');
 });
@@ -42,11 +37,6 @@ Route::group(['prefix' => 'tickets', 'as' => 'tickets.', 'middleware' => 'auth:s
 Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
     Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
     Route::post('create', [MessageController::class, 'store'])->name('create');
-<<<<<<< HEAD
-=======
-    Route::put('edit/{id}', [MessageController::class, 'update'])->name('edit');
-    Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
->>>>>>> ff252bae2aa0bc4fee25975a5320fb08158169b7
 });
 
 

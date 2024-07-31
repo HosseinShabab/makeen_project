@@ -14,5 +14,10 @@ class MessageController extends Controller
         return response()->json(['message'=>$message]);
     }
 
+    public function index()
+    {
+        $message = Message::orderBy('id','desc')->first();
+        return response()->json($message);
+    }
 }
 
