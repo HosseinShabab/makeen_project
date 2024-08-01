@@ -49,6 +49,7 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        "address"=> "object",
     ];
 
     public function tickets(): HasMany

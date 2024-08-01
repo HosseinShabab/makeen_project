@@ -23,7 +23,8 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'national_code' => 'required|string|size:10|unique:users,national_code|regex:/^[0-9]+$/',
-            'phone_number' => 'required',
+            'phone_number' => 'required|string|size:11|unique:users,phone_number|regex:/^[0-9]+$/',
+
         ];
     }
 }

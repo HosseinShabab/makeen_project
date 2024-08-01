@@ -22,19 +22,19 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-            $user = User::create($request->toArray());
-
+        $user = User::create($request->toArray());
         return response()->json($user);
     }
 
     public function delete($id)
     {
-        $user= User::find($id);
+        $user = User::find($id);
         $user->assignPermission("deleted");
         return "successfull";
     }
 
-    public function deactive(Request $request){
+    public function deactive(Request $request)
+    {
         $user = User::find($request->id);
         $user->revokePermission("active");
         return "successfull";
