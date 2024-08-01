@@ -22,7 +22,6 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_name',
         'first_name',
         'last_name',
         'phone_number',
@@ -31,8 +30,7 @@ class User extends Authenticatable implements HasMedia
         'national_code',
         'card_number',
         'sheba_number',
-        'address',
-        'password',
+        'address'
     ];
 
     /**
@@ -41,7 +39,7 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'phone_number',
         'remember_token',
     ];
 
@@ -52,7 +50,7 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'phone_number' => 'hashed',
     ];
 
     public function tickets(): HasMany

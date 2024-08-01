@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -26,7 +27,7 @@ class PermissionSeeder extends Seeder
         $user_create = Permission::create(['name' => 'user.create']);
         $user_update = Permission::create(['name' => 'user.update']);
         $user_index = Permission::create(['name' => 'user.index']);
-
+        $update_profile = Permission::create(['name' => 'update.profile']);
         //ticket permission
         $ticket_create = Permission::create(['name' => 'ticket.create']);
         $ticket_update = Permission::create(['name' => 'ticket.update']);
@@ -57,28 +58,28 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo($user_banned);
         //
         $super_admin->syncPermissions((Permission::all()));
-        $admin->syncPermissions(["user.index","user.create", "user.delete",
-        "user.update"
+        $admin->syncPermissions(["user.index","user.create", "user.delete"
         ]);
         $user->syncPermissions([
-         "user.index","user.delete","user.update",
-        "message.create",
+         "user.index","user.delete",
+        "message.create", "update.profile",
         "create.loan"
         ]);
         $super_admin = User::create([
             'username' => 'Arman',
-            'phone_number' => '09021111111',
-            'password' => 'Aa12345678'
+            'password' => '09021111111',
+
         ]);
 
         $super_admin->assignRole('super_admin');
 
         $admin = User::create([
             'username' => 'Arman',
-            'phone_number' => '09121111111',
-            'password' => 'Aa12345678'
+            'password' => '09121111111',
+
         ]);
 
         $admin->assignRole('admin');
     }
+
 }
