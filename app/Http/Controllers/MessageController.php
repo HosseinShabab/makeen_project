@@ -15,14 +15,41 @@ class MessageController extends Controller
         return response()->json(['message'=>$message]);
     }
 
+
+
     public function index(Request $request , $id)
     {
         if ($id) {
             $message = Message::where('id', $id)->first();
         } else {
-            $message = Message::orderBy('id', 'desc')->get();
+            $message = Message::orderBy('id', 'desc')->paginate(10);
         }
         return response()->json($message);
     }
+
+
+
+    public function mymessage()
+    {
+        $userid = auth()->id();
+        $message = Message::where('user_id', $userid)->orderBy('id', 'desc')->get();
+        return response()->json($message);
+    }
+
+
+
+
+
+
+
+// public function fetchNewMessages(Ticket $ticket)
+// {
+//     $messages = Message::where('ticket_id', $ticket->id)
+//                         ->where('created_at', '>', now()->subMinutes(1))
+//                         ->get();
+
+//     return response()->json($messages);
+// }
+
 }
 

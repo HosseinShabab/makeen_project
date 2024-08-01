@@ -51,8 +51,10 @@ class PermissionSeeder extends Seeder
         ]);
         $admin->syncPermissions([
             'user.create','user.update','user.index','user.delete','user.deactive',
+            'message.create','message.index', 'ticket.create','ticket.index'
         ]);
         $user->syncPermissions([
+            'message.create', 'ticket.create',
             "update.profile",
         ]);
 
