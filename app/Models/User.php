@@ -24,7 +24,7 @@ class User extends Authenticatable implements HasMedia
     protected $fillable = [
         'first_name',
         'last_name',
-        'phone_number',
+        'phone_number'  ,
         'emergency_number',
         'home_number',
         'national_code',
@@ -39,7 +39,6 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $hidden = [
-        'phone_number',
         'remember_token',
     ];
 
@@ -50,7 +49,6 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'phone_number' => 'hashed',
     ];
 
     public function tickets(): HasMany

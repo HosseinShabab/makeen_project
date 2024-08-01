@@ -85,16 +85,7 @@ class AuthController extends Controller
         $updateprofile->emergency_number = $request->emergency_number;
         $updateprofile->address = $request->address;
         $updateprofile->sheba_number = $request->sheba_number;
-        $updateprofile->card_number = $request->card_nuumber;
-
-            // $user['first_name'] = $user['first_name'] ?? null;
-            // $user['last_name'] = $user['last_name'] ?? null;
-            // $user['emergency_number'] = $user['emergency_number'] ?? null;
-            // $user['home_number'] = $user['home_number'] ?? null;
-            // $user['card_number'] = $user['card_number'] ?? null;
-            // $user['sheba_number'] = $user['sheba_number'] ?? null;
-            // $user['address'] = $user['address'] ?? null;
-            //     User::create($updateprofile);
+        $updateprofile->card_number = $request->card_number;
 
         if ($request->filled('name', 'last_name', 'home_number', 'emergency_number',
          'address', 'sheba_number', 'card_number')){
@@ -113,4 +104,3 @@ class AuthController extends Controller
         }
     }
 }
-    

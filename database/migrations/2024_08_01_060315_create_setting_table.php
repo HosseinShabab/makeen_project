@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text("desciription");
             $table->integer("guarantors_count");
-            $table->integerIncrements("loans_count");
+            $table->integer("loans_count");
             $table->timestamps();
         });
     }
