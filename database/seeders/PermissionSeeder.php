@@ -47,23 +47,22 @@ class PermissionSeeder extends Seeder
 
 
         // ///////////////////////////////////////////////////////////////////////////////// create supe admin , admin
-        $super_admin = User::create([
+        $superAdmin = User::create([
             'national_code' => '14522876562',
             'phone_number' => '09021111111',
             'password' =>"SuperAdminQrz4764",
 
-        ]);
+        ])->assignRole($super_admin);
 
-        $super_admin->assignRole('super_admin');
 
-        $admin = User::create([
+        $Admin = User::create([
             'national_code' => '41212556999',
             'phone_number' => '09121111111',
             'password' =>"adminQrz8786",
 
-        ]);
+        ])->assignRole($admin);
 
-        $admin->assignRole('admin');
+        // $Admin->assignRole($admin);
     }
 
 }
