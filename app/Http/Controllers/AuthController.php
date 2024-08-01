@@ -6,16 +6,14 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 
-use Illuminate\Support\Facades\Auth;
+
+
+
+
 
 use Illuminate\Support\Facades\DB;
-
-=======
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
->>>>>>> c7ebf90e39f431d887b652d84481dccf9972c5e7
 use Illuminate\Support\Facades\Hash;
 use SebastianBergmann\Diff\Diff;
 
@@ -36,11 +34,7 @@ class AuthController extends Controller
             return  $this->verificationCheck($user->id);
         } else {
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> c7ebf90e39f431d887b652d84481dccf9972c5e7
             $token = $user->createToken($request->user_name)->plainTextToken;
 
             return response()->json(["token" => $token]);
@@ -88,10 +82,7 @@ class AuthController extends Controller
         return ['message' => 'successfully logged out have fun'];
     }
 
-<<<<<<< HEAD
 
-    public function me()
-=======
     public function updateprofile(UpdateProfileRequest $request)
     {
         $updateprofile = User::find($request->id);
@@ -112,8 +103,7 @@ class AuthController extends Controller
     }
 
 
-    public function show()
->>>>>>> c7ebf90e39f431d887b652d84481dccf9972c5e7
+    public function me()
     {
         if (Auth()->check()) {
             return response()->json(auth()->user());
@@ -121,10 +111,5 @@ class AuthController extends Controller
             return response()->json(null, status: 401);
         }
     }
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> c7ebf90e39f431d887b652d84481dccf9972c5e7
 }

@@ -13,6 +13,7 @@ class Message extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
     protected $fillable = [
         "discription",
+        "status",
         "ticket_id",
         'user_id'
 

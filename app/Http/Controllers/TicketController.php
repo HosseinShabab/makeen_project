@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class TicketController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(TicketRequest $request)
     {
         $ticket = ticket::create($request->toArray());
         return response()->json($ticket);

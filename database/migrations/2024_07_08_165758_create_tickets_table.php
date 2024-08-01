@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->enum('type',['systemic','unsystematic'])->default('unsystematic');
-            $table->text('description');
             $table->unsignedBigInteger('user_id');
             $table->enum('priority', ['low', 'medium', 'necessary']);
             $table->timestamps();
