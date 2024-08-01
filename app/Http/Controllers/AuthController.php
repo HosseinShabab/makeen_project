@@ -29,7 +29,7 @@ class AuthController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return response()->json('password wrong');
         }
-<<<<<<< HEAD
+
 
         if ($user->hasRole('Amin')) {
             return  $this->verificationCheck($user->id);
@@ -40,10 +40,10 @@ class AuthController extends Controller
 
             return response()->json(["token" => $token]);
         }
-=======
+
         $token = $user->createToken($request->user_name)->plainTextToken;
         return response()->json(["token" => $token]);
->>>>>>> 814ab88b2f10797a663fd129e59064e4348e6d95
+
     }
 
     public function loginAdmin(Request $request)

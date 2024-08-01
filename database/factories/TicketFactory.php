@@ -18,9 +18,9 @@ class TicketFactory extends Factory
     {
         return [
             'title' => fake()->word(),
-            'type' => fake(),
-            'description' => fake()->text(),
-            'priority' => fake(),
+            'type' => fake()->randomElement(['systemic' , 'unsystematic']),
+            'priority' => fake()->randomElement(['low' , 'medium', 'necessary']),
+
         ];
     }
 }

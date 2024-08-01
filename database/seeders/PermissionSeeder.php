@@ -30,15 +30,20 @@ class PermissionSeeder extends Seeder
         $user_deactive = Permission::create(['name'=>'user.deactive']);
         $update_profile = Permission::create(['name' => 'update.profile']);
 
-<<<<<<< HEAD
+
         //message permission
         $message_create = Permission::create(['name' =>'message.create']);
-        $mesage_update = Permission::create(['name' => 'message.update']);
         $message_index = Permission::create(['name' => 'message.index']);
-=======
+
+        //ticket permission
+        $ticket_create = Permission::create(['name' => 'ticket.create']);
+        $ticket_index = Permission::create(['name' => 'ticket.index']);
+
+
+
         $active = Permission::create(["name"=> "active"]);
         $deleted = Permission::create(["name"=> "deleted"]);
->>>>>>> 814ab88b2f10797a663fd129e59064e4348e6d95
+
 
 
         $super_admin->syncPermissions([

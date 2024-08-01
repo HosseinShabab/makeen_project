@@ -18,6 +18,7 @@ class MessageFactory extends Factory
     {
         return [
             'description' => fake()->text(),
+            'status' => fake()->randomElement(['read' , 'unread']),
         ];
     }
 }
