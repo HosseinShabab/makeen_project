@@ -63,10 +63,10 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () 
 
 //users route
 Route::prefix('users/')->as('users.')->group(function () {
-    Route::get('index/{id?}', [UserController::class, 'index'])->name('index');
+    Route::put('index/{id?}', [UserController::class, 'index'])->name('index');
     Route::post('create', [UserController::class, 'store'])->name('create');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->name('edit');
-    Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
+    Route::post('delete', [UserController::class, 'delete'])->name('delete');
+    Route::post('deactive', [UserController::class, 'ban'])->name('ban');
 });
 
 //auth routs
@@ -75,6 +75,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('verification/send', [AuthController::class, 'verificationSend'])->name('verification.send');
     Route::post('verification/check', [AuthController::class, 'verificationCheck'])->name('verification.check');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->name('edit');
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('me', [AuthController::class, 'me'])->name('me');

@@ -26,10 +26,16 @@ class Loan extends Model
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0377e06132f02ae7049521598bafce9007e12da5
     public function installments(): HasMany
     {
         return $this->hasMany(Installment::class);
     }
+<<<<<<< HEAD
 =======
 >>>>>>> c7ebf90e39f431d887b652d84481dccf9972c5e7
+=======
+>>>>>>> 0377e06132f02ae7049521598bafce9007e12da5
 }

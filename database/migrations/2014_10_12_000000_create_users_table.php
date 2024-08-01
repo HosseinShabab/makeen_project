@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('phone_number')->unique();
-            $table->unsignedBigInteger('emergency_number')->nullable();
-            $table->unsignedBigInteger('home_number')->nullable();
-            $table->string('national_code')->unique()->length(10);
-            $table->unsignedBigInteger('card_number')->nullable();
-            $table->unsignedBigInteger('sheba_number')->nullable();
-            $table->string('address')->nullable();
+            $table->string('emergency_number')->nullable();
+            $table->string('home_number')->nullable();
+            $table->string('national_code')->unique();
+            $table->string('card_number')->nullable();
+            $table->string('sheba_number')->nullable();
+            $table->text('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
