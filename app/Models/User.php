@@ -24,6 +24,7 @@ class User extends Authenticatable implements HasMedia
     protected $fillable = [
         'first_name',
         'last_name',
+        'password',
         'phone_number'  ,
         'emergency_number',
         'home_number',
@@ -40,6 +41,7 @@ class User extends Authenticatable implements HasMedia
      */
     protected $hidden = [
         'remember_token',
+        'passwrod',
     ];
 
     /**
@@ -49,6 +51,7 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password' => "hashed",
         "address"=> "object",
     ];
 
