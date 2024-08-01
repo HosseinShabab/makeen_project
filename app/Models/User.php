@@ -63,6 +63,10 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Loan::class);
     }
 
+    public function installments(): HasMany
+    {
+        return $this->hasMany(Installment::class);
+    }
 
 
 }

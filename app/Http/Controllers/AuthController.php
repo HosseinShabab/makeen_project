@@ -47,7 +47,11 @@ class AuthController extends Controller
 
     public function verificationCheck(Request $request)
     {
-        $code = DB::table('verifications')->where('user_id', $request->user_id)->where('verification_code', $request->verification_code)->first();
+        $user = User::select('id')->where('national_code', $request->user_name)->first();
+        if(!$user){
+            return response()->json("user not found ");
+        }
+        $code = DB::table('verifications')->where('user_id', $user->id)->where('verification_code', $request->verification_code)->first();
 
         if (!$code) {
             return response()->json("verification code is wrong");

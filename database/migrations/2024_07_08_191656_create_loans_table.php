@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text("admin_description")->nullable();
             $table->text("user_description")->nullable();
             $table->enum('type',["normal","necessary"]);
-            $table->enum("admin_accept",["accepterd","faild"])->nullable();
-            $table->enum("guarantors_accept",["accepterd","faild"])->nullable();
+            $table->enum("admin_accept",["accepted","faild","pending"])->default("pending");
+            $table->enum("guarantors_accept",["accepted","faild","pending"])->default("pending");
             $table->unsignedBigInteger("user_id");
             $table->timestamps();
         });
