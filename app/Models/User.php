@@ -11,10 +11,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +25,8 @@ class User extends Authenticatable implements HasMedia
     protected $fillable = [
         'first_name',
         'last_name',
-        'phone_number',
+        'password',
+        'phone_number'  ,
         'emergency_number',
         'home_number',
         'national_code',
@@ -39,8 +41,8 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $hidden = [
-        'phone_number',
         'remember_token',
+        'passwrod',
     ];
 
     /**
@@ -50,7 +52,8 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'phone_number' => 'hashed',
+        'password' => "hashed",
+        "address"=> "object",
     ];
 
     public function tickets(): HasMany

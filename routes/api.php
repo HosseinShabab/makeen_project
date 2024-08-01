@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\TicketController;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Contracts\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,20 +69,26 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () 
 });
 
 //users route
-Route::prefix('users/')->as('users.')->group(function () {
-    Route::get('index/{id?}', [UserController::class, 'index'])->name('index');
-    Route::post('create', [UserController::class, 'store'])->name('create');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->name('edit');
-    Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
+Route::prefix('users/')->as('users.')->middleware('auth:sanctum')->group(function () {
+    Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
+    Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
+    Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update")->name('edit');
+    Route::post('delete', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');
+    Route::post('deactive', [UserController::class, 'ban'])->middleware('permission:user.deactive')->name('ban');
 });
 
 //auth routs
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
-
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('verification/send', [AuthController::class, 'verificationSend'])->name('verification.send');
-    Route::post('verification/check', [AuthController::class, 'verificationCheck'])->name('verification.check');
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('me', [AuthController::class, 'me'])->name('me');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum','permission:update.profile'])->name('edit');
+    Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+});
+
+//media controller
+Route::group(['prefix' => 'media', 'as' => 'media.', 'middleware' => 'auth:sanctum'], function () {
+    Route::post('show', [MediaController::class, 'index'])->middleware('auth:sanctum')->name('index');
+    Route::post('create', [MediaController::class, 'store'])->middleware('auth:sanctum')->name('create');
+    Route::post('delete', [MediaController::class, 'delete'])->middleware("auth:sanctum")->name('delete');
 });

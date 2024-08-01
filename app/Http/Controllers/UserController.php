@@ -6,6 +6,7 @@ use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use PDO;
 
 class UserController extends Controller
 {
@@ -21,24 +22,35 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-            $user = User::create($request->merge([
-                "phone_number" => Hash::make($request->phone_number)
-            ])->toArray());
-
-            // $user['first_name'] = $user['first_name'] ?? null;
-            // $user['last_name'] = $user['last_name'] ?? null;
-            // $user['emergency_number'] = $user['emergency_number'] ?? null;
-            // $user['home_number'] = $user['home_number'] ?? null;
-            // $user['card_number'] = $user['card_number'] ?? null;
-            // $user['sheba_number'] = $user['sheba_number'] ?? null;
-            // $user['address'] = $user['address'] ?? null;
-                // User::create($user);
+        $user = User::create([
+            "national_code" => $request->national_code,
+            "password" => $request->passwrod,
+            "phone_number" => $request->password,
+        ]);
+        $user->syncRole('user');
         return response()->json($user);
     }
 
-    public function delete($id)
+    public function update(Request $request)
     {
-        $user = User::where('id', $id)->delete();
+        $user = User::where('id', $request->user_id)->update($request->merge([
+            "password" => Hash::make($request->password)
+        ])->toArray());
         return response()->json($user);
+    }
+
+
+    public function delete(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->assignPermission("deleted");
+        return "successfull";
+    }
+
+    public function deactive(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->revokePermission("active");
+        return "successfull";
     }
 }

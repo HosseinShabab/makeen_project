@@ -22,13 +22,19 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'home_number' => 'required',
-            'emergency_number' => 'required',
-            'address' => 'required',
-            'sheba_number' => 'required',
-            'card_number' => 'required'
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'phone_number' =>'required|string|size:11|unique:users,phone_number|regex:/^[0-9]+$/'
+            'home_number' => 'required|string|size:11|regex:/^[0-9]+$/',
+            'emergency_number' => 'required|string|size:11|regex:/^[0-9]+$/',
+            'address' => 'required|array',
+            'address.street' => 'required|string',
+            'address.alley' => 'required|string',
+            'address.city' => 'required|string',
+            'address.plaque' => 'required|string',
+            'address.description' => 'required|string',
+            'sheba_number' => 'required|string|size:24|regex:/^[0-9]+$/',
+            'card_number' => 'required|string|size:16|regex:/^[0-9]+$/'
         ];
     }
 }

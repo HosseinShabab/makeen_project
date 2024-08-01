@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verifications', function (Blueprint $table) {
-            $table->unsignedBigInteger("user_id");
-            $table->bigInteger("verification_code");
+        Schema::create('setting', function (Blueprint $table) {
+            $table->id();
+            $table->text("desciription");
+            $table->integer("guarantors_count");
+            $table->integer("loans_count");
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verifications');
+        Schema::dropIfExists('setting');
     }
 };
