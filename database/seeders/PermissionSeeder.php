@@ -58,11 +58,10 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo($user_banned);
         //
         $super_admin->syncPermissions((Permission::all()));
-        $admin->syncPermissions(["user.index","user.create", "user.delete",
-        "user.update"
+        $admin->syncPermissions(["user.index","user.create", "user.delete"
         ]);
         $user->syncPermissions([
-         "user.index","user.delete","user.update",
+         "user.index","user.delete",
         "message.create", "update.profile",
         "create.loan"
         ]);

@@ -25,8 +25,11 @@ class Loan extends Model
         return $this->belongsTo(User::class);
     }
 
+<<<<<<< HEAD
     public function installments(): HasMany
     {
         return $this->hasMany(Installment::class);
     }
+=======
+>>>>>>> c7ebf90e39f431d887b652d84481dccf9972c5e7
 }
