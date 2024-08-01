@@ -22,13 +22,27 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $user = User::create($request->toArray());
+        $user = User::create([
+            "national_code" => $request->national_code,
+            "password" => $request->passwrod,
+            "phone_number" => $request->password,
+        ]);
+        $user->syncRole('user');
         return response()->json($user);
     }
 
-    public function delete($id)
+    public function update(Request $request)
     {
-        $user = User::find($id);
+        $user = User::where('id', $request->user_id)->update($request->merge([
+            "password" => Hash::make($request->password)
+        ])->toArray());
+        return response()->json($user);
+    }
+
+
+    public function delete(Request $request)
+    {
+        $user = User::find($request->id);
         $user->assignPermission("deleted");
         return "successfull";
     }

@@ -22,60 +22,44 @@ class PermissionSeeder extends Seeder
         $admin = Role ::create(['name' => 'admin']);
         $user = Role::create(['name' =>'user']);
 
-
         //user permission
         $user_create = Permission::create(['name' => 'user.create']);
         $user_update = Permission::create(['name' => 'user.update']);
         $user_index = Permission::create(['name' => 'user.index']);
+        $user_delete = Permission::create(['name' => 'user.delete']);
+        $user_deactive = Permission::create(['name'=>'user.deactive']);
         $update_profile = Permission::create(['name' => 'update.profile']);
-        //ticket permission
-        $ticket_create = Permission::create(['name' => 'ticket.create']);
-        $ticket_update = Permission::create(['name' => 'ticket.update']);
-        $ticket_index = Permission::create(['name' => 'ticket.index']);
 
-        //message permission
-        $message_create = Permission::create(['name' =>'message.create']);
-        $mesage_update = Permission::create(['[name' => 'message.update']);
-        $message_index = Permission::create(['name' => 'message.index']);
+        $active = Permission::create(["name"=> "active"]);
+        $deleted = Permission::create(["name"=> "deleted"]);
 
-        //loan permission
-        $loan_create = Permission::create(['name' => 'loan_create']);
-        $loan_update = Permission::create(['name'=>'loan_update']);
-        $loan_index = Permission::create(['name' => 'loan_index']);
 
-        //payment permission
-        $payment_create = Permission::create(['name' => 'payment.create']);
-        $payment_update = Permission::create(['name' => 'payment.update']);
-        $payment_index = Permission::create(['name' => 'payment.index']);
-
-        //Media permission
-        $media_create = Permission::create(["name"=> 'media.create']);
-        $media_download = Permission::create(["name"=> 'media.download']);
-        $media_delete = Permission::create(["name"=> 'media.delete']);
-
-        // user banned
-        $user_banned = Permission::create(['name' => 'user.banned']);
-        $admin->givePermissionTo($user_banned);
-        //
-        $super_admin->syncPermissions((Permission::all()));
-        $admin->syncPermissions(["user.index","user.create", "user.delete"
+        $super_admin->syncPermissions([
+            'user.create','user.update','user.index','user.delete','user.deactive',
+        ]);
+        $admin->syncPermissions([
+            'user.create','user.update','user.index','user.delete','user.deactive',
         ]);
         $user->syncPermissions([
-         "user.index","user.delete",
-        "message.create", "update.profile",
-        "create.loan"
+            "update.profile",
         ]);
+
+
+
+        // ///////////////////////////////////////////////////////////////////////////////// create supe admin , admin
         $super_admin = User::create([
-            'username' => 'Arman',
-            'password' => '09021111111',
+            'national_code' => '14522876562',
+            'phone_number' => '09021111111',
+            'password' =>"SuperAdminQrz4764",
 
         ]);
 
         $super_admin->assignRole('super_admin');
 
         $admin = User::create([
-            'username' => 'Arman',
-            'password' => '09121111111',
+            'national_code' => '41212556999',
+            'phone_number' => '09121111111',
+            'password' =>"adminQrz8786",
 
         ]);
 
