@@ -28,23 +28,21 @@ use Spatie\Permission\Contracts\Permission;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
-    ///Route me
-    Route::get('show/{id?}', [AuthController::class, 'show'])->name('show');
+
 });
 // Route Tickets
 Route::group(['prefix' => 'tickets', 'as' => 'tickets.', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
-    Route::post('create', [TicketController::class, 'store'])->name('create');
-    Route::put('edit/{id}', [TicketController::class, 'update'])->name('edit');
-    Route::delete('delete/{id}', [TicketController::class, 'delete'])->name('delete');
+    Route::get('index/{id?}', [TicketController::class, 'index'])->middleware("permission:ticket.index")->name('index');
+    Route::post('create', [TicketController::class, 'store'])->middleware("permission:ticket.create")->name('create');
+    Route::get('myticket', [MessageController::class, 'myticket'])->name('myticket');
+
 });
 
 //Route Messages
-Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
-    Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
-    Route::post('create', [MessageController::class, 'store'])->name('create');
-    Route::put('edit/{id}', [MessageController::class, 'update'])->name('edit');
-    Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
+Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware' => 'auth:sanctum'], function () {
+    Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
+    Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
+    Route::get('mymessage', [MessageController::class, 'mymessage'])->name('mymessage');
 });
 
 

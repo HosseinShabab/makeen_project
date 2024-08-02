@@ -30,6 +30,17 @@ class PermissionSeeder extends Seeder
         $user_deactive = Permission::create(['name'=>'user.deactive']);
         $update_profile = Permission::create(['name' => 'update.profile']);
 
+
+        //message permission
+        $message_create = Permission::create(['name' =>'message.create']);
+        $message_index = Permission::create(['name' => 'message.index']);
+
+        //ticket permission
+        $ticket_create = Permission::create(['name' => 'ticket.create']);
+        $ticket_index = Permission::create(['name' => 'ticket.index']);
+
+
+
         $active = Permission::create(["name"=> "active"]);
         $deleted = Permission::create(["name"=> "deleted"]);
 
@@ -37,17 +48,18 @@ class PermissionSeeder extends Seeder
         $setting_create = Permission::create(['name' => 'setting.create']);
         $setting_index = Permission::create(['name' => 'setting.index']);
         $addmedia = Permission::create(['name' => 'addmedia']);
-        $removemedia = Permission::create(['name' => 'removemedia'])
+        $removemedia = Permission::create(['name' => 'removemedia']);
 
 
-        $super_admin->syncPermissions([
-            'user.create','user.update','user.index','user.delete','user.deactive', 'setting.create', 'setting.index', 'addmedia', 'removemedia'
-        ]);
+
+        $super_admin->syncPermissions((Permission::all()));
         $admin->syncPermissions([
-            'user.create','user.update','user.index','user.delete','user.deactive', 'setting.create', 'setting.index', 'addmedia', 'removemedia'
+            'user.create','user.update','user.index','user.delete','user.deactive',
+            'message.create','message.index', 'ticket.create','ticket.index'
         ]);
         $user->syncPermissions([
-            "update.profile",'setting.index'
+            'message.create', 'ticket.create',
+            "update.profile",
         ]);
 
 

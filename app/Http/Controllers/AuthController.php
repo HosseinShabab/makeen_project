@@ -6,6 +6,12 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
+
+
+
+
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,8 +29,21 @@ class AuthController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return response()->json('password wrong');
         }
+
+
+        if ($user->hasRole('Amin')) {
+            return  $this->verificationCheck($user->id);
+        } else {
+
+
+            $token = $user->createToken($request->user_name)->plainTextToken;
+
+            return response()->json(["token" => $token]);
+        }
+
         $token = $user->createToken($request->user_name)->plainTextToken;
         return response()->json(["token" => $token]);
+
     }
 
     public function loginAdmin(Request $request)
@@ -47,6 +66,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return ['message' => 'successfully logged out have fun'];
     }
+
 
     public function updateprofile(UpdateProfileRequest $request)
     {
@@ -73,4 +93,5 @@ class AuthController extends Controller
             return response()->json(null, status: 401);
         }
     }
+
 }

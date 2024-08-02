@@ -172,7 +172,16 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
 
 
+
+
+
         App\Providers\TelescopeServiceProvider::class,
+
+
+
+
+        App\Providers\TelescopeServiceProvider::class,
+
         App\Providers\TelescopeServiceProvider::class,
 
     ])->toArray(),

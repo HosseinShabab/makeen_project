@@ -13,7 +13,10 @@ class Message extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
     protected $fillable = [
         "discription",
-        "ticket_id"
+        "status",
+        "ticket_id",
+        'user_id'
+
 
 
     ];
@@ -21,5 +24,9 @@ class Message extends Model implements HasMedia
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
