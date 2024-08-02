@@ -59,8 +59,8 @@ class AuthController extends Controller
         $user->sheba_number = $request->sheba_number;
         $user->card_number = $request->card_number;
         $user->save();
-        $user->assignPermission('active');
-        $user->revokePermission('update.profile');
+        $user->givePermissionTo('active');
+        $user->revokePermissionTo('update.profile');
         return response()->json($user);
     }
 

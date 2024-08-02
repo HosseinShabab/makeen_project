@@ -16,6 +16,8 @@ class FactorySeeder extends Seeder
     {
         $users = User::factory()->count(10)->create()->each(function ($user) {
             $user->assignRole('user');
+            $user->givePermissionTo('active');
+            $user->revokePermissionTo('update.profile');
         });
 
     }
