@@ -13,11 +13,10 @@ use PhpParser\Node\Stmt\Return_;
 
 class LoanController extends Controller
 {
-    public function showGuarantors()
+    public function showGuarantors(Request $request)
     {
-        $gurantors = User::select('id', 'phone_number', 'first_name', 'last_name')
-            ->withoutPermission('banned')->withoutPermission('deleted')->get();
-        return response()->json($gurantors);
+        $user = User::select('id','first_name','last_name')->where('national_code',$request->national_code)->first();
+        return response()->json($user);
     }
 
     public function acceptGuarantor(Request $request)
@@ -108,13 +107,14 @@ class LoanController extends Controller
 
     public function store(Request $request)
     {
+        $count = $request->user()->loans()->count;
         $loan = new Loan();
         $loan = $loan->create([
-            "loan_number" => 1,
+            "loan_number" => $count,
             "price" => $request->price,
             "user_description" => $request->user_description,
             "type" => $request->type,
-            "user_id" => $request->user_id,
+            "user_id" => $request->user()->id,
         ]);
 
         $guarantors_id = $request->guarantors_id;
