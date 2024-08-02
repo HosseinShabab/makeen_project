@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text("admin_description")->nullable();
             $table->unsignedBigInteger("loan_id")->nullable();
             $table->unsignedBigInteger("user_id")->nullable();
+            $table->unsignedBigInteger('payment_id')->nullable();
             $table->timestamps();
         });
     }
