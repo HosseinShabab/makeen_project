@@ -33,15 +33,21 @@ class PermissionSeeder extends Seeder
         $active = Permission::create(["name"=> "active"]);
         $deleted = Permission::create(["name"=> "deleted"]);
 
+        //admin permisson
+        $setting_create = Permission::create(['name' => 'setting.create']);
+        $setting_index = Permission::create(['name' => 'setting.index']);
+        $addmedia = Permission::create(['name' => 'addmedia']);
+        $removemedia = Permission::create(['name' => 'removemedia'])
+
 
         $super_admin->syncPermissions([
-            'user.create','user.update','user.index','user.delete','user.deactive',
+            'user.create','user.update','user.index','user.delete','user.deactive', 'setting.create', 'setting.index', 'addmedia', 'removemedia'
         ]);
         $admin->syncPermissions([
-            'user.create','user.update','user.index','user.delete','user.deactive',
+            'user.create','user.update','user.index','user.delete','user.deactive', 'setting.create', 'setting.index', 'addmedia', 'removemedia'
         ]);
         $user->syncPermissions([
-            "update.profile",
+            "update.profile",'setting.index'
         ]);
 
 
