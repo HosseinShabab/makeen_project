@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SettingStoreRequest;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    public function store(Request $request)
+    public function store(SettingStoreRequest $request)
     {
         $setting = Setting::create($request->toArray());
         return response()->json($setting);
