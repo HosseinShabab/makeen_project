@@ -38,9 +38,9 @@ class Installment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function payments(): HasMany
+    public function payment(): BelongsTo
     {
-        return $this->hasMany(Payment::class);
+        return $this->belongsTo(Payment::class);
     }
 
 }
