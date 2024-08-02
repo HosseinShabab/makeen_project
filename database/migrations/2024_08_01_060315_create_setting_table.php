@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('setting', function (Blueprint $table) {
             $table->id();
-            $table->text("desciription");
+            $table->text("description");
             $table->integer("guarantors_count");
             $table->integer("loans_count");
+            $table->string('fund_name');
             $table->timestamps();
         });
     }
