@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('loan_guarantor', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('guarantor_id');
             $table->unsignedBigInteger('loan_id');
-            $table->enum("guarantor_accept",["accepted","faild","pending"])->default("pending");
+            $table->enum("guarantor_accept", ["accepted", "faild", "pending"])->default("pending");
         });
     }
 

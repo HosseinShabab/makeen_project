@@ -47,7 +47,7 @@ Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
 });
 
 
-Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
+Route::group(['prefix' => 'loans', 'as' => 'loans.' , 'middleware'=> 'auth:sanctum'], function () {
 
     Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
     Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');
