@@ -24,7 +24,7 @@ class UpdateProfileRequest extends FormRequest
         return [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'phone_number' =>'required|string|size:11|unique:users,phone_number|regex:/^[0-9]+$/'
+            'phone_number' =>'required|string|size:11|unique:users,phone_number|regex:/^[0-9]+$/',
             'home_number' => 'required|string|size:11|regex:/^[0-9]+$/',
             'emergency_number' => 'required|string|size:11|regex:/^[0-9]+$/',
             'address' => 'required|array',

@@ -20,11 +20,9 @@ return new class extends Migration
             $table->enum('status',['paid','unpaid','error'])->default("unpaid");
             $table->enum("admin_accept",["accepted",'faid'])->nullable();
             $table->text("admin_description")->nullable();
-            $table->unsignedBigInteger('paid_price')->nullable();
-            $table->text("user_description")->nullable();
             $table->unsignedBigInteger("loan_id")->nullable();
             $table->unsignedBigInteger("user_id")->nullable();
-            $table->string('user_name');
+            $table->unsignedBigInteger('payment_id')->nullable();
             $table->timestamps();
         });
     }
