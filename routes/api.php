@@ -7,6 +7,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -78,7 +79,7 @@ Route::prefix('users/')->as('users.')->middleware('auth:sanctum')->group(functio
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum','permission:update.profile'])->name('edit');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:update.profile'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });
@@ -88,4 +89,11 @@ Route::group(['prefix' => 'media', 'as' => 'media.', 'middleware' => 'auth:sanct
     Route::post('show', [MediaController::class, 'index'])->middleware('auth:sanctum')->name('index');
     Route::post('create', [MediaController::class, 'store'])->middleware('auth:sanctum')->name('create');
     Route::post('delete', [MediaController::class, 'delete'])->middleware("auth:sanctum")->name('delete');
+});
+
+Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(function () {
+    Route::post('create', [SettingController::class, 'store'])->middleware('permisson:setting.create')->name('create');
+    Route::get('index', [SettingController::class, 'index'])->middleware('permission:setting.index')->name('index');
+    Route::post('addmedia', [SettingController::class , 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
+    Route::post('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
 });
