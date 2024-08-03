@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum("admin_accept",["accepted",'faid'])->nullable();
             $table->text("admin_description")->nullable();
             $table->unsignedBigInteger("loan_id")->nullable();
-            $table->unsignedBigInteger("user_id")->nullable();
+            $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger('payment_id')->nullable();
             $table->timestamps();
         });
