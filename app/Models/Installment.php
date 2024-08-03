@@ -39,9 +39,4 @@ class Installment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function payment(): BelongsToMany
-    {
-        return $this->belongsToMany(Payment::class);
-    }
-
 }

@@ -3,25 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\Installment;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDO;
 
 class InstallmentController extends Controller
 {
+
+    private function storeSub($id)
+    {
+        $last_installment = Installment::where('user_id',$id && "due_date", "<", Carbon::now()->toDateString() && 'admin_accept', '!=', 'accepted')
+            ->last();
+        $curr_date = Carbon::now()->toDateString();
+        $last_date = $last_installment->due_date;
+        $count = $last_installment->count;
+        while($last_date < $curr_date){
+            $count++;
+            $last_date->addmonth();
+            Installment::create([
+                'type' => "subscription",
+                'count' => $count,
+                'price'=> $last_installment->price,
+                'due_date'=> $last_date,
+            ]);
+        }
+        return;
+    }
+
     public function show(Request $request)
     {
+        $this->storeSub($request->id);
         if ($request->loan_id) {
             $installments = Installment::where("loan_id", $request->loan_id)->orderBy('esc')->get();
         } else {
-            $installments = Installment::where('user_id',$request->user()->id)->orderBy('esc')->get();
+            $installments = Installment::where('user_id', $request->user()->id && 'loan_id',null)->orderBy('esc')->get();
         }
         return response()->json($installments);
     }
 
+    public function pay(Request $request){
+        $installments_id = $request->installments_id;
+        
+        foreach($installments_id as $installment_id){
+            $installment = Installment::find($installment_id);
+            $installment->paid_price = $installment->price;
+            $installment->user_description=$request->user_description;
+            $installment->save();
+            $installment = $installment->addMediaFromRequest('media');
+        }
+        return response()->json('ok status:200');
+    }
 
     public function showAdmin(Request $request)
     {
+
         if ($request->status == "paid") {
             $installments = Installment::select("id", "user_name", "due_date")
                 ->where("paid_price", "!=", null)->paginate($request->paginate)->get();
@@ -34,7 +70,12 @@ class InstallmentController extends Controller
 
     public function showPayment(Request $request)
     {
-        //return media ;
+        $curr_date= Carbon::now()->toDateString();
+        $this->storeSub($request->user_id);
+        $user = User::find($request->user_id);
+        $installments = Installment::with('payments','media')->where('id',$request->user_id && 'due_date','<',$curr_date && 'status','!=','paid')->get();
+        $installments_sum = Installment::where('id',$request->user_id && 'due_date','<',$curr_date && 'status','!=','paid')->sum('price');
+        return response()->json(['user'=>$user,'installments'=>$installments, 'sum',$installments_sum]);
     }
 
     public function adminAccept(Request $request)
@@ -44,17 +85,10 @@ class InstallmentController extends Controller
         $installment->admin_accept = $request->admin_accept;
         $installment->admin_description = $request->admin_description;
         $installment->status = ($request->status == "accepted") ? "paid" : "error";
-        if ($request->admin_accept == "accepted" && $installment->type == "subscription") {
-            $newSub = new Installment();
-            $newSub->create([
-                "type" => "subscription",
-                "count" => ($installment->count) + 1,
-                "price" => $installment->price,
-                "due_date" => $installment->due_date->addmonth(),
-                "user_id" => $installment->user_id,
-            ]);
+        if($request->newPrice){
+            $installment->price = $request->newPrice;
         }
-
+        $installment->save();
         return response()->json($installment);
     }
 }

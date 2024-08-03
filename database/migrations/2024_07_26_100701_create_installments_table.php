@@ -18,11 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('price');
             $table->date("due_date");
             $table->enum('status',['paid','unpaid','error'])->default("unpaid");
-            $table->enum("admin_accept",["accepted",'faid'])->nullable();
             $table->text("admin_description")->nullable();
+            $table->enum('admin_accept',['accepted','faild','pending'])->default('pending');
+            $table->unsignedBigInteger('paid_price')->nullable();
+            $table->text('user_description')->nullable();
             $table->unsignedBigInteger("loan_id")->nullable();
             $table->unsignedBigInteger("user_id");
-            $table->unsignedBigInteger('payment_id')->nullable();
             $table->timestamps();
         });
     }
