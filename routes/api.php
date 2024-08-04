@@ -61,11 +61,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.' , 'middleware'=> 'auth:sanct
 Route::group(['prefix' => 'installments', 'as' => 'installments.','middleware'=>'auth:sanctum'], function () {
 
     Route::post('show', [InstallmentController::class, 'show'])->name('show');
-    Route::post('pay', [InstallmentController::class, 'pay'])->name('pay');
-    Route::post('admin/accept', [InstallmentController::class, 'adminAccept'])->name('adminAccept');
-    Route::post('show/admin', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
-    Route::post('show/pyament', [InstallmentController::class, 'showPayment'])->name('showPayment');
-    Route::post('show/sub', [InstallmentController::class, 'showSubscription'])->name('showSub');
+    Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 
 //users route
@@ -88,7 +84,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
-    Route::post('index', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::put('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
     Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
     Route::post('accept', [FactorController::class, 'accept'])->middleware("permission:factor.accept")->name('delete');
 });
