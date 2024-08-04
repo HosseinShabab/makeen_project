@@ -9,10 +9,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TicketController;
-use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Contracts\Permission;
+use App\Http\Controllers\RolePermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +45,7 @@ Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware' => 'auth:
 });
 
 
-Route::group(['prefix' => 'loans', 'as' => 'loans.'], function () {
+Route::group(['prefix' => 'loans', 'as' => 'loans.' , 'middleware'=> 'auth:sanctum'], function () {
 
     Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
     Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');

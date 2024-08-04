@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
+use App\Models\Installment;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use PDO;
@@ -26,6 +28,14 @@ class UserController extends Controller
             "national_code" => $request->national_code,
             "password" => $request->passwrod,
             "phone_number" => $request->password,
+        ]);
+        $installment = new Installment();
+        $installment=$installment->create([
+            "type" => "subscription",
+            "count" => 1,
+            "price" =>"850000",
+            "due_date" => Carbon::now()->addMonth()->toDateString(),
+            "user_id" => $user->id,
         ]);
         $user->syncRole('user');
         return response()->json($user);

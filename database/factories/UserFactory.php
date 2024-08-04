@@ -26,13 +26,13 @@ class UserFactory extends Factory
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'phone_number' => $phone_number=fake()->unique()->randomNumber(11, true),
-            'password' => Hash::make($phone_number),
-            'emergency_number' => fake()->randomNumber(11, true),
-            'home_number' => fake()->randomNumber(11, true),
-            'national_code' => fake()->unique()->randomNumber(10, true),
-            'card_number' => fake()->randomNumber(16, true),
-            'sheba_number' => fake()->randomNumber(24, true),
+            'phone_number' => $phone_number=fake()->unique()->regexify("[0-9]{11}"),
+            'password' => $phone_number,
+            'emergency_number' => fake()->regexify('[0-9]{11}'),
+            'home_number' => fake()->regexify('[0-9]{11}'),
+            'national_code' => fake()->unique()->regexify('[0-9]{10}'),
+            'card_number' => fake()->regexify('[0-9]{16}'),
+            'sheba_number' => fake()->regexify('[0-9]{24}'),
             'address' => fake()->address()
         ];
     }

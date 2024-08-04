@@ -15,6 +15,8 @@ class Setting extends Model implements HasMedia
         'description',
         'guarantors_count',
         'loans_count',
-        'fund_name'
+        'fund_name',
+        'phone_number',
+        'card_number'
     ];
 }
