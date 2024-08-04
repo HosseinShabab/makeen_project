@@ -108,7 +108,7 @@ class LoanController extends Controller
 
         if ($request->admin_accept == "accepted") {
             $temp = $request->installment_count;
-            $installment_price = $loan->price;
+            $installment_price = $request->loan_price;
             $installment_price /= $temp;
 
             for ($i = 1; $i <= $temp; $i++) {
