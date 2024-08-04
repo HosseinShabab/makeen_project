@@ -33,15 +33,20 @@ class PermissionSeeder extends Seeder
         $active = Permission::create(["name"=> "active"]);
         $deleted = Permission::create(["name"=> "deleted"]);
 
+        // factor permission
+        $factor_index = Permission::create(['name'=>'factor.index']);
+        $factor_create = Permission::create(['name'=>'factor.create']);
+        $factor_accept = Permission::create(['name'=>'factor.accept']);
 
         $super_admin->syncPermissions([
             'user.create','user.update','user.index','user.delete','user.deactive',
         ]);
         $admin->syncPermissions([
-            'user.create','user.update','user.index','user.delete','user.deactive',
+            'user.create','user.update','user.index','user.delete','user.deactive','factor.index',
+            'factor.create','factor.accept'
         ]);
         $user->syncPermissions([
-            "update.profile",
+            "update.profile",'factor.create'
         ]);
 
 

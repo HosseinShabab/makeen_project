@@ -18,6 +18,7 @@ class Factor extends Model implements HasMedia
         'installment_price',
         'discription',
         'paid_price',
+        'accept_status',
         'user_id'
     ];
 

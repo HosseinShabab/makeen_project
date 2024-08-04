@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FactorController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MediaController;
@@ -83,6 +84,13 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum','permission:update.profile'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+});
+
+// factor controller
+Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
+    Route::post('index', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
+    Route::post('accept', [FactorController::class, 'accept'])->middleware("permission:factor.accept")->name('delete');
 });
 
 //media controller

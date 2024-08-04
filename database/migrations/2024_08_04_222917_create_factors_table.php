@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('installment_price');
+            $table->enum('accept_status',['accepted','pending','faild'])->default('pending');
             $table->unsignedBigInteger('paid_price');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('user_id');
