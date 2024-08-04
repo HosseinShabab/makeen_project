@@ -88,7 +88,7 @@ class AuthController extends Controller
     public function me()
     {
         if (Auth()->check()) {
-            return response()->json(auth()->user());
+            return response()->json(auth()->user(with('Setting:id,description,guaranturs_count,loans_count,phone_number,card_number,fund_name,subscription')));
         } else {
             return response()->json(null, status: 401);
         }
