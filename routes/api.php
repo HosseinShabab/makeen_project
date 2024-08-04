@@ -54,10 +54,10 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.' , 'middleware'=> 'auth:sanct
     Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
     Route::post('show', [LoanController::class, 'show'])->name('show');
     Route::post('store', [LoanController::class, 'store'])->name('create');
-    Route::post('update', [LoanController::class, 'update'])->name('update');
+    Route::post('update', [LoanController::class, 'updateGuarantor'])->name('update');
 });
 
-Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () {
+Route::group(['prefix' => 'installments', 'as' => 'installments.','middleware'=>'auth:sanctum'], function () {
 
     Route::post('show', [InstallmentController::class, 'show'])->name('show');
     Route::post('pay', [InstallmentController::class, 'pay'])->name('pay');
