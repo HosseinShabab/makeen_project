@@ -68,7 +68,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.','middleware'=>
 });
 
 //users route
-Route::prefix('users/')->as('users.')->middleware('auth:sanctum')->group(function () {
+Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update")->name('edit');
