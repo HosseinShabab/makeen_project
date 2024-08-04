@@ -29,27 +29,17 @@ class MessageController extends Controller
 
 
 
-    public function mymessage()
+    public function mymessage($id = null)
     {
-        $userid = auth()->id();
-        $message = Message::where('user_id', $userid)->orderBy('id', 'desc')->get();
+        if ($id) {
+            $message = Message::where('user_id', $id)->orderBy('id', 'desc')->get();
+        } else {
+            $message = Message::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
+        }
         return response()->json($message);
     }
 
 
-
-
-
-
-
-// public function fetchNewMessages(Ticket $ticket)
-// {
-//     $messages = Message::where('ticket_id', $ticket->id)
-//                         ->where('created_at', '>', now()->subMinutes(1))
-//                         ->get();
-
-//     return response()->json($messages);
-// }
 
 }
 

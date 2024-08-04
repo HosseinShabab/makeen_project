@@ -25,12 +25,15 @@ class TicketController extends Controller
         return response()->json($ticket);
     }
 
-
-    public function myticket()
-{
-    $userid = auth()->id();
-    $ticket = Ticket::with('message')->where('user_id', $userid)->orderBy('id', 'desc')->get();
-    return response()->json($ticket);
-}
+    public function myticket($id = null)
+    {
+        if ($id) {
+            $ticket = Ticket::with('messages','User:id,first_name,last_name')->where('user_id', $id)->orderBy('id', 'desc')->get();
+        } else {
+            $userid = auth()->id();
+            $ticket = Ticket::with('messages','User:id,first_name,last_name')->where('user_id', $userid)->orderBy('id', 'desc')->get();
+        }
+        return response()->json($ticket);
+    }
 
 }
