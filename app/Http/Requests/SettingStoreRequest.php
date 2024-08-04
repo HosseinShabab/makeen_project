@@ -24,9 +24,10 @@ class SettingStoreRequest extends FormRequest
         return [
             'guarantors_count' => 'required|integer',
             'loans_count' => 'required|integer',
-            'fund_name' => 'required|string',
-            'phone_number' => 'required|string|size:11|unique:users,phone_number|regex:/^[0-9]+$/',
-            'card_number' => 'required'
+            'fund_name' => 'required|string|unique:settings,fund_name',
+            'phone_number' => 'required|string|size:11|regex:/^[0-9]+$/',
+            'card_number' => 'required|integer|digits:16',
+            'subscription' => 'required|integer'
         ];
     }
 }
