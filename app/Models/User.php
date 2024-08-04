@@ -71,5 +71,9 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Installment::class);
     }
 
+    public function factors(): HasMany
+    {
+        return $this->hasMany(Factor::class);
+    }
 
 }
