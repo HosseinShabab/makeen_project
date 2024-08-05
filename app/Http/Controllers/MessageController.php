@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MessageRequest;
 use App\Models\Message;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    public function index()
-    {
-        $message = Message::orderBy('id','desc')->first();
-        return response()->json($message);
-    }
 
-
-    public function store(Request $request)
+ public function store(MessageRequest $request)
     {
         $message=  Message::create( $request->toArray());
         return response()->json(['message'=>$message]);
@@ -22,17 +17,29 @@ class MessageController extends Controller
 
 
 
-    public function update(Request $request, string $id)
+    public function index(Request $request , $id)
     {
-        $message = Message::where('id' , $id)->update($request->toArray());
+        if ($id) {
+            $message = Message::where('id', $id)->first();
+        } else {
+            $message = Message::orderBy('id', 'desc')->paginate(10);
+        }
         return response()->json($message);
     }
 
 
-    public function delete(string $id)
+
+    public function mymessage($id = null)
     {
-      $message = Message::destroy($id);
-      return response()->json($message);
+        if ($id) {
+            $message = Message::where('user_id', $id)->orderBy('id', 'desc')->get();
+        } else {
+            $message = Message::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
+        }
+        return response()->json($message);
     }
+
+
+
 }
 

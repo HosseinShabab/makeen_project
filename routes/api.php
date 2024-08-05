@@ -8,6 +8,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,23 +28,21 @@ use App\Http\Controllers\RolePermissionController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
-    ///Route me
-    Route::get('show/{id?}', [AuthController::class, 'show'])->name('show');
+
 });
 // Route Tickets
 Route::group(['prefix' => 'tickets', 'as' => 'tickets.', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('index/{id?}', [TicketController::class, 'index'])->name('index');
-    Route::post('create', [TicketController::class, 'store'])->name('create');
-    Route::put('edit/{id}', [TicketController::class, 'update'])->name('edit');
-    Route::delete('delete/{id}', [TicketController::class, 'delete'])->name('delete');
+    Route::get('index/{id?}', [TicketController::class, 'index'])->middleware("permission:ticket.index")->name('index');
+    Route::post('create', [TicketController::class, 'store'])->middleware("permission:ticket.create")->name('create');
+    Route::get('myticket/{id?}', [MessageController::class, 'myticket'])->name('myticket');
+
 });
 
 //Route Messages
-Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
-    Route::get('index/{id?}', [MessageController::class, 'index'])->name('index');
-    Route::post('create', [MessageController::class, 'store'])->name('create');
-    Route::put('edit/{id}', [MessageController::class, 'update'])->name('edit');
-    Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('delete');
+Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware' => 'auth:sanctum'], function () {
+    Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
+    Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
+    Route::get('mymessage/{id?}', [MessageController::class, 'mymessage'])->name('mymessage');
 });
 
 
@@ -77,7 +76,7 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum','permission:update.profile'])->name('edit');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:update.profile'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });
@@ -94,4 +93,11 @@ Route::group(['prefix' => 'media', 'as' => 'media.', 'middleware' => 'auth:sanct
     Route::post('show', [MediaController::class, 'index'])->middleware('auth:sanctum')->name('index');
     Route::post('create', [MediaController::class, 'store'])->middleware('auth:sanctum')->name('create');
     Route::post('delete', [MediaController::class, 'delete'])->middleware("auth:sanctum")->name('delete');
+});
+
+Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(function () {
+    Route::post('create', [SettingController::class, 'store'])->middleware('permisson:setting.create')->name('create');
+    Route::get('index', [SettingController::class, 'index'])->middleware('permission:setting.index')->name('index');
+    Route::post('addmedia', [SettingController::class , 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
+    Route::post('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
 });

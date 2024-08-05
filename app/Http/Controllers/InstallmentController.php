@@ -13,7 +13,7 @@ class InstallmentController extends Controller
 
     private function storeSub($id)
     {
-        $last_installment = Installment::where([['user_id', '=',$id], ["due_date", "<", Carbon::now()->toDateString()], ['admin_accept', '!=', 'accepted']])
+        $last_installment = Installment::where([['user_id', $id],['loan_id',null], ["due_date", "<", Carbon::now()->toDateString()], ['admin_accept', '!=', 'accepted']])
             ->latest()->first();
         if($last_installment){
             $curr_date = Carbon::now()->toDateString();
@@ -27,6 +27,7 @@ class InstallmentController extends Controller
                     'count' => $count,
                     'price' => $last_installment->price,
                     'due_date' => $last_date,
+                    'user_id' =>$id,
                 ]);
             }
         }
@@ -37,16 +38,12 @@ class InstallmentController extends Controller
     public function show(Request $request)
     {
         $this->storeSub($request->user()->id);
-        if ($request->loan_id) {
-            $installments = Installment::where("loan_id", $request->loan_id)->get();
-        } else {
-            $installments = Installment::where('user_id', $request->user()->id && 'loan_id', null)->get();
-        }
+        $installments = Installment::where('user_id',$request->user()->id)->orderBy('due_date','asc')->orderBy("status",['error','unpaid','paid'])->get();
         return response()->json($installments);
     }
 
 
-    public function showAdmin(Request $request)
+    public function showAdmin(Request $request,$id=null)
     {
 
         if ($request->status == "paid") {

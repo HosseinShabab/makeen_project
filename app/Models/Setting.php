@@ -8,24 +8,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Message extends Model implements HasMedia
+class Setting extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
+
     protected $fillable = [
-        "discription",
-        "status",
-        "ticket_id",
-        'user_id'
-
-
-
+        'description',
+        'guarantors_count',
+        'loans_count',
+        'fund_name',
+        'phone_number',
+        'card_number',
+        'subscription'
     ];
 
-    public function ticket(): BelongsTo
-    {
-        return $this->belongsTo(Ticket::class);
-    }
-    public function user()
+    public function User(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

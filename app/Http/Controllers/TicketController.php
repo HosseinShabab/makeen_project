@@ -2,35 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    public function index()
+    public function index(Request $request , $id)
     {
-        $ticket = Ticket::with('messages','User:id,first_name,last_name')->orderBy('id','desc')->first();
+        if ($id) {
+            $ticket = Ticket::with('messages','User:id,first_name,last_name')->where('id', $id)->first();
+        } else {
+            $ticket = Ticket::with('messages','User:id,first_name,last_name')->orderBy('id', 'desc')->get();
+        }
         return response()->json($ticket);
+
     }
 
-
-    public function store(Request $request)
+    public function store(TicketRequest $request)
     {
         $ticket = ticket::create($request->toArray());
         return response()->json($ticket);
     }
 
-
-    public function update(Request $request, string $id)
+    public function myticket($id = null)
     {
-        $ticket = ticket::where('id' , $id)->update($request->toArray());
+        if ($id) {
+            $ticket = Ticket::with('messages','User:id,first_name,last_name')->where('user_id', $id)->orderBy('id', 'desc')->get();
+        } else {
+            $userid = auth()->id();
+            $ticket = Ticket::with('messages','User:id,first_name,last_name')->where('user_id', $userid)->orderBy('id', 'desc')->get();
+        }
         return response()->json($ticket);
     }
 
-
-    public function delete(string $id)
-    {
-        $ticket = ticket::where('id' , $id)->delete();
-        return response()->json($ticket);
-    }
 }

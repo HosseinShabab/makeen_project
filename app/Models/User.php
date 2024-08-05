@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -66,14 +67,27 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Loan::class);
     }
 
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
     public function installments(): HasMany
     {
         return $this->hasMany(Installment::class);
+
     }
 
+<<<<<<< HEAD
     public function factors(): HasMany
     {
         return $this->hasMany(Factor::class);
     }
 
+=======
+    public function Setting(): HasOne
+    {
+        return $this->hasOne(Setting::class);
+    }
+>>>>>>> 806ae2a576b5872e83623eb0445a8ca432488c1f
 }
