@@ -62,21 +62,18 @@ class AuthController extends Controller
 
     public function forgetPassword(Request $request)
     {
-        $user = User::select('id', 'phone_number')->where('phone_number', $request->phone_number)->first();
+        $user = User::where('phone_number', $request->phone_number)->first();
 
         if (!$user || $user->hasRole('user')) {
             return response()->json('user not found');
         }
         $otp_code = Str::random(8);
+        $password = $otp_code;
+        $user_name = $user->national_code;
+        $user = User::where('phone_nubmer' , $request->phone_number)->update([
+            "password" => Hash::make($otp_code)
+        ]);
 
-        $cachedcode = Cache::get($otp_code , $request->phone_number);
-
-        if ($request->otp_code !== $cachedcode) {
-            return response()->json('code not corect');
-        }
-
-        $token = $user->createToken($request->phone_number)->plainTextToken;
-        return response()->json(["token" => $token]);
     }
 
     public function logout(Request $request)
