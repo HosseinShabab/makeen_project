@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MediaRequest;
 use App\Models\Installment;
 use App\Models\Message;
 use App\Models\Payment;
@@ -32,7 +33,7 @@ class MediaController extends Controller
         return response()->json($media);
     }
 
-    public function store(Request $request)
+    public function store(MediaRequest $request)
     {
         $type = $request->type;
         $typable_id = $request->typable_id;
