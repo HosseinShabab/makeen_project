@@ -9,7 +9,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDO;
 use PhpParser\Node\Stmt\Return_;
+
+use function PHPUnit\Framework\returnSelf;
 
 class LoanController extends Controller
 {
@@ -25,16 +28,16 @@ class LoanController extends Controller
     public function acceptGuarantor(Request $request)
     {
         $loan = Loan::find($request->loan_id);
-        if ($loan->admin_accept == 'faild') {
-            return response()->json("loan request faild");
-        }
-
         $loan_guarantor = DB::table('loan_guarantor')
-            ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->guarantor_id)->first();
+            ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->user()->id)->first();
 
         if (!$loan_guarantor || !$loan) {
             return response()->json('loan_id not valid ');
         }
+        if ($loan->admin_accept == 'faild') {
+            return response()->json("loan request faild");
+        }
+
         if ($loan_guarantor->guarantor_accept != "pending") {
             return response()->json("you have already voted");
         }
@@ -53,6 +56,7 @@ class LoanController extends Controller
             if ($guarantor_accept->guarantor_accept == "pending")
                 $temp = "pending";
 
+
             if ($guarantor_accept->guarantor_accept == "faild") {
                 $temp = "faild";
                 break;
@@ -61,9 +65,11 @@ class LoanController extends Controller
 
 
         $loan = Loan::find($request->loan_id);
-        $loan->guarantors_accept = $temp;
-        if ($temp == "faild") {
-            $loan->admin_accept = $temp;
+        if ($temp == "accepted") {
+            $loan->guarantors_accept = $temp;
+        }
+        if ($temp == 'faild') {
+            // yek payam baraye sahebe loan ke in rad karde update kon
         }
         $loan->save();
 
@@ -75,8 +81,8 @@ class LoanController extends Controller
     {
         if ($request->count == "checked") {
 
-            $loans = Loan::with('user')->where('guarantors_accept','!=','faild')->where('admin_accept', "!=", "pending")->where('type', $request->type)->get();
-        } else if($request->count == "all") {
+            $loans = Loan::with('user')->where('guarantors_accept', '!=', 'faild')->where('admin_accept', "!=", "pending")->where('type', $request->type)->get();
+        } else if ($request->count == "all") {
 
             $loans = Loan::with('user')->where('admin_accept', "pending")->where('type', $request->type)->get();
         }
@@ -94,7 +100,7 @@ class LoanController extends Controller
     public function acceptAdmin(Request $request)
     {
         $loan = Loan::find($request->loan_id);
-        if($loan->admin_accept != "pending"){
+        if ($loan->admin_accept != "pending") {
             return response()->json('you have arlready voted');
         }
         $loan->admin_accept = $request->admin_accept;
@@ -102,13 +108,13 @@ class LoanController extends Controller
 
         if ($request->admin_accept == "accepted") {
             $temp = $request->installment_count;
-            $installment_price = $loan->price;
+            $installment_price = $request->loan_price;
             $installment_price /= $temp;
 
             for ($i = 1; $i <= $temp; $i++) {
                 $due_date = Carbon::now()->addMonths($i)->toDateString();
                 $installment = new Installment();
-                $installment=$installment->create([
+                $installment = $installment->create([
                     "type" => "installment",
                     "count" => $i,
                     "price" => $installment_price,
@@ -116,7 +122,6 @@ class LoanController extends Controller
                     "loan_id" => $loan->id,
                 ]);
             }
-
         }
         $loan->save();
         return response()->json($loan);
@@ -125,7 +130,7 @@ class LoanController extends Controller
     public function store(Request $request)
     {
 
-        $count = $request->user()->loans()->count();
+        $count = loan::where([['user_id', $request->user()->id], ['admin_accept', 'accepted']])->count();
         $user_id = $request->user()->id;
         $guarantors_id = $request->guarantors_id;
         foreach ($guarantors_id as $guarantor_id) {
@@ -152,35 +157,15 @@ class LoanController extends Controller
         return response()->json($loan);
     }
 
-    public function update(Request $request)
+    public function updateGuarantor(Request $request)
     {
 
-        $loan = Loan::find($request->loan_id);
-        $timeDiff = (Carbon::now()->diffInDays($loan->created_at));
-
-        if ($timeDiff > 24) {
-            return "time expierd";
-        }
-
-        $loan->price = ($request->price) ? $request->price : $loan->price;
-        $loan->user_description = ($request->user_description) ? $request->user_description : $loan->user_description;
-
-        if ($request->guarantors_id) {
-
-            $past_guarantors = DB::table("loan_guarantor")->select("guarantor_id")->where("loan_id", $loan->id)->get();
-
-            foreach ($past_guarantors as $past_guarantor) {
-                DB::table("loan_guarantor")->where("guarantor_id", $past_guarantor->guarantor_id)->delete();
-                //yek massage ke bego
-            }
-
-            $guarantors_id = $request->guarantors_id;
-            foreach ($guarantors_id as $guarantor_id) {
-                DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
-                //yek massage sakhte beshe baraye on user :
-            }
-        }
-        $loan->save();
-        return response()->json($loan);
+        $last_guarantor = DB::table('loan_guarantor')->where('guarantor_id', $request->last_guarantor_id)->delete();
+        $new_guarantor = DB::table('loan_guarantor')->insert([
+            'guarantor_id' => $request->new_guarantor_id,
+            'loan_id' => $request->loan_id,
+        ]);
+        //yek payam besas;
+        return response()->json($new_guarantor);
     }
 }

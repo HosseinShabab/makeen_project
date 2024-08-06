@@ -13,17 +13,16 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Installment extends Model
 {
-    use HasFactory , Notifiable, InteractsWithMedia;
+    use HasFactory , Notifiable;
 
     protected $fillable = [
         'count',
+        'type',
         'price',
         'due_date',
         'status',
         'admin_accept',
         'admin_description',
-        'paid_price',
-        'user_description',
         'user_id',
         'loan_id',
         'payment_id',
@@ -37,6 +36,10 @@ class Installment extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function factors(): BelongsToMany
+    {
+        return $this->belongsToMany(Factor::class);
     }
 
 }

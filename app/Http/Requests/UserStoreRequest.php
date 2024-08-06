@@ -23,8 +23,9 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'national_code' => 'required|string|size:10|unique:users,national_code|regex:/^[0-9]+$/',
-            'passwrod' => 'required|string|size:11|unique:users,passwrod|regex:/^[0-9]+$/',
-
+            'password' => 'required|string|size:11|unique:users,phone_number|regex:/^[0-9]+$/',
+            'first_name'=>'required|string|max:32',
+            'last_name'=>'required|string|max:32',
         ];
     }
 }

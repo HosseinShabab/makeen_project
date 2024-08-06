@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "68692c690069cc8739319b27a2dc5f4f",
+=======
+    "content-hash": "e4aef3634854a0c1bebc9eddad1eb5c1",
+>>>>>>> f39fd0abea998c2c8387a25c9b359ee1014da4e8
     "packages": [
         {
             "name": "brick/math",
@@ -1132,6 +1136,7 @@
             "time": "2023-12-03T19:50:20+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "intervention/gif",
             "version": "4.1.0",
             "source": {
@@ -1153,15 +1158,41 @@
                 "phpunit/phpunit": "^10.0",
                 "slevomat/coding-standard": "~8.0",
                 "squizlabs/php_codesniffer": "^3.8"
+=======
+            "name": "ippanel/php-rest-sdk",
+            "version": "v2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ippanel/php-rest-sdk.git",
+                "reference": "040c1e0564a9fd62977c4f5d596aa0629ee2fcb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ippanel/php-rest-sdk/zipball/040c1e0564a9fd62977c4f5d596aa0629ee2fcb2",
+                "reference": "040c1e0564a9fd62977c4f5d596aa0629ee2fcb2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5"
+>>>>>>> f39fd0abea998c2c8387a25c9b359ee1014da4e8
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
+<<<<<<< HEAD
                     "Intervention\\Gif\\": "src"
+=======
+                    "IPPanel\\": "src/IPPanel/"
+>>>>>>> f39fd0abea998c2c8387a25c9b359ee1014da4e8
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
+<<<<<<< HEAD
                 "MIT"
             ],
             "authors": [
@@ -1266,6 +1297,23 @@
                 }
             ],
             "time": "2024-07-05T13:35:01+00:00"
+=======
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "ippanel",
+                    "email": "dev@ippanel.com"
+                }
+            ],
+            "description": "IPPanel REST API client",
+            "homepage": "https://github.com/ippanel/php-rest-sdk",
+            "support": {
+                "issues": "https://github.com/ippanel/php-rest-sdk/issues",
+                "source": "https://github.com/ippanel/php-rest-sdk/tree/v2.0.4"
+            },
+            "time": "2022-10-15T09:53:04+00:00"
+>>>>>>> f39fd0abea998c2c8387a25c9b359ee1014da4e8
         },
         {
             "name": "laravel/framework",

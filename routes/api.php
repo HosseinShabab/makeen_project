@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FactorController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MediaController;
@@ -55,21 +56,17 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.' , 'middleware'=> 'auth:sanct
     Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
     Route::post('show', [LoanController::class, 'show'])->name('show');
     Route::post('store', [LoanController::class, 'store'])->name('create');
-    Route::post('update', [LoanController::class, 'update'])->name('update');
+    Route::post('update', [LoanController::class, 'updateGuarantor'])->name('update');
 });
 
-Route::group(['prefix' => 'installments', 'as' => 'installments.'], function () {
+Route::group(['prefix' => 'installments', 'as' => 'installments.','middleware'=>'auth:sanctum'], function () {
 
     Route::post('show', [InstallmentController::class, 'show'])->name('show');
-    Route::post('pay', [InstallmentController::class, 'pay'])->name('pay');
-    Route::post('admin/accept', [InstallmentController::class, 'adminAccept'])->name('adminAccept');
-    Route::post('show/admin', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
-    Route::post('show/pyament', [InstallmentController::class, 'showPayment'])->name('showPayment');
-    Route::post('show/sub', [InstallmentController::class, 'showSubscription'])->name('showSub');
+    Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 
 //users route
-Route::prefix('users/')->as('users.')->middleware('auth:sanctum')->group(function () {
+Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update")->name('edit');
@@ -84,6 +81,13 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:update.profile'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+});
+
+// factor controller
+Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
+    Route::put('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
+    Route::post('accept', [FactorController::class, 'accept'])->middleware("permission:factor.accept")->name('delete');
 });
 
 //media controller
