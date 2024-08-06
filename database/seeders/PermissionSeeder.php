@@ -59,22 +59,19 @@ class PermissionSeeder extends Seeder
 
         $super_admin->syncPermissions((Permission::all()));
         $admin->syncPermissions([
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             'user.create','user.update','user.index','user.delete','user.deactive',
             'message.create','message.index', 'ticket.create','ticket.index',
-=======
-=======
+
             'user.create','user.update','user.index','user.delete','user.deactive','factor.index',
             'factor.create','factor.accept'
         ]);
         $user->syncPermissions([
             "update.profile",'factor.create',
->>>>>>> f39fd0abea998c2c8387a25c9b359ee1014da4e8
             'user.create', 'user.update', 'user.index', 'user.delete', 'user.deactive',
             'message.create', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
             'setting.index', 'setting.update', 'addmedia', 'removemedia'
->>>>>>> 818e9f3ca048301c0c772dbaf98370a4bf20bb4e
+
         ]);
         $user->syncPermissions([
             'message.create', 'ticket.create',
