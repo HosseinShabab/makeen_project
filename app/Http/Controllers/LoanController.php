@@ -120,6 +120,7 @@ class LoanController extends Controller
                     "price" => $installment_price,
                     "due_date" => $due_date,
                     "loan_id" => $loan->id,
+                    'user_id'=>$loan->user_id,
                 ]);
             }
         }

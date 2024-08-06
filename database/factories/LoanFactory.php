@@ -23,7 +23,7 @@ class LoanFactory extends Factory
             'user_id'=> User::factory(),
             'loan_number' =>1,
             'price' =>fake()->randomNumber(5,true),
-            'guarantors_accept'=>'pending',
+            'guarantors_accept'=>'accepted',
             'admin_accept'=>'pending',
             'user_description' =>fake()->sentence(),
         ];
