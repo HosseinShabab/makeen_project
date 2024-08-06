@@ -21,11 +21,10 @@ class LoanFactory extends Factory
         return [
             'type'=> fake()->randomElement(['normal','necessary']),
             'user_id'=> User::factory(),
-            'loan_number' =>Loan::where("user_id",'user_id')->where('admin_accept','accepted')->count() +1,
+            'loan_number' =>1,
             'price' =>fake()->randomNumber(5,true),
-            'guarantors_accept'=>$guarantors_accept = fake()->randomElement(['accepted','pending','faild']),
-            'admin_accept'=>($guarantors_accept != "accepted") ? "pending" : fake()->randomElement(['accepted','faild']),
-            'admin_description' =>('admin_accpet' != 'accepted') ? fake()->sentence() : null,
+            'guarantors_accept'=>'pending',
+            'admin_accept'=>'pending',
             'user_description' =>fake()->sentence(),
         ];
     }
