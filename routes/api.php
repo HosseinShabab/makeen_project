@@ -83,9 +83,10 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
-    Route::put('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
-    Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
-    Route::post('accept', [FactorController::class, 'accept'])->middleware("permission:factor.accept")->name('delete');
+    Route::put('index/{id?}', [FactorController::class, 'index'])->name('index');
+    Route::post('store', [FactorController::class, 'store'])->name('create');
+    Route::post('accept', [FactorController::class, 'accept'])->name('accept');
+    Route::post('update', [FactorController::class, 'update'])->name('edit');
 });
 
 //media controller

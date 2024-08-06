@@ -33,9 +33,9 @@ class FactorController extends Controller
     public function index($id = null)
     {
         if ($id) {
-            $factors = Factor::with('media', 'installlments')->where('id', $id)->first();
+            $factors = Factor::with('media', 'installments')->where('id', $id)->first();
         } else
-            $factors = Factor::where('accept_status', 'pending')->orderBy('created_at')->get();
+            $factors = Factor::where('accept_status',null)->orderBy('created_at')->get();
         return response()->json($factors);
     }
 
@@ -45,13 +45,22 @@ class FactorController extends Controller
         $factor->accept_status = $request->accept_status;
         $factor->save();
         $status = ($request->accept_status == "accepted") ? "paid" : "error";
-        if ($request->accept_status == "faild") $status = "upaid";
-        $installments = $factor->installments();
+        if ($request->accept_status == "faild") $status = "unpaid";
+        $installments = $factor->installments()->get();
         foreach ($installments as $installment) {
             $installment->status = $status;
             $installment->admin_description = $request->admin_description;
             $installment->save();
         }
-        return response()->json("seccsseded", $status = 200);
+        return response()->json($installments, $status = 200);
+    }
+    public function update(Request $request){
+        $factor =  Factor::where([['user_id',auth()->user()->id],['id',$request->factor_id]])->first();
+        $factor->paid_price+=$request->paid_price;
+        $factor->description = $request->description;
+        $factor->accept_status = null;
+        //attach media;
+        $factor->save();
+        return response()->json($factor);
     }
 }
