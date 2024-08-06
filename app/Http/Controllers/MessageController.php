@@ -38,4 +38,11 @@ class MessageController extends Controller
         }
         return response()->json($message);
     }
+
+public function unreadmessage()
+{
+    $unreadmessage = Message::where('status','unread')->count();
+    return response()->json($unreadmessage);
+}
+
 }

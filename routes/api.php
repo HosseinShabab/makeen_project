@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 // Route Tickets
-Route::group(['prefix' => 'tickets', 'as' => 'tickets.', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'tickets', 'as' => 'tickets.','middleware'=> 'auth:sanctum'], function () {
     Route::get('index/{id?}', [TicketController::class, 'index'])->middleware("permission:ticket.index")->name('index');
     Route::post('create', [TicketController::class, 'store'])->middleware("permission:ticket.create")->name('create');
     Route::get('myticket/{id?}', [MessageController::class, 'myticket'])->name('myticket');
@@ -38,8 +38,17 @@ Route::group(['prefix' => 'tickets', 'as' => 'tickets.', 'middleware' => 'auth:s
 //Route Messages
 Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
     Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("")->name('index');
+    Route::get('myticket/{id?}', [TicketController::class, 'myticket'])->name('myticket');
+
+});
+
+//Route Messages
+Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
+    Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
     Route::get('mymessage/{id?}', [MessageController::class, 'mymessage'])->name('mymessage');
+    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->name('unreadmessage');
+
 });
 
 
