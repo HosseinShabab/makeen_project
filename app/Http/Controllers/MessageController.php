@@ -6,24 +6,24 @@ use App\Http\Requests\MessageRequest;
 use App\Models\Message;
 use Illuminate\Http\Request;
 
+
 class MessageController extends Controller
 {
 
- public function store(MessageRequest $request)
+    public function store(MessageRequest $request)
     {
-        $message=  Message::create( $request->toArray());
-        return response()->json(['message'=>$message]);
+        $user = $request->user();
+        if ($user->hasRole('user')) {
+            $message =  Message::create($request->toArray());
+            return response()->json($message);
+        }
     }
 
 
 
-    public function index(Request $request , $id)
+    public function index()
     {
-        if ($id) {
-            $message = Message::where('id', $id)->first();
-        } else {
-            $message = Message::orderBy('id', 'desc')->paginate(10);
-        }
+        $message = Message::get();
         return response()->json($message);
     }
 
@@ -38,8 +38,4 @@ class MessageController extends Controller
         }
         return response()->json($message);
     }
-
-
-
 }
-
