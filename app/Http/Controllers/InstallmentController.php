@@ -13,7 +13,7 @@ class InstallmentController extends Controller
 {
 
     private function storeSub($id)
-    {
+    {   return response()->json($id);
         $last_installment = Installment::where([['user_id', $id], ['type', "subscription"]])->latest()->first();
         if ($last_installment) {
             $curr_date = Carbon::now()->toDateString();
@@ -38,7 +38,7 @@ class InstallmentController extends Controller
     public function show()
     {
         $this->storeSub(auth()->user()->id);
-        $installments = Installment::where('user_id',auth()->user()->id)->orderBy('due_date', 'asc')->orderBy("status", ['error', 'unpaid', 'paid'])->get();
+        $installments = Installment::where('user_id',auth()->user()->id)->orderBy('due_date', 'asc')->orderBy("status")->get();
         return response()->json($installments);
     }
 
