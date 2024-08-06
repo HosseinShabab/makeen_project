@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('card_number')->nullable();
             $table->string('sheba_number')->nullable();
             $table->text('address')->nullable();
+            $table->unsignedBigInteger('debt')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -44,7 +44,8 @@ class FactorController extends Controller
         $factor = Factor::find($request->factor_id);
         $factor->accept_status = $request->accept_status;
         $factor->save();
-        $status = ($request->accept_status == "accepted") ? "paid" : "eror";
+        $status = ($request->accept_status == "accepted") ? "paid" : "error";
+        if ($request->accept_status == "faild") $status = "upaid";
         $installments = $factor->installments();
         foreach ($installments as $installment) {
             $installment->status = $status;
