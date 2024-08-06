@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
-    public function index(Request $request , $id = null)
+    public function index($id = null)
     {
         if ($id) {
             $ticket = Ticket::with('message:id,description,', 'User:id,first_name,last_name')->where('id', $id)->first();
