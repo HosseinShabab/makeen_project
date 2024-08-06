@@ -25,8 +25,10 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         $user = User::create([
+            'first_name'=>$request->first_name,
+            'last_name'=>$request->last_name,
             "national_code" => $request->national_code,
-            "password" => $request->passwrod,
+            "password" => $request->password,
             "phone_number" => $request->password,
         ]);
         $installment = new Installment();
@@ -37,7 +39,7 @@ class UserController extends Controller
             "due_date" => Carbon::now()->addMonth()->toDateString(),
             "user_id" => $user->id,
         ]);
-        $user->syncRole('user');
+        $user->assignRole('user');
         return response()->json($user);
     }
 

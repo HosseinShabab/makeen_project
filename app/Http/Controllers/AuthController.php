@@ -23,7 +23,6 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $user = User::select('id', 'national_code', 'password')->where('national_code', $request->user_name)->first();
-
         if (!$user  || !$user->hasRole('user')) {
             return response()->json('username not exist');
         }

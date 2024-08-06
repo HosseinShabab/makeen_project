@@ -39,6 +39,10 @@ class PermissionSeeder extends Seeder
         $ticket_create = Permission::create(['name' => 'ticket.create']);
         $ticket_index = Permission::create(['name' => 'ticket.index']);
 
+        // factor permission
+        $factor_index = Permission::create(['name'=>'factor.index']);
+        $factor_create = Permission::create(['name'=>'factor.create']);
+        $factor_accept = Permission::create(['name'=>'factor.accept']);
 
 
         $active = Permission::create(["name" => "active"]);
@@ -60,6 +64,19 @@ class PermissionSeeder extends Seeder
             'setting.index', 'setting.update', 'addmedia', 'removemedia',
             'user.create','user.update','user.index','user.delete','user.deactive',
             'message.create','message.index', 'ticket.create','ticket.index',
+
+            'user.create','user.update','user.index','user.delete','user.deactive',
+            'message.create','message.index', 'ticket.create','ticket.index',
+
+            'user.create','user.update','user.index','user.delete','user.deactive','factor.index',
+            'factor.create','factor.accept'
+        ]);
+        $user->syncPermissions([
+            "update.profile",'factor.create',
+            'user.create', 'user.update', 'user.index', 'user.delete', 'user.deactive',
+            'message.create', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
+            'setting.index', 'setting.update', 'addmedia', 'removemedia'
+
         ]);
         $user->syncPermissions([
             'message.create', 'ticket.create',
