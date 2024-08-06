@@ -47,7 +47,7 @@ class MediaController extends Controller
         } else if ($type == 'messages') {
             $model = Message::find($typable_id);
         }
-        $model = $model->addMediaFromRequest('media')->toMediaCollection("$request->collection", 'local');
+        $model = $model->addMediaFromRequest('media')->toMediaCollection("profile", 'local');
 
         return response()->json($model);
     }
@@ -58,4 +58,6 @@ class MediaController extends Controller
         return response()->json($user);
     }
 
-}
+    }
+
+
