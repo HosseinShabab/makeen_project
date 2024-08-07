@@ -6,9 +6,15 @@ use App\Models\Factor;
 use App\Models\Installment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use PDO;
 
 class FactorController extends Controller
 {
+    public function factorCnt(){
+        $factors = Factor::where('acceptd_status',null)->count();
+        return response()->json($factors);
+    }
+
     public function store(Request $request)
     {
         $user = User::find($request->user()->id);
@@ -35,13 +41,16 @@ class FactorController extends Controller
         if ($id) {
             $factors = Factor::with('media', 'installments')->where('id', $id)->first();
         } else
-            $factors = Factor::where('accept_status',null)->orderBy('created_at')->get();
+            $factors = Factor::orderBy('accept_status','desc')->get();
         return response()->json($factors);
     }
 
     public function accept(Request $request)
     {
         $factor = Factor::find($request->factor_id);
+        if(!$factor){
+            return response()->json("your factor not found");
+        }
         $factor->accept_status = $request->accept_status;
         $factor->save();
         $status = ($request->accept_status == "accepted") ? "paid" : "error";
