@@ -41,8 +41,8 @@ class MessageController extends Controller
 
 public function unreadmessage()
 {
-    $unreadmessage = Message::where('status','unread')->where('user_id', auth()->id())->count();
-    return response()->json($unreadmessage);
+    $unreadmessage = Message::where('status','unread')->where('user_id', auth()->id())->update(['status' => 'read']);
+    return response()->json($unreadmessage->count());
 }
 
 }
