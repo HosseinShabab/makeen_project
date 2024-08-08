@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->text('description');
-            $table->enum('status',['read','unread']);
+            $table->enum('status',['read','unread'])->default('unread');
             $table->unsignedBigInteger('ticket_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

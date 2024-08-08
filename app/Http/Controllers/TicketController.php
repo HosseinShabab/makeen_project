@@ -39,7 +39,7 @@ class TicketController extends Controller
     public function myticket($id = null)
     {
         if ($id) {
-            $ticket = Ticket::with('messages:id,description', 'User:id,first_name,last_name')->where('user_id', $id)->orderBy('id', 'desc')->get();
+            $ticket = Ticket::with('messages:id,description', 'User:id,first_name,last_name')->where('user_id', $id)->get();
         } else {
             $userid = auth()->id();
             $ticket = Ticket::with('messages:id,description', 'User:id,first_name,last_name')->where('user_id', $userid)->orderBy('id', 'desc')->get();
