@@ -34,7 +34,7 @@ class MessageController extends Controller
         if ($id) {
             $message = Message::where('user_id', $id)->orderBy('id', 'desc')->get();
         } else {
-            $message = Message::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
+            $message = Message::where('user_id', auth()->id())->orderBy('id', 'desc')->paginate(10);
         }
         return response()->json($message);
     }
