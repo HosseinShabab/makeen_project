@@ -28,6 +28,9 @@ class LoanController extends Controller
         if ($user->id == auth()->user()->id || !$user->can('active')) {
             return response()->json("guarantor is not worthy");
         }
+        if(!$user){
+            return response()->json("guarantor not found");
+        }
         return response()->json(['id' => $user->id, 'name' => $user->first_name . ' ' . $user->last_name]);
     }
 

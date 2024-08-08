@@ -4,19 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
-
-
-
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use SebastianBergmann\Diff\Diff;
 
 class AuthController extends Controller
 {
@@ -32,7 +22,7 @@ class AuthController extends Controller
 
 
         if ($user->hasRole('Amin')) {
-            return  $this->verificationCheck($user->id);
+            return  $this->verificationCheck($user->id);///hfdghfhjdhfy
         } else {
 
 
