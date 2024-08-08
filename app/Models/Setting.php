@@ -22,8 +22,4 @@ class Setting extends Model implements HasMedia
         'subscription'
     ];
 
-    public function User(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }

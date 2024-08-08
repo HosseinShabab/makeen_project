@@ -64,11 +64,6 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Loan::class);
     }
 
-
-    public function messages(): HasMany
-    {
-        return $this->hasMany(Ticket::class);
-    }
     public function installments(): HasMany
     {
         return $this->hasMany(Installment::class);
@@ -80,8 +75,4 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Factor::class);
     }
 
-    public function Setting(): HasOne           // think
-    {
-        return $this->hasOne(Setting::class);
-    }
 }

@@ -38,6 +38,7 @@ class PermissionSeeder extends Seeder
         //ticket permission
         $ticket_create = Permission::create(['name' => 'ticket.create']);
         $ticket_index = Permission::create(['name' => 'ticket.index']);
+        $myticket = Permission::create(['name' => 'myticket']);
 
         // factor permission
         $factor_index = Permission::create(['name'=>'factor.index']);
@@ -59,23 +60,31 @@ class PermissionSeeder extends Seeder
 
         $super_admin->syncPermissions((Permission::all()));
         $admin->syncPermissions([
+            'user.create', 'user.update', 'user.index', 'user.delete', 'user.deactive',
+            'message.create', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
+            'setting.index', 'setting.update', 'addmedia', 'removemedia',
+            'user.create','user.update','user.index','user.delete','user.deactive',
+            'message.create','message.index',
+
+            'ticket.create','ticket.index', 'myticket',
+
+            'user.create','user.update','user.index','user.delete','user.deactive',
+            'message.create','message.index', 'ticket.create','ticket.index',
+
             'user.create','user.update','user.index','user.delete','user.deactive','factor.index',
             'factor.create','factor.accept'
         ]);
         $user->syncPermissions([
             "update.profile",'factor.create',
-            'user.create', 'user.update', 'user.index', 'user.delete', 'user.deactive',
+            'user.update', 'user.deactive',
             'message.create', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
-            'setting.index', 'setting.update', 'addmedia', 'removemedia'
-        ]);
-        $user->syncPermissions([
-            'message.create', 'ticket.create',
-            "update.profile",
+            'setting.update', 'addmedia', 'removemedia', 'myticket', 'setting.index'
+
         ]);
 
 
 
-        // ///////////////////////////////////////////////////////////////////////////////// create supe admin , admin
+        //create super admin , admin
         $superAdmin = User::create([
             'national_code' => '14522876562',
             'phone_number' => '09021111111',
