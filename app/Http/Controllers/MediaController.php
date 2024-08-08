@@ -29,7 +29,7 @@ class MediaController extends Controller
         } else if ($type == 'messages') {
             $media = Message::find($typable_id);
         }
-        if($collection != null)
+        if ($collection != null)
             $media = $media->getMedia("$collection");
         else
             $media = $media->getMedia();
@@ -47,16 +47,15 @@ class MediaController extends Controller
             $collection = $request->collection;
         } else if ($type == 'factors') {
             $model = Factor::find($typable_id);
+            $collection = 'factor';
         } else if ($type == 'messages') {
             $model = Message::find($typable_id);
+            $collection = 'message';
         }
         if (!$model)
             return response()->json("model not found");
 
-        if ($collection != null)
-            $model = $model->addMediaFromRequest('media')->toMediaCollection("$collection");
-        else
-            $model = $model->addMediaFromRequest('media');
+        $model = $model->addMediaFromRequest('media')->toMediaCollection("$collection", 'local');
 
         return response()->json($model);
     }

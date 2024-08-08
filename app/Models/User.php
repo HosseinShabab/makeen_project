@@ -83,8 +83,4 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Factor::class);
     }
 
-    public function Setting(): HasOne
-    {
-        return $this->hasOne(Setting::class);
-    }
 }

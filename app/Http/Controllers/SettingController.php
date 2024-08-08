@@ -15,7 +15,8 @@ class SettingController extends Controller
         return response()->json($setting);
     }
 
-    public function update(SettingUpdateRequest $request){
+    public function update(SettingUpdateRequest $request)
+    {
         $setting = Setting::find($request->setting_id);
         $setting->guarantors_count = $request->input('guarantors_count', $setting->guarantors_count);
         $setting->loans_count = $request->input('loans_count', $setting->loans_count);
@@ -30,23 +31,23 @@ class SettingController extends Controller
 
     public function addmedia(Request $request)
     {
-        $typable_id = $request->typable_id;
-        if ($request->user()->hasRole("admin")) {
-            $typable_id = $request->user()->id;
-        }
-            $setting = Setting::find($typable_id);
-        $setting = $setting->addMediaFromRequest('media')->toMediaCollection("logo", 'local');
+        // $typable_id = $request->user()->id;
+
+        $setting = Setting::find(1);
+        $setting = $setting->addMediaFromRequest('media')->collection('logo', 'local');
         return response()->json($setting);
     }
 
-    public function removemedia(Request $request)
+    public function removemedia()
     {
-        $setting = $request->setting()->MediaCollections('logo')->destroy();
+        $setting = Setting::find(1);
+        $setting = $setting->clearMediaCollection('logo');
         return response()->json($setting);
     }
 
-    public function index(){
-        $setting = Setting::get();
+    public function index()
+    {
+        $setting = Setting::first();
         return response()->json($setting);
     }
 }

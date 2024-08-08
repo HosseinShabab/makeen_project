@@ -76,14 +76,10 @@ class PermissionSeeder extends Seeder
         ]);
         $user->syncPermissions([
             "update.profile",'factor.create',
-            'user.create', 'user.update', 'user.index', 'user.delete', 'user.deactive',
+            'user.update', 'user.deactive',
             'message.create', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
-            'setting.index', 'setting.update', 'addmedia', 'removemedia', 'myticket'
+            'setting.update', 'addmedia', 'removemedia', 'myticket', 'setting.index'
 
-        ]);
-        $user->syncPermissions([
-            'message.create', 'ticket.create',
-            "update.profile",
         ]);
 
 
