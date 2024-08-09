@@ -36,6 +36,10 @@ class InstallmentController extends Controller
         return;
     }
 
+    public function last(){
+        $installment = Installment::where([['user_id', auth()->user()->id],['status','!=','accepted']])->first();
+        return response()->json($installment);
+    }
     public function show()
     {
         $this->storeSub(auth()->user()->id);

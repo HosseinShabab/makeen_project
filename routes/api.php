@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FactorController;
 use App\Http\Controllers\InstallmentController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
@@ -54,7 +55,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanct
 });
 
 Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
-
+    Route::get('last', [InstallmentController::class, 'last'])->name('last');
     Route::get('show', [InstallmentController::class, 'show'])->name('show');
     Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
@@ -101,4 +102,8 @@ Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(f
     Route::post('addmedia', [SettingController::class, 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
     Route::get('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
     Route::post('edit', [SettingController::class, 'update'])->middleware('permission:setting.update')->name('edit');
+});
+
+Route::group(['prefix'=> 'inventory','as'=> 'inventory.','middleware'=> 'auth:sanctum'], function () {
+    Route::get('index',[InventoryController::class,'index'])->name('index');
 });
