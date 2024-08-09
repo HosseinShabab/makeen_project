@@ -19,7 +19,6 @@ class Message extends Model implements HasMedia
         "title",
         "priority"
 
-
     ];
 
     public function ticket(): BelongsTo

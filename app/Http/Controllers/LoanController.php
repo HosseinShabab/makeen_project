@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MessageRequest;
 use App\Models\Installment;
 use App\Models\Loan;
+use App\Models\Message;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 
 class LoanController extends Controller
@@ -25,7 +28,7 @@ class LoanController extends Controller
         if ($user->id == auth()->user()->id || !$user->can('active')) {
             return response()->json("guarantor is not worthy");
         }
-        if(!$user){
+        if (!$user) {
             return response()->json("guarantor not found");
         }
         return response()->json(['id' => $user->id, 'name' => $user->first_name . ' ' . $user->last_name]);
@@ -75,6 +78,12 @@ class LoanController extends Controller
         }
         if ($temp == 'faild') {
             // yek payam baraye sahebe loan ke in rad karde update kon
+            $message=new MessageRequest();
+            $message->user_id = $loan->user_id;
+            $message->type = "systemic";
+            $message->title = "درخواست شما از سمت ضامن رد شد";
+            $message->description = "با سلام با درخواست شما از سمت ضامن رد شد ";
+            app(MessageController::class)->storeAdmin($message);
         }
         $loan->save();
 
@@ -153,12 +162,17 @@ class LoanController extends Controller
             "type" => $request->type,
             "user_id" => $user_id,
         ]);
-
+        $user = User::find($user_id);
         foreach ($guarantors_id as $guarantor_id) {
 
             DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
             //yek massage sakhte beshe baraye on user :
-            // MessageController::storeAdmin($request);
+            $message=new MessageRequest();
+            $message->user_id = $guarantor_id;
+            $message->type = "systemic";
+            $message->title = "درخواست ضمانت";
+            $message->description = "$request->price برای وام به مبلغ  $user->first_name.' '. $user->last_name درخواست ضمانت از طرف ";
+            app(MessageController::class)->storeAdmin($message);
         }
 
         return response()->json($loan);
