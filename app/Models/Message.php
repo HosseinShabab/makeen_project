@@ -16,8 +16,8 @@ class Message extends Model implements HasMedia
         "discription",
         "status",
         "ticket_id",
-        "user_id"
-
+        "title",
+        "priority"
 
 
     ];
@@ -26,8 +26,5 @@ class Message extends Model implements HasMedia
     {
         return $this->belongsTo(Ticket::class);
     }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('factor_installment_create', function (Blueprint $table) {
+        Schema::create('factor_installment', function (Blueprint $table) {
             $table->unsignedBigInteger('factor_id');
             $table->unsignedBigInteger('installment_id');
         });
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('factor_installment_create');
+        Schema::dropIfExists('factor_installment');
     }
 };

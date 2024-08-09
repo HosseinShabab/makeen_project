@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->text('discription');
-            $table->enum('status',['read','unread']);
+            $table->string('title')->nullable();
+            $table->text('description');
+            $table->enum('status',['read','unread'])->default('unread');
             $table->unsignedBigInteger('ticket_id');
-            $table->unsignedBigInteger('user_id');
+            $table->enum('priority', ['low', 'medium', 'necessary'])->nullable();
             $table->timestamps();
         });
     }

@@ -9,10 +9,10 @@ class TicketRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    // public function authorize(): bool
-    // {
-    //     return true;
-    // }
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,10 +23,7 @@ class TicketRequest extends FormRequest
     {
         return [
             "title" => "required|string",
-            "type" => "required|in:systemic,unsystematic",
             "priority" => "required|in:low,medium,necessary",
-
-
         ];
     }
 }

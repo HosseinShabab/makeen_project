@@ -12,6 +12,11 @@ use PDO;
 
 class UserController extends Controller
 {
+    public function memberCnt(){
+        $users = User::role('user')->permission('active')->count();
+        return response()->json($users);
+    }
+
     public function index(Request $request, $id = null)
     {
         if ($id) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Installment;
 use App\Models\User;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use PDO;
@@ -13,20 +14,20 @@ class InstallmentController extends Controller
 {
 
     private function storeSub($id)
-    {   return response()->json($id);
-        $last_installment = Installment::where([['user_id', $id], ['type', "subscription"]])->latest()->first();
+    {
+        $last_installment = Installment::where([['user_id', $id], ['type', "subscription"]])->get()->last();
         if ($last_installment) {
             $curr_date = Carbon::now()->toDateString();
-            $last_date = $last_installment->due_date;
+            $last_date=Carbon::createFromDate($last_installment->due_date) ;
             $count = $last_installment->count;
             while ($last_date < $curr_date) {
                 $count++;
-                $last_date->addmonth();
+                $last_date->addMonth();
                 Installment::create([
                     'type' => "subscription",
                     'count' => $count,
                     'price' => $last_installment->price,
-                    'due_date' => $last_date,
+                    'due_date' => $last_date->toDateString(),
                     'user_id' => $id,
                 ]);
             }
@@ -52,6 +53,7 @@ class InstallmentController extends Controller
         } else {
             $users = User::role('user')->permission('active')->get();
             foreach($users as $user){
+                $this->storeSub($user->id);
                 $user->debt = Installment::where([['user_id',$user->id],['due_date','<',Carbon::now()->toDateString()],['status','!=','paid']])->sum('price');
                 $user->save();
             }

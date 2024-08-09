@@ -16,6 +16,12 @@ use function PHPUnit\Framework\returnSelf;
 
 class LoanController extends Controller
 {
+    public function requestCnt()
+    {
+        $loans = Loan::where([['guarantors_accept', 'accepted'], ['admin_accept', 'pending']])->count();
+        return response()->json($loans);
+    }
+
     public function showGuarantors(Request $request)
     {
         $user = User::select('id', 'first_name', 'last_name')->where('national_code', $request->national_code)->first();
@@ -120,6 +126,7 @@ class LoanController extends Controller
                     "price" => $installment_price,
                     "due_date" => $due_date,
                     "loan_id" => $loan->id,
+                    'user_id' => $loan->user_id,
                 ]);
             }
         }

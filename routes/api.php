@@ -27,15 +27,13 @@ use App\Http\Controllers\RolePermissionController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-
-
 });
 // Route Tickets
 Route::group(['prefix' => 'tickets', 'as' => 'tickets.','middleware'=> 'auth:sanctum'], function () {
     Route::get('index/{id?}', [TicketController::class, 'index'])->middleware("permission:ticket.index")->name('index');
     Route::post('create', [TicketController::class, 'store'])->middleware("permission:ticket.create")->name('create');
-    Route::get('myticket/{id?}', [TicketController::class, 'myticket'])->name('myticket');
-
+    Route::get('myticket/{id?}', [MessageController::class, 'myticket'])->middleware("permission:myticket")->name('myticket');
+    Route::get('systematic', [TicketController::class, 'systematic'])->middleware("role:admin")->name('systematic');
 });
 
 //Route Messages
@@ -48,7 +46,7 @@ Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:s
 });
 
 
-Route::group(['prefix' => 'loans', 'as' => 'loans.' , 'middleware'=> 'auth:sanctum'], function () {
+Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanctum'], function () {
 
     Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
     Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');
@@ -59,7 +57,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.' , 'middleware'=> 'auth:sanct
     Route::post('update', [LoanController::class, 'updateGuarantor'])->name('update');
 });
 
-Route::group(['prefix' => 'installments', 'as' => 'installments.','middleware'=>'auth:sanctum'], function () {
+Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
 
     Route::post('show', [InstallmentController::class, 'show'])->name('show');
     Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
@@ -67,6 +65,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.','middleware'=>
 
 //users route
 Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
+    Route::get('memberCnt', [UserController::class, 'MemberCnt'])->name('MemberCnt');
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update")->name('edit');
@@ -85,21 +84,25 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
-    Route::put('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
-    Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
-    Route::post('accept', [FactorController::class, 'accept'])->middleware("permission:factor.accept")->name('delete');
+    Route::get('factorCnt', [FactorController::class, 'factorCnt'])->name('factorCnt');
+    Route::put('index/{id?}', [FactorController::class, 'index'])->name('index');
+    Route::post('store', [FactorController::class, 'store'])->name('create');
+    Route::post('accept', [FactorController::class, 'accept'])->name('accept');
+    Route::post('update', [FactorController::class, 'update'])->name('edit');
 });
 
 //media controller
 Route::group(['prefix' => 'media', 'as' => 'media.', 'middleware' => 'auth:sanctum'], function () {
-    Route::post('show', [MediaController::class, 'index'])->middleware('auth:sanctum')->name('index');
+    Route::post('show', [MediaController::class, 'show'])->middleware('auth:sanctum')->name('index');
     Route::post('create', [MediaController::class, 'store'])->middleware('auth:sanctum')->name('create');
     Route::post('delete', [MediaController::class, 'delete'])->middleware("auth:sanctum")->name('delete');
 });
 
 Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(function () {
-    Route::post('create', [SettingController::class, 'store'])->middleware('permisson:setting.create')->name('create');
+    Route::post('create', [SettingController::class, 'store'])->middleware('permission:setting.create')->name('create');
     Route::get('index', [SettingController::class, 'index'])->middleware('permission:setting.index')->name('index');
-    Route::post('addmedia', [SettingController::class , 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
-    Route::post('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
+    Route::post('addmedia', [SettingController::class, 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
+    Route::post('addmedia', [SettingController::class, 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
+    Route::get('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
+    Route::post('edit', [SettingController::class, 'update'])->middleware('permission:setting.update')->name('edit');
 });
