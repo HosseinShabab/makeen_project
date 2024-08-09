@@ -51,8 +51,7 @@ class LoanController extends Controller
         }
 
         $loan_guarantor = DB::table('loan_guarantor')
-            ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->guarantor_id)
-            ->update(["guarantor_accept" => $request->guarantor_accept]);
+            ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->user()->id)->update(["guarantor_accept" => $request->guarantor_accept]);
 
         $guarnators_accept = DB::table('loan_guarantor')
             ->select('guarantor_accept')->where('loan_id', $request->loan_id)->get();
@@ -78,7 +77,7 @@ class LoanController extends Controller
         }
         if ($temp == 'faild') {
             // yek payam baraye sahebe loan ke in rad karde update kon
-            $message=new MessageRequest();
+            $message = new MessageRequest();
             $message->user_id = $loan->user_id;
             $message->type = "systemic";
             $message->title = "درخواست شما از سمت ضامن رد شد";
@@ -167,7 +166,7 @@ class LoanController extends Controller
 
             DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
             //yek massage sakhte beshe baraye on user :
-            $message=new MessageRequest();
+            $message = new MessageRequest();
             $message->user_id = $guarantor_id;
             $message->type = "systemic";
             $message->title = "درخواست ضمانت";
