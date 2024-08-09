@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
     Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
+    Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.create")->name('create.admin');
     Route::get('mymessage/{id?}', [MessageController::class, 'mymessage'])->name('mymessage');
     Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->name('unreadmessage');
 

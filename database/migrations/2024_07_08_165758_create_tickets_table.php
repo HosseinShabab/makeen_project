@@ -15,6 +15,8 @@ return new class extends Migration
 
             $table->id();
             $table->enum('type',['systemic','unsystematic'])->default('unsystematic');
+            $table->string('name');
+            $table->enum('response_status',['responded','pending']);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
