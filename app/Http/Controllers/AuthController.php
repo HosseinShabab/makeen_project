@@ -19,19 +19,8 @@ class AuthController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return response()->json('password wrong');
         }
-
-
-        if ($user->hasRole('Amin')) {
-            return  $this->verificationCheck($user->id);///hfdghfhjdhfy
-        } else {
-
-
-            $token = $user->createToken($request->user_name)->plainTextToken;
-
-            return response()->json(["token" => $token]);
-        }
-
         $token = $user->createToken($request->user_name)->plainTextToken;
+
         return response()->json(["token" => $token]);
     }
 
@@ -54,7 +43,7 @@ class AuthController extends Controller
         $user = User::where('phone_number', $request->phone_number)->first();
 
         if (!$user || $user->hasRole('user')) {
-            return response()->json('user not found');
+            return response()->json(['error','user not found']);
         }
         $otp_code = Str::random(8);
         $password = $otp_code;
@@ -62,7 +51,6 @@ class AuthController extends Controller
         $user = User::where('phone_nubmer' , $request->phone_number)->update([
             "password" => Hash::make($otp_code)
         ]);
-
     }
 
     public function logout(Request $request)
@@ -93,7 +81,7 @@ class AuthController extends Controller
     public function me()
     {
         if (Auth()->check()) {
-            return response()->json(auth()->user(with('Setting:id,description,guaranturs_count,loans_count,phone_number,card_number,fund_name,subscription')));
+            return response()->json(auth()->user());
         } else {
             return response()->json(null, status: 401);
         }

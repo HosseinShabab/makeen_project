@@ -33,7 +33,10 @@ class PermissionSeeder extends Seeder
 
         //message permission
         $message_create = Permission::create(['name' => 'message.create']);
+        $message_create_ad = Permission::create(['name' => 'message.create.ad']);
         $message_index = Permission::create(['name' => 'message.index']);
+        $message_show = Permission::create(['name' => 'message.show']);
+        $message_unread = Permission::create(['name' => 'message.unread']);
 
         //ticket permission
         $ticket_create = Permission::create(['name' => 'ticket.create']);
@@ -58,26 +61,12 @@ class PermissionSeeder extends Seeder
 
 
 
-        $super_admin->syncPermissions((Permission::all()));
-        $admin->syncPermissions([
-            'user.create', 'user.update', 'user.index', 'user.delete', 'user.deactive',
-            'message.create', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
-            'setting.index', 'setting.update', 'addmedia', 'removemedia',
-            'user.create','user.update','user.index','user.delete','user.deactive',
-            'message.create','message.index',
-
-            'ticket.create','ticket.index', 'myticket',
-
-            'user.create','user.update','user.index','user.delete','user.deactive',
-            'message.create','message.index', 'ticket.create','ticket.index',
-
-            'user.create','user.update','user.index','user.delete','user.deactive','factor.index',
-            'factor.create','factor.accept'
-        ]);
+        $super_admin->syncPermissions(Permission::all());
+        $admin->syncPermissions(Permission::all());
         $user->syncPermissions([
             "update.profile",'factor.create',
-            'user.update', 'user.deactive',
-            'message.create', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
+            'user.update', 'user.deactive','message.create','message.show','message.unread',
+            'message.create.ad', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
             'setting.update', 'addmedia', 'removemedia', 'myticket', 'setting.index'
 
         ]);

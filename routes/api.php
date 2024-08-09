@@ -35,9 +35,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
     Route::get('index', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
-    Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.create")->name('create.admin');
-    Route::get('show/{type}', [MessageController::class, 'show'])->name('show');
-    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->name('unreadmessage');
+    Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.create.ad")->name('create.admin');
+    Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show')->name('show');
+    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission::message.unread')->name('unreadmessage');
 
 });
 
@@ -74,6 +74,7 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('forgetPass', [AuthController::class, 'forgetPasswrod'])->name('forgetPass');
     Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:update.profile'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
