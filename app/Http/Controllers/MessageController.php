@@ -53,16 +53,15 @@ class MessageController extends Controller
 
     public function storeAdmin(MessageRequest $request)
     {
-        $ticket_id = $request->ticket_id;
+        $user_id = $request->user_id;
         $type = $request->type;
-        $isTicket = $this->isTicket($type, $ticket_id);
+        $isTicket = $this->isTicket($type, $user_id);
         if (!$isTicket)
             return response()->json(['error' => 'user not  valid ']);
         $message = Message::create([
             "title" => $request->title,
             "description" => $request->description,
-            'ticket_id' => $ticket_id,
-            'priority' => $request->priority,
+            'ticket_id' => $isTicket,
             'status' => "unread",
         ]);
         $this->pendTicket($isTicket, 'responded');
@@ -73,7 +72,12 @@ class MessageController extends Controller
     public function show($type)
     {
         $user_id = auth()->user()->id;
-        $ticket = Ticket::where([['id', $user_id], ['type', $type]])->get();
+        $ticket = Ticket::where([['user_id', $user_id], ['type', $type]])->first();
+        if (!$ticket)
+            return response()->json(['error' => 'ticket does not exist']);
+        Message::where([['ticket_id',$ticket->id],['status','unread']])->update([
+            'status'=> 'read',
+        ]);
         $messages = Message::where('ticket_id', $ticket->id)->get();
         if (!$ticket || !$messages)
             return response()->json("no massage for $type");
@@ -82,13 +86,17 @@ class MessageController extends Controller
 
     public function index()
     {
-        $ticket = Ticket::with('masssages')->where([['type', 'unsystematic'], ['response_status', 'pending']])->get();
+        $ticket = Ticket::with('messages')->where([['type', 'unsystematic'], ['response_status', 'pending']])->get();
         return response()->json($ticket);
     }
 
     public function unreadmessage()
     {
-        $unreadmessage = Message::where('user_id', auth()->id())->where('status', 'unread')->count();
+        $tickets = Ticket::where('user_id', auth()->user()->id)->get('id');
+        $unreadmessage = 0;
+        foreach ($tickets as $ticket) {
+            $unreadmessage += Message::where('ticket_id', $ticket->id)->where('status', 'unread')->count();
+        }
         return response()->json($unreadmessage);
     }
 }
