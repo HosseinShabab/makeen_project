@@ -68,7 +68,6 @@ class FactorController extends Controller
         $factor->paid_price+=$request->paid_price;
         $factor->description = $request->description;
         $factor->accept_status = null;
-        //attach media;
         $factor->save();
         return response()->json($factor);
     }

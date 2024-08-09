@@ -9,10 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PDO;
-use PhpParser\Node\Stmt\Return_;
 
-use function PHPUnit\Framework\returnSelf;
 
 class LoanController extends Controller
 {
@@ -39,7 +36,6 @@ class LoanController extends Controller
         $loan = Loan::find($request->loan_id);
         $loan_guarantor = DB::table('loan_guarantor')
             ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->user()->id)->first();
-
         if (!$loan_guarantor || !$loan) {
             return response()->json('loan_id not valid ');
         }
@@ -162,6 +158,7 @@ class LoanController extends Controller
 
             DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
             //yek massage sakhte beshe baraye on user :
+            // MessageController::storeAdmin($request);
         }
 
         return response()->json($loan);

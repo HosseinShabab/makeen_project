@@ -8,7 +8,6 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-
 class MessageController extends Controller
 {
     private function isTicket($type, $user_id)

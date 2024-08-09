@@ -44,6 +44,7 @@ Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:s
 Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanctum'], function () {
 
     Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
+    Route::get('requestCnt', [LoanController::class, 'requestCnt'])->name('requestCnt');
     Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');
     Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
     Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
@@ -54,7 +55,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanct
 
 Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
 
-    Route::post('show', [InstallmentController::class, 'show'])->name('show');
+    Route::get('show', [InstallmentController::class, 'show'])->name('show');
     Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 
