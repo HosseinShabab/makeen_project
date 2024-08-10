@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Monolog\Handler\Slack\SlackRecord;
 use stdClass;
 
 
@@ -86,7 +87,6 @@ class LoanController extends Controller
         }
         $loan->save();
 
-
         return response()->json('succsseded');
     }
 
@@ -135,6 +135,11 @@ class LoanController extends Controller
                     "loan_id" => $loan->id,
                     'user_id' => $loan->user_id,
                 ]);
+            }
+            $reqloans = Loan::where([['user_id', $loan->user_id], ['admin_accept', 'pending']])->get();
+            foreach ($reqloans as $reqloan) {
+                $reqloan->count++;
+                $reqloan->save();
             }
         }
         $loan->save();
