@@ -11,7 +11,7 @@ use PDO;
 class FactorController extends Controller
 {
     public function factorCnt(){
-        $factors = Factor::where('acceptd_status',null)->count();
+        $factors = Factor::where('accept_status',null)->count();
         return response()->json($factors);
     }
 
