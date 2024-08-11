@@ -59,7 +59,7 @@ class MessageController extends Controller
 
 
 
-    
+
     public function storeAdmin(MessageRequest $request)
     {
         $user_id = $request->user_id;
@@ -77,4 +77,46 @@ class MessageController extends Controller
         return response()->json($message);
 
     }
+
+
+
+    public function show($type)
+    {
+        $user_id = auth()->user()->id;
+        $ticket = Ticket::where([['user_id', $user_id], ['type', $type]])->first();
+        if (!$ticket)
+            return response()->json(['error' => 'ticket does not exist']);
+        Message::where([['ticket_id',$ticket->id],['status','unread']])->update([
+            'status'=> 'read',
+        ]);
+        $messages = Message::where('ticket_id', $ticket->id)->get();
+        if (!$ticket || !$messages)
+            return response()->json("no massage for $type");
+        return response()->json($messages);
+    }
+
+
+
+
+    public function index()
+    {
+        $ticket = Ticket::with('messages')->where([['type', 'unsystematic'], ['response_status', 'pending']])->get();
+        return response()->json($ticket);
+    }
+
+
+
+
+    public function unreadmessage()
+    {
+        $tickets = Ticket::where('user_id', auth()->user()->id)->get('id');
+        $unreadmessage = 0;
+        foreach ($tickets as $ticket) {
+            $unreadmessage += Message::where('ticket_id', $ticket->id)->where('status', 'unread')->count();
+        }
+        return response()->json($unreadmessage);
+    }
 }
+
+
+
