@@ -100,8 +100,7 @@ Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(f
     Route::post('create', [SettingController::class, 'store'])->middleware('permission:setting.create')->name('create');
     Route::get('index', [SettingController::class, 'index'])->middleware('permission:setting.index')->name('index');
     Route::post('addmedia', [SettingController::class, 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
-    Route::post('addmedia', [SettingController::class, 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
-    Route::get('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
+    Route::post('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
     Route::post('edit', [SettingController::class, 'update'])->middleware('permission:setting.update')->name('edit');
 });
 
