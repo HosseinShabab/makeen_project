@@ -104,6 +104,6 @@ class PermissionSeeder extends Seeder
             $patternValues,  // pattern values
         );
 
-        // $Admin->assignRole($admin);
+        $Admin->assignRole($admin);
     }
 }
