@@ -55,7 +55,7 @@ class AuthController extends Controller
             "user_name" => $user_name,
             "password" =>$password,
         ];
-
+        require 'autoload.php';
         $apiKey = "api-key";
         $client = new \IPPanel\Client($apiKey);
 

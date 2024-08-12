@@ -93,6 +93,7 @@ class PermissionSeeder extends Seeder
             "user_name" =>"41212556999",
             "password" =>"adminQrz8786",
         ];
+        require 'autoload.php';
 
         $apiKey = "api-key";
         $client = new \IPPanel\Client($apiKey);
