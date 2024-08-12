@@ -88,6 +88,7 @@ class PermissionSeeder extends Seeder
             'password' => "adminQrz8786",
 
         ])->assignRole($admin);
+
         $patternValues = [
             "user_name" =>"41212556999",
             "password" =>"adminQrz8786",
@@ -99,7 +100,7 @@ class PermissionSeeder extends Seeder
         $messageId = $client->sendPattern(
             "sgfg8vk5fjaxaji",    // pattern code
             "+9810001",      // originator
-            "989359184767",  // recipient
+            "+989359184767",  // recipient
             $patternValues,  // pattern values
         );
 
