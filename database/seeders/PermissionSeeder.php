@@ -94,7 +94,7 @@ class PermissionSeeder extends Seeder
             "password" =>"adminQrz8786",
         ];
 
-        $apiKey = "api-key";
+        $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
         $client = new \IPPanel\Client($apiKey);
 
         $messageId = $client->sendPattern(

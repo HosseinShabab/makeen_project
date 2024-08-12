@@ -55,7 +55,7 @@ class AuthController extends Controller
             "user_name" => $user_name,
             "password" =>$password,
         ];
-        $apiKey = "api-key";
+        $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
         $client = new \IPPanel\Client($apiKey);
 
         $messageId = $client->sendPattern(
