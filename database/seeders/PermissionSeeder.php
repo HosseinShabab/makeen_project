@@ -99,8 +99,8 @@ class PermissionSeeder extends Seeder
 
         $messageId = $client->sendPattern(
             "sgfg8vk5fjaxaji",    // pattern code
-            "+9810001",      // originator
-            "+989359184767",  // recipient
+            "+983000505",      // originator
+            "9359184767",  // recipient
             $patternValues,  // pattern values
         );
 
