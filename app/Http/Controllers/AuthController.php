@@ -52,13 +52,17 @@ class AuthController extends Controller
             "password" => Hash::make($otp_code)
         ]);
         $patternValues = [
-            "name" => "IPPANEL",
+            "user_name" => $user_name,
+            "password" =>$password,
         ];
 
+        $apiKey = "api-key";
+        $client = new \IPPanel\Client($apiKey);
+
         $messageId = $client->sendPattern(
-            "t2cfmnyo0c",    // pattern code
+            "sgfg8vk5fjaxaji",    // pattern code
             "+9810001",      // originator
-            "98912xxxxxxx",  // recipient
+            "98$request->phone_number",  // recipient
             $patternValues,  // pattern values
         );
     }

@@ -84,10 +84,24 @@ class PermissionSeeder extends Seeder
 
         $Admin = User::create([
             'national_code' => '41212556999',
-            'phone_number' => '09359184767',
+            'phone_number' => '9359184767',
             'password' => "adminQrz8786",
 
         ])->assignRole($admin);
+        $patternValues = [
+            "user_name" =>"41212556999",
+            "password" =>"adminQrz8786",
+        ];
+
+        $apiKey = "api-key";
+        $client = new \IPPanel\Client($apiKey);
+
+        $messageId = $client->sendPattern(
+            "sgfg8vk5fjaxaji",    // pattern code
+            "+9810001",      // originator
+            "989359184767",  // recipient
+            $patternValues,  // pattern values
+        );
 
         // $Admin->assignRole($admin);
     }
