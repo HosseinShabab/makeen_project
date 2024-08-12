@@ -51,6 +51,16 @@ class AuthController extends Controller
         $user = User::where('phone_nubmer' , $request->phone_number)->update([
             "password" => Hash::make($otp_code)
         ]);
+        $patternValues = [
+            "name" => "IPPANEL",
+        ];
+
+        $messageId = $client->sendPattern(
+            "t2cfmnyo0c",    // pattern code
+            "+9810001",      // originator
+            "98912xxxxxxx",  // recipient
+            $patternValues,  // pattern values
+        );
     }
 
     public function logout(Request $request)
