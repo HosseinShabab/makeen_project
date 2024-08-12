@@ -28,13 +28,6 @@ use App\Http\Controllers\RolePermissionController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-// Route Tickets
-Route::group(['prefix' => 'tickets', 'as' => 'tickets.','middleware'=> 'auth:sanctum'], function () {
-    Route::get('index/{id?}', [TicketController::class, 'index'])->middleware("permission:ticket.index")->name('index');
-    Route::post('create', [TicketController::class, 'store'])->middleware("permission:ticket.create")->name('create');
-    Route::get('myticket/{id?}', [MessageController::class, 'myticket'])->middleware("permission:myticket")->name('myticket');
-    Route::get('systematic', [TicketController::class, 'systematic'])->middleware("role:admin")->name('systematic');
-});
 
 //Route Messages
 Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
