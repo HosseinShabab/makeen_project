@@ -22,7 +22,7 @@ class MessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "discription" => "required",
+            "description" => "required",
         ];
     }
 }
