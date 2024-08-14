@@ -32,7 +32,9 @@ class User extends Authenticatable implements HasMedia
         'national_code',
         'card_number',
         'sheba_number',
-        'address'
+        'address',
+        'card',
+        'profile'
     ];
 
     /**
