@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->enum( 'title',['subscription','loan','loan_request','guarantor_failed'])->nullable();
             $table->text('description');
             $table->enum('status',['read','unread'])->default('unread');
             $table->unsignedBigInteger('ticket_id');

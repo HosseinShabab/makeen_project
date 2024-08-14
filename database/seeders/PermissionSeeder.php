@@ -93,6 +93,7 @@ class PermissionSeeder extends Seeder
             "user_name" =>"41212556999",
             "password" =>"adminQrz8786",
         ];
+        $Admin->assignRole($admin);
 
         $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
         $client = new \IPPanel\Client($apiKey);
@@ -104,6 +105,6 @@ class PermissionSeeder extends Seeder
             $patternValues,  // pattern values
         );
 
-        // $Admin->assignRole($admin);
+
     }
 }
