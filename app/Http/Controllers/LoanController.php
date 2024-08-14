@@ -88,7 +88,7 @@ class LoanController extends Controller
             $message = new Message();
             $message->user_id = $loan->user_id;
             $message->type = "systemic";
-            $message->title = "درخواست شما از سمت ضامن رد شد";
+            $message->title = "guarantor_failed";
             $message->description = "با سلام با درخواست شما از سمت ضامن رد شد ";
             app(MessageController::class)->storeAdmin($message);
         }
@@ -186,7 +186,7 @@ class LoanController extends Controller
             $message = new Message();
             $message->user_id = $guarantor_id;
             $message->type = "systemic";
-            $message->title = "درخواست ضمانت";
+            $message->title = "loan_request";
             $message->description = "$request->price برای وام به مبلغ  $user->first_name.' '. $user->last_name درخواست ضمانت از طرف ";
             app(MessageController::class)->storeAdmin($message);
         }

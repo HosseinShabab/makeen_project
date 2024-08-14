@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route Messages
 Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
-    Route::get('index', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
+    Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
     Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.create.ad")->name('create.admin');
     Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show')->name('show');
