@@ -77,11 +77,11 @@ class UserController extends Controller
         $user = User::permission('deactive_req')->get();
         return response()->json($user);
     }
-    public function deactive($id)
+    public function deactive($id, $operation)
     {
         $user = User::find($id);
         $user->revokePermissionTo("deactive_req");
-        $user->revokePermissionTo("active");
+        if ($operation == "accept") $user->revokePermissionTo("active");
         return response()->json('success');
     }
 }
