@@ -46,7 +46,7 @@ class InstallmentController extends Controller
         $installments = Installment::where('user_id',auth()->user()->id)->orderBy('due_date', 'asc')->orderBy("status")->get();
         return response()->json($installments);
     }
-
+// master branch;
     public function sum(Request $request){
         $installments_id = $request->installments_id;
         $sum = 0;
