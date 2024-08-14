@@ -87,6 +87,7 @@ class AuthController extends Controller
         $user->save();
         $user->addMediaFromRequest('card')->toMediaCollection('card', 'local');
         $user->addMediaFromRequest('profile')->toMediaCollection('profile', 'local');
+
         $user->givePermissionTo('active');
         $user->revokePermissionTo('update.profile');
         return response()->json($user);

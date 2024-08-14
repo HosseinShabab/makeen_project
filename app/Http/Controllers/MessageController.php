@@ -66,7 +66,6 @@ class MessageController extends Controller
         ]);
         $this->pendTicket($isTicket, 'responded');
         return response()->json($message);
-
     }
 
     public function show($type)
@@ -75,8 +74,8 @@ class MessageController extends Controller
         $ticket = Ticket::where([['user_id', $user_id], ['type', $type]])->first();
         if (!$ticket)
             return response()->json(['error' => 'ticket does not exist']);
-        Message::where([['ticket_id',$ticket->id],['status','unread']])->update([
-            'status'=> 'read',
+        Message::where([['ticket_id', $ticket->id], ['status', 'unread']])->update([
+            'status' => 'read',
         ]);
         $messages = Message::where('ticket_id', $ticket->id)->get();
         if (!$ticket || !$messages)
@@ -84,10 +83,12 @@ class MessageController extends Controller
         return response()->json($messages);
     }
 
-    
-    public function index()
+    public function index($id = null)
     {
-        $ticket = Ticket::with('messages')->where([['type', 'unsystematic'], ['response_status', 'pending']])->get();
+        if ($id)
+            $ticket = Ticket::with("messages")->find($id);
+        else
+            $ticket = Ticket::with('messages')->where([['type', 'unsystematic'], ['response_status', 'pending']])->get();
         return response()->json($ticket);
     }
 

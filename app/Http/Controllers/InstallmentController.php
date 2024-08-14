@@ -35,7 +35,6 @@ class InstallmentController extends Controller
 
         return;
     }
-
     public function last(){
         $installment = Installment::where([['user_id', auth()->user()->id],['status','!=','accepted']])->first();
         $installment->user_inventory = Installment::where([['user_id', auth()->user()->id],['status','accepted'],['type','subscription ']])->sum('price');
@@ -48,6 +47,16 @@ class InstallmentController extends Controller
         return response()->json($installments);
     }
 
+    public function sum(Request $request){
+        $installments_id = $request->installments_id;
+        $sum = 0;
+        foreach($installments_id as $installment_id){
+            $installment = Installment::find($installment_id);
+            if(!$installment) return response()->json(["error"=>'installments id not valid']);
+            $sum += $installment->price;
+        }
+        return response()->json(['sum'=>$sum]);
+    }
 
     public function showAdmin(Request $request, $id = null)
     {

@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route Messages
 Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
-    Route::get('index', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
+    Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
     Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.createAdmin")->name('create.admin');
     Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show')->name('show');
@@ -58,6 +58,20 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' 
     Route::get('last', [InstallmentController::class, 'last'])->middleware("permission:installment.last")->name('last');
     Route::get('show', [InstallmentController::class, 'show'])->middleware("permission:installment.show")->name('show');
     Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->middleware("permission:installment.showAdmin")->name('showAdmin');
+    Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');
+    Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
+    Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
+    Route::post('show', [LoanController::class, 'show'])->name('show');
+    Route::get('loanDetails',[LoanController::class,'loanDetails'])->name('loand.details');
+    Route::post('store', [LoanController::class, 'store'])->name('create');
+    Route::post('update', [LoanController::class, 'updateGuarantor'])->name('update');
+});
+
+Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('last', [InstallmentController::class, 'last'])->name('last');
+    Route::get('show', [InstallmentController::class, 'show'])->name('show');
+    Route::post('sum', [InstallmentController::class,'sum'])->name('sum');
+    Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 
 //users route
@@ -67,7 +81,9 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update")->name('edit');
     Route::post('delete', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');
-    Route::post('deactive', [UserController::class, 'deactive'])->middleware('permission:user.deactive')->name('ban');
+    Route::get('deactiveReq', [UserController::class, 'deactiveReq'])->name('deactiveReq');
+    Route::get('deactiveShow', [UserController::class, 'deactiveShow'])->middleware('permission:user.deactive')->name('deactiveShow');
+    Route::get('deactive', [UserController::class, 'deactive'])->middleware('permission:user.deactive')->name('deactive');
 });
 
 //auth routs

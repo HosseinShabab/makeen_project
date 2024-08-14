@@ -62,6 +62,15 @@ class UserController extends Controller
         return "successfull";
     }
 
+    public function deactiveReq(){
+        $user = User::find(auth()->user()->id);
+        $user->givePermissionTo("deactive_req");
+    }
+
+    public function deactiveShow(){
+        $user = User::permission('deactive_req')->get();
+        return response()->json($user);
+    }
     public function deactive(Request $request)
     {
         $user = User::find($request->id);

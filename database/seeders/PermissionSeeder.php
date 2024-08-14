@@ -52,6 +52,8 @@ class PermissionSeeder extends Seeder
         $user_update = Permission::create(['name' => 'user.update']);
         $user_delete = Permission::create(['name' => 'user.delete']);
         $user_deactive = Permission::create(['name' => 'user.deactive']);
+        $deactive_req = Permission::create(['name'=> 'deactive_req']);
+        $update_profile = Permission::create(['name' => 'update.profile']);
 
 
         //auth permission
@@ -89,6 +91,7 @@ class PermissionSeeder extends Seeder
 
 
         $admin->syncPermissions(Permission::all());
+        $admin->revokePermissionTo('deactive_req');
         $user->syncPermissions([
            "message.create","message.show","message.unread",
            "auth.updateprofile",
@@ -113,6 +116,7 @@ class PermissionSeeder extends Seeder
             "user_name" =>"41212556999",
             "password" =>"adminQrz8786",
         ];
+        $Admin->assignRole($admin);
 
         $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
         $client = new \IPPanel\Client($apiKey);
@@ -124,6 +128,6 @@ class PermissionSeeder extends Seeder
             $patternValues,  // pattern values
         );
 
-        $Admin->assignRole($admin);
+
     }
 }
