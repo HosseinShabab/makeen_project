@@ -18,6 +18,20 @@ use stdClass;
 
 class LoanController extends Controller
 {
+    private function isStoreAble($user_id, $guarantors_id)
+    {
+        $guarantors_setting = Setting::find('1');
+        $guarantors_count = $guarantors_setting->guarantors_count;
+        if ($guarantors_count != $guarantors_id->size()) return false;
+        $loans_count = $guarantors_setting->loans_count;
+        $user_loans = Loan::where([['user_id', $user_id], ['status', 'unpaid'], ['admin_accept', "!=", 'faild']])->count();
+        if ($user_loans >= $loans_count) return false;
+        foreach ($guarantors_id as $guarantor_id) {
+            $guarantor = User::find($guarantor_id);
+            if (!$guarantor || !$guarantor->can('active') || $guarantor_id == $user_id) return false;
+        }
+        return $user_loans;
+    }
     public function requestCnt()
     {
         $loans = Loan::where([['guarantors_accept', 'accepted'], ['admin_accept', 'pending']])->count();
@@ -44,10 +58,6 @@ class LoanController extends Controller
         if (!$loan_guarantor || !$loan) {
             return response()->json('loan_id not valid ');
         }
-        if ($loan->admin_accept == 'faild') {
-            return response()->json("loan request faild");
-        }
-
         if ($loan_guarantor->guarantor_accept != "pending") {
             return response()->json("you have already voted");
         }
@@ -95,10 +105,12 @@ class LoanController extends Controller
     {
         if ($request->count == "checked") {
 
-            $loans = Loan::with('user')->where('guarantors_accept', '!=', 'faild')->where('admin_accept', "!=", "pending")->where('type', $request->type)->get();
+            $loans = Loan::with('user:id,first_name,last_name')->leftJoin('loan_guarantor', 'id', '=', 'loan_id')
+                ->where('guarantors_accept', '!=', 'faild')->where('admin_accept', "!=", "pending")->where('type', $request->type)->get();
         } else if ($request->count == "all") {
 
-            $loans = Loan::with('user')->where('admin_accept', "pending")->where('type', $request->type)->get();
+            $loans = Loan::with('user:id,first_name,last_name')->leftJoin('loan_guarantor', 'id', '=', 'loan_id')
+                ->where('admin_accept', "pending")->where('type', $request->type)->get();
         }
         return response()->json($loans);
     }
@@ -106,7 +118,8 @@ class LoanController extends Controller
     public function show(Request $request)
     {
         $user_id = $request->user()->id;
-        $loans = Loan::where('admin_accept', $request->admin_accept)->where("user_id", $user_id)->get();
+        $loans = Loan::leftJoin('loan_guarantor', 'id', '=', 'loan_id')
+            ->where('admin_accept', $request->admin_accept)->where("user_id", $user_id)->get();
 
         return response()->json($loans);
     }
@@ -115,7 +128,7 @@ class LoanController extends Controller
     {
         $loan = Loan::find($request->loan_id);
         if ($loan->admin_accept != "pending") {
-            return response()->json('you have arlready voted');
+            return response()->json(['error' => 'you have arlready voted']);
         }
         $loan->admin_accept = $request->admin_accept;
         $loan->admin_description = $request->admin_description;
@@ -147,20 +160,18 @@ class LoanController extends Controller
         return response()->json($loan);
     }
 
+    public function loanDetails()
+    {
+        $user = auth()->user();
+        $user_loans = Loan::where([['user_id', $user->id], ['status', 'unpaid'], ['admin_accept', "!=", 'faild']])->count();
+        return response()->json(['count' => '$user_loans', 'date' => Carbon::now()->toDateString()]);
+    }
     public function store(Request $request)
     {
-
-        $count = loan::where([['user_id', $request->user()->id]])->count();
         $user_id = $request->user()->id;
         $guarantors_id = $request->guarantors_id;
-        $guarantors_count = Setting::find('1');
-        $guarantors_count = $guarantors_count->guarantors_count;
-        if( $guarantors_count != $guarantors_id->size() ) return response()->json(['error'=>'the number of your guarantors is invalid']);
-        foreach ($guarantors_id as $guarantor_id) {
-            $guarantor = User::find($guarantor_id);
-            if (!$guarantor || !$guarantor->can('active') || $guarantor_id == $user_id)
-                return response()->json("guarantor not worthy");
-        }
+        $count = $this->isStoreAble($user_id, $guarantors_id);
+        if (! $count) return response()->json(['error', 'you have reached the limit or gourantors not valid']);
 
         $loan = new Loan();
         $loan = $loan->create([
@@ -172,8 +183,9 @@ class LoanController extends Controller
         ]);
         $user = User::find($user_id);
         foreach ($guarantors_id as $guarantor_id) {
-
-            DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
+            $guarantor = User::find($guarantor_id);
+            $guarantor_name = $guarantor->first_name . ' ' . $guarantor->last_name;
+            DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id, 'guarantor_name' => $guarantor_name]);
             //yek massage sakhte beshe baraye on user :
             $message = new Message();
             $message->user_id = $guarantor_id;
@@ -190,8 +202,12 @@ class LoanController extends Controller
     {
 
         $last_guarantor = DB::table('loan_guarantor')->where('guarantor_id', $request->last_guarantor_id)->delete();
+        $guarantor = User::find($request->new_guarantor_id);
+        if (!$guarantor || !$guarantor->can('active') || $guarantor->id == $request->user()->id) return  response()->json(['error' => 'guarantor not worthy']);
+        $guarantor_name = $guarantor->first_name . ' ' . $guarantor->last_name;
         $new_guarantor = DB::table('loan_guarantor')->insert([
             'guarantor_id' => $request->new_guarantor_id,
+            'guarantor_name' => $guarantor_name,
             'loan_id' => $request->loan_id,
         ]);
         //yek payam besas;

@@ -50,6 +50,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanct
     Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
     Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
     Route::post('show', [LoanController::class, 'show'])->name('show');
+    Route::get('loanDetails',[LoanController::class,'loanDetails'])->name('loand.details');
     Route::post('store', [LoanController::class, 'store'])->name('create');
     Route::post('update', [LoanController::class, 'updateGuarantor'])->name('update');
 });
