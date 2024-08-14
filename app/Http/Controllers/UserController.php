@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Models\Installment;
+use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,11 +35,12 @@ class UserController extends Controller
             "password" => $request->password,
             "phone_number" => $request->password,
         ]);
+        $installment_price= Setting::where('id',1)->sum('subscription');
         $installment = new Installment();
         $installment=$installment->create([
             "type" => "subscription",
             "count" => 1,
-            "price" =>"850000",
+            "price" =>$installment_price,
             "due_date" => Carbon::now()->addMonth()->toDateString(),
             "user_id" => $user->id,
         ]);
@@ -65,16 +67,18 @@ class UserController extends Controller
     public function deactiveReq(){
         $user = User::find(auth()->user()->id);
         $user->givePermissionTo("deactive_req");
+        return response()->json(['success'=>'request sent']);
     }
 
     public function deactiveShow(){
         $user = User::permission('deactive_req')->get();
         return response()->json($user);
     }
-    public function deactive(Request $request)
+    public function deactive($id)
     {
-        $user = User::find($request->id);
-        $user->revokePermission("active");
-        return "successfull";
+        $user = User::find($id);
+        $user->revokePermissionTo("deactive_req");
+        $user->revokePermissionTo("active");
+        return response()->json('success');
     }
 }

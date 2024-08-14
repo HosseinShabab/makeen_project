@@ -118,15 +118,15 @@ class PermissionSeeder extends Seeder
         ];
         $Admin->assignRole($admin);
 
-        $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
-        $client = new \IPPanel\Client($apiKey);
+        // $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
+        // $client = new \IPPanel\Client($apiKey);
 
-        $messageId = $client->sendPattern(
-            "sgfg8vk5fjaxaji",    // pattern code
-            "+983000505",      // originator
-            "9359184767",  // recipient
-            $patternValues,  // pattern values
-        );
+        // $messageId = $client->sendPattern(
+        //     "sgfg8vk5fjaxaji",    // pattern code
+        //     "+983000505",      // originator
+        //     "9359184767",  // recipient
+        //     $patternValues,  // pattern values
+        // );
 
 
     }

@@ -24,7 +24,7 @@ class LoanController extends Controller
     {
         $guarantors_setting = Setting::find('1');
         $guarantors_count = $guarantors_setting->guarantors_count;
-        if ($guarantors_count != $guarantors_id->size()) return false;
+        if ($guarantors_count != sizeof($guarantors_id)) return false;
         $loans_count = $guarantors_setting->loans_count;
         $user_loans = Loan::where([['user_id', $user_id], ['status', 'unpaid'], ['admin_accept', "!=", 'faild']])->count();
         if ($user_loans >= $loans_count) return false;
@@ -87,7 +87,7 @@ class LoanController extends Controller
         }
         if ($temp == 'faild') {
             // yek payam baraye sahebe loan ke in rad karde update kon
-            $message = new Message();
+            $message = new MessageRequest();
             $message->user_id = $loan->user_id;
             $message->type = "systemic";
             $message->title = "guarantor_failed";
@@ -103,12 +103,10 @@ class LoanController extends Controller
     {
         if ($request->count == "checked") {
 
-            $loans = Loan::with('user:id,first_name,last_name')->leftJoin('loan_guarantor', 'id', '=', 'loan_id')
-                ->where('guarantors_accept', '!=', 'faild')->where('admin_accept', "!=", "pending")->where('type', $request->type)->get();
+            $loans = Loan::with('user:id,first_name,last_name','guarantors')->where('guarantors_accept', '!=', 'faild')->where('admin_accept', "!=", "pending")->where('type', $request->type)->get();
         } else if ($request->count == "all") {
 
-            $loans = Loan::with('user:id,first_name,last_name')->leftJoin('loan_guarantor', 'id', '=', 'loan_id')
-                ->where('admin_accept', "pending")->where('type', $request->type)->get();
+            $loans = Loan::with('user:id,first_name,last_name','guarantors')->where('admin_accept', "pending")->where('type', $request->type)->get();
         }
         return response()->json($loans);
     }
@@ -116,8 +114,7 @@ class LoanController extends Controller
     public function show(Request $request)
     {
         $user_id = $request->user()->id;
-        $loans = Loan::leftJoin('loan_guarantor', 'id', '=', 'loan_id')
-            ->where('admin_accept', $request->admin_accept)->where("user_id", $user_id)->get();
+        $loans = Loan::with('guarantors')->where([['user_id', $user_id],['admin_accept',$request->admin_accept]])->get();
 
         return response()->json($loans);
     }
@@ -162,14 +159,14 @@ class LoanController extends Controller
     {
         $user = auth()->user();
         $user_loans = Loan::where([['user_id', $user->id], ['status', 'unpaid'], ['admin_accept', "!=", 'faild']])->count();
-        return response()->json(['count' => '$user_loans', 'date' => Carbon::now()->toDateString()]);
+        return response()->json(['count' => $user_loans, 'date' => Carbon::now()->toDateString()]);
     }
     public function store(LoanReqeust $request)
     {
         $user_id = $request->user()->id;
         $guarantors_id = $request->guarantors_id;
         $count = $this->isStoreAble($user_id, $guarantors_id);
-        if (! $count) return response()->json(['error', 'you have reached the limit or gourantors not valid']);
+        if (! $count) return response()->json(['error'=>'you have reached the limit or gourantors not valid']);
 
         $loan = new Loan();
         $loan = $loan->create([
@@ -185,7 +182,7 @@ class LoanController extends Controller
             $guarantor_name = $guarantor->first_name . ' ' . $guarantor->last_name;
             DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id, 'guarantor_name' => $guarantor_name]);
             //yek massage sakhte beshe baraye on user :
-            $message = new Message();
+            $message = new MessageRequest();
             $message->user_id = $guarantor_id;
             $message->type = "systemic";
             $message->title = "loan_request";

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
@@ -97,7 +98,8 @@ class AuthController extends Controller
     public function me()
     {
         if (Auth()->check()) {
-            return response()->json(auth()->user());
+            $user= User::with('media')->find(Auth::id());
+            return response()->json( $user );
         } else {
             return response()->json(null, status: 401);
         }
