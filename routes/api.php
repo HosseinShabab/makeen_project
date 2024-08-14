@@ -58,6 +58,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanct
 Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('last', [InstallmentController::class, 'last'])->name('last');
     Route::get('show', [InstallmentController::class, 'show'])->name('show');
+    Route::post('sum', [InstallmentController::class,'sum'])->name('sum');
     Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 

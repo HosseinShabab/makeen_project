@@ -64,18 +64,14 @@ class LoanController extends Controller
 
         $loan_guarantor = DB::table('loan_guarantor')
             ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->user()->id)->update(["guarantor_accept" => $request->guarantor_accept]);
-
         $guarnators_accept = DB::table('loan_guarantor')
             ->select('guarantor_accept')->where('loan_id', $request->loan_id)->get();
-
         $temp = "accepted";
 
         foreach ($guarnators_accept as $guarantor_accept) {
 
             if ($guarantor_accept->guarantor_accept == "pending")
                 $temp = "pending";
-
-
             if ($guarantor_accept->guarantor_accept == "faild") {
                 $temp = "faild";
                 break;
