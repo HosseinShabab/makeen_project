@@ -28,6 +28,7 @@ class PermissionSeeder extends Seeder
         $user_index = Permission::create(['name' => 'user.index']);
         $user_delete = Permission::create(['name' => 'user.delete']);
         $user_deactive = Permission::create(['name' => 'user.deactive']);
+        $deactive_req = Permission::create(['name'=> 'deactive_req']);
         $update_profile = Permission::create(['name' => 'update.profile']);
 
 
@@ -63,6 +64,7 @@ class PermissionSeeder extends Seeder
 
         $super_admin->syncPermissions(Permission::all());
         $admin->syncPermissions(Permission::all());
+        $admin->revokePermissionTo('deactive_req');
         $user->syncPermissions([
             "update.profile",'factor.create',
             'user.update', 'user.deactive','message.create','message.show','message.unread',
