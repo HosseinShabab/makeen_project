@@ -71,7 +71,7 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
     Route::post('delete', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');
     Route::get('deactiveReq', [UserController::class, 'deactiveReq'])->name('deactiveReq');
     Route::get('deactiveShow', [UserController::class, 'deactiveShow'])->middleware('permission:user.deactive')->name('deactiveShow');
-    Route::get('deactive', [UserController::class, 'deactive'])->middleware('permission:user.deactive')->name('deactive');
+    Route::get('deactive/{id}', [UserController::class, 'deactive'])->middleware('permission:user.deactive')->name('deactive');
 });
 
 //auth routs

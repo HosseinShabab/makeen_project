@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum("admin_accept",["accepted","faild","pending"])->default("pending");
             $table->enum("guarantors_accept",["accepted","faild","pending"])->default("pending");
             $table->unsignedBigInteger("user_id");
-            $table->enum('status',['paid','unpaid'])->default('upaid');
+            $table->enum('status',['paid','unpaid'])->default('unpaid');
             $table->timestamps();
         });
     }

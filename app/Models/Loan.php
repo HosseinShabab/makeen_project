@@ -29,5 +29,9 @@ class Loan extends Model
     {
         return $this->hasMany(Installment::class);
     }
+    public function guarantors(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class,'loan_guarantor','loan_id','guarantor_id');
+    }
 
 }
