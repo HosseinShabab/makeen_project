@@ -38,33 +38,33 @@ class AuthController extends Controller
         return response()->json(["token" => $token]);
     }
 
-    // public function forgetPassword(Request $request)
-    // {
-    //     $user = User::where('phone_number', $request->phone_number)->first();
+    public function forgetPassword(Request $request)
+    {
+        $user = User::where('phone_number', $request->phone_number)->first();
 
-    //     if (!$user || $user->hasRole('user')) {
-    //         return response()->json(['error','user not found']);
-    //     }
-    //     $otp_code = Str::random(8);
-    //     $password = $otp_code;
-    //     $user_name = $user->national_code;
-    //     $user = User::where('phone_nubmer' , $request->phone_number)->update([
-    //         "password" => Hash::make($otp_code)
-    //     ]);
-    //     $patternValues = [
-    //         "user_name" => $user_name,
-    //         "password" =>$password,
-    //     ];
-    //     $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
-    //     $client = new \IPPanel\Client($apiKey);
+        if (!$user || $user->hasRole('user')) {
+            return response()->json(['error','user not found']);
+        }
+        $otp_code = Str::random(8);
+        $password = $otp_code;
+        $user_name = $user->national_code;
+        $user = User::where('phone_nubmer' , $request->phone_number)->update([
+            "password" => Hash::make($otp_code)
+        ]);
+        $patternValues = [
+            "user_name" => $user_name,
+            "password" =>$password,
+        ];
+        $apiKey = "MnDJrYGphRag513u5Ymj_ySPe9V7bIMdR-CFETGSzEE=";
+        $client = new \IPPanel\Client($apiKey);
 
-    //     $messageId = $client->sendPattern(
-    //         "sgfg8vk5fjaxaji",    // pattern code
-    //         "+983000505",      // originator
-    //         $request->phone_number,  // recipient
-    //         $patternValues,  // pattern values
-    //     );
-    // }
+        $messageId = $client->sendPattern(
+            "sgfg8vk5fjaxaji",    // pattern code
+            "+983000505",      // originator
+            $request->phone_number,  // recipient
+            $patternValues,  // pattern values
+        );
+}
 
     public function logout(Request $request)
     {
