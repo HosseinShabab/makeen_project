@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FactorStoreRequest;
 use App\Models\Factor;
 use App\Models\Installment;
 use App\Models\User;
@@ -15,7 +16,7 @@ class FactorController extends Controller
         return response()->json($factors);
     }
 
-    public function store(Request $request)
+    public function store(FactorStoreRequest $request)
     {
         $user = User::find($request->user()->id);
         $name = $user->first_name . ' ' . $user->last_name;
@@ -32,6 +33,7 @@ class FactorController extends Controller
             'description' => $request->description,
             'user_id' => $user->id,
         ]);
+        $factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
         $factor->installments()->attach($installments_id);
         return response()->json($factor);
     }
