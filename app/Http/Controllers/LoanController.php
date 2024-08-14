@@ -6,6 +6,7 @@ use App\Http\Requests\MessageRequest;
 use App\Models\Installment;
 use App\Models\Loan;
 use App\Models\Message;
+use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -149,9 +150,12 @@ class LoanController extends Controller
     public function store(Request $request)
     {
 
-        $count = loan::where([['user_id', $request->user()->id], ['admin_accept', 'accepted']])->count();
+        $count = loan::where([['user_id', $request->user()->id]])->count();
         $user_id = $request->user()->id;
         $guarantors_id = $request->guarantors_id;
+        $guarantors_count = Setting::find('1');
+        $guarantors_count = $guarantors_count->guarantors_count;
+        if( $guarantors_count != $guarantors_id->size() ) return response()->json(['error'=>'the number of your guarantors is invalid']);
         foreach ($guarantors_id as $guarantor_id) {
             $guarantor = User::find($guarantor_id);
             if (!$guarantor || !$guarantor->can('active') || $guarantor_id == $user_id)

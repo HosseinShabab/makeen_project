@@ -61,7 +61,7 @@ class AuthController extends Controller
         $messageId = $client->sendPattern(
             "sgfg8vk5fjaxaji",    // pattern code
             "+983000505",      // originator
-            "$request->phone_number",  // recipient
+            $request->phone_number,  // recipient
             $patternValues,  // pattern values
         );
     }
