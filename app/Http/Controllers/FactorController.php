@@ -23,6 +23,7 @@ class FactorController extends Controller
         $installment_price = 0;
         foreach ($installments_id as $installment_id) {
             $installment = Installment::find($installment_id);
+            if(!$installment || $installment->status == 'paid') return response()->json(['error'=>'installment not valid']);
             $installment_price += $installment->price;
         }
         $factor = Factor::create([
