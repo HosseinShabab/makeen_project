@@ -22,20 +22,10 @@ class LoanReqeust extends FormRequest
     public function rules(): array
     {
         return [
-            "price" => '',
-            "national_code" => '',
-            "loan_id" => '',
-            "guarantor_accept" => '',
-            "type" => '',
-            "admin_accept" => '',
-            "admin_description" => "",
-            "loan_price" => '',
-            "installment_count" => '',
-            "guarantors_id" => '',
-            "last_guarantor_id" => '',
-            "new_guarantor_id" => '',
-            "user_id" => ' ',
-            'user_descirption' => '',
+            'price' => 'required',
+            'user_description' => 'required|string',
+            'type' => 'required',
+            'guarantors_id' => 'required|array|integer'
         ];
     }
 }

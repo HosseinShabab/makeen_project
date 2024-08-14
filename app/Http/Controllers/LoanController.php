@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoanReqeust;
 use App\Http\Requests\MessageRequest;
 use App\Models\Installment;
 use App\Models\Loan;
@@ -9,6 +10,7 @@ use App\Models\Message;
 use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Factories\LoanFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -147,7 +149,7 @@ class LoanController extends Controller
         return response()->json($loan);
     }
 
-    public function store(Request $request)
+    public function store(LoanReqeust $request)
     {
 
         $count = loan::where([['user_id', $request->user()->id]])->count();
