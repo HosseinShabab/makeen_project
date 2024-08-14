@@ -79,7 +79,7 @@ class LoanController extends Controller
         }
         if ($temp == 'faild') {
             // yek payam baraye sahebe loan ke in rad karde update kon
-            $message = new MessageRequest();
+            $message = new Message();
             $message->user_id = $loan->user_id;
             $message->type = "systemic";
             $message->title = "درخواست شما از سمت ضامن رد شد";
@@ -175,7 +175,7 @@ class LoanController extends Controller
 
             DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
             //yek massage sakhte beshe baraye on user :
-            $message = new MessageRequest();
+            $message = new Message();
             $message->user_id = $guarantor_id;
             $message->type = "systemic";
             $message->title = "درخواست ضمانت";
