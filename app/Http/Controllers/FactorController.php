@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Factor;
 use App\Models\Installment;
+use App\Models\Loan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PDO;
@@ -61,6 +62,14 @@ class FactorController extends Controller
             $installment->status = $status;
             $installment->admin_description = $request->admin_description;
             $installment->save();
+            //chosing loan status :
+            if($status == 'accepted'){
+                $isPaid = Installment::where([['loan_id',$installment->loan_id],['status','!=','accepted']])->exists();
+                if(!$isPaid){
+                    $loan = Loan::find($installment->loan_id);
+                    $loan->status = 'paid';
+                }
+            }
         }
         return response()->json($installments, $status = 200);
     }
