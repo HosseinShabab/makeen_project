@@ -24,7 +24,8 @@ class FactorStoreRequest extends FormRequest
         return [
             'description' => 'required',
             'paid_price' => 'required',
-            'factor' => 'required|image|max:2048'
+            'factor' => 'required|image|max:2048',
+            'installments_id' => 'required|array'
         ];
     }
 }
