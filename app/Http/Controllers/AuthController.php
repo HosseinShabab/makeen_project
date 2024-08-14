@@ -85,6 +85,8 @@ class AuthController extends Controller
         $user->sheba_number = $request->sheba_number;
         $user->card_number = $request->card_number;
         $user->save();
+        $user->addMediaFromRequest('card')->toMediaCollection('card', 'local');
+        $user->addMediaFromRequest('profile')->toMediaCollection('profile', 'local');
         $user->givePermissionTo('active');
         $user->revokePermissionTo('update.profile');
         return response()->json($user);
