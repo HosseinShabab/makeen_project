@@ -17,9 +17,8 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->word(),
+
             'type' => fake()->randomElement(['systemic' , 'unsystematic']),
-            'priority' => fake()->randomElement(['low' , 'medium', 'necessary']),
 
         ];
     }

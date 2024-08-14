@@ -84,6 +84,7 @@ class MessageController extends Controller
         return response()->json($messages);
     }
 
+    
     public function index()
     {
         $ticket = Ticket::with('messages')->where([['type', 'unsystematic'], ['response_status', 'pending']])->get();

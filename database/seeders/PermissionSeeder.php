@@ -18,70 +18,90 @@ class PermissionSeeder extends Seeder
     {
 
         //Roles
-        $super_admin = Role::create(['name' => 'super_admin']);
         $admin = Role::create(['name' => 'admin']);
         $user = Role::create(['name' => 'user']);
 
-        //user permission
-        $user_create = Permission::create(['name' => 'user.create']);
-        $user_update = Permission::create(['name' => 'user.update']);
-        $user_index = Permission::create(['name' => 'user.index']);
-        $user_delete = Permission::create(['name' => 'user.delete']);
-        $user_deactive = Permission::create(['name' => 'user.deactive']);
-        $update_profile = Permission::create(['name' => 'update.profile']);
-
 
         //message permission
-        $message_create = Permission::create(['name' => 'message.create']);
-        $message_create_ad = Permission::create(['name' => 'message.create.ad']);
         $message_index = Permission::create(['name' => 'message.index']);
+        $message_create = Permission::create(['name' => 'message.create']);
+        $message_createAdmin = Permission::create(['name' => 'message.createAdmin']);
         $message_show = Permission::create(['name' => 'message.show']);
         $message_unread = Permission::create(['name' => 'message.unread']);
 
-        //ticket permission
-        $ticket_create = Permission::create(['name' => 'ticket.create']);
-        $ticket_index = Permission::create(['name' => 'ticket.index']);
-        $myticket = Permission::create(['name' => 'myticket']);
 
-        // factor permission
-        $factor_index = Permission::create(['name'=>'factor.index']);
-        $factor_create = Permission::create(['name'=>'factor.create']);
-        $factor_accept = Permission::create(['name'=>'factor.accept']);
+        //loan permission
+        $loan_showGuarantors =Permission::create(['name' => 'loan.showGuarantors']);
+        $loan_showAdmin = Permission::create(['name' => 'loan.showAdmin']);
+        $loan_acceptAdmin = Permission::create(['name' => 'loan.acceptAdmin']);
+        $loan_acceptGuarantor = Permission::create(['name' => 'loan.acceptGuarantor']);
+        $loan_show = Permission::create(['name' => 'loan.show']);
+        $loan_create = Permission::create(['name' => 'loan.create']);
+        $loan_updateGuarantor = Permission::create(['name' => 'loan.updateGuarantor']);
+
+
+        //installment permission
+        $installment_last = Permission::create(['name' => 'installment.last']);
+        $installment_show = Permission::create(['name' => 'installment.show']);
+        $installment_showAdmin = Permission::create(['name' => 'installment.showAdmin']);
+
+
+        //user permission
+        $user_index = Permission::create(['name' => 'user.index']);
+        $user_create = Permission::create(['name' => 'user.create']);
+        $user_update = Permission::create(['name' => 'user.update']);
+        $user_delete = Permission::create(['name' => 'user.delete']);
+        $user_deactive = Permission::create(['name' => 'user.deactive']);
+
+
+        //auth permission
+        $auth_updateprofile = Permission::create(['name' => 'auth.updateprofile']);
+        $auth_forgetPasswrod = Permission::create(['name' => 'auth.forgetPasswrod']);
 
 
         $active = Permission::create(["name" => "active"]);
         $deleted = Permission::create(["name" => "deleted"]);
 
-        //admin permisson
+
+        // factor permission
+        $factor_index = Permission::create(['name'=>'factor.index']);
+        $factor_create = Permission::create(['name'=>'factor.create']);
+        $factor_accept = Permission::create(['name'=>'factor.accept']);
+        $factor_update = Permission::create(['name'=>'factor.update']);
+
+
+        // media permission
+        $media_index = Permission::create(['name' => 'media.index']);
+        $media_create = Permission::create(['name' => 'media.create']);
+        $media_delete = Permission::create(['name' => 'media.delete']);
+
+
+        // setting permission
         $setting_create = Permission::create(['name' => 'setting.create']);
         $setting_index = Permission::create(['name' => 'setting.index']);
         $setting_update = Permission::create(['name' => 'setting.update']);
         $addmedia = Permission::create(['name' => 'addmedia']);
         $removemedia = Permission::create(['name' => 'removemedia']);
 
+        // inventory permission
+        $inventory_index = permission::create(['name' => 'inventory.index']);
 
 
-        $super_admin->syncPermissions(Permission::all());
+
         $admin->syncPermissions(Permission::all());
         $user->syncPermissions([
-            "update.profile",'factor.create',
-            'user.update', 'user.deactive','message.create','message.show','message.unread',
-            'message.create.ad', 'message.index', 'ticket.create', 'ticket.index', 'setting.create',
-            'setting.update', 'addmedia', 'removemedia', 'myticket', 'setting.index'
+           "message.create","message.show","message.unread",
+           "auth.updateprofile",
+           "factor.create","factor.update",
+           "installment.show",
+           "loan.updateGuarantor","loan.show","loan.create","loan.showGuarantors"
+
 
         ]);
 
 
 
-        //create super admin , admin
-        $superAdmin = User::create([
-            'national_code' => '14522876562',
-            'phone_number' => '09021111111',
-            'password' => "SuperAdminQrz4764",
-
-        ])->assignRole($super_admin);
-
-
+        //create  Admin
         $Admin = User::create([
             'national_code' => '41212556999',
             'phone_number' => '9359184767',
