@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MessageRequest;
 use App\Models\Installment;
 use App\Models\Loan;
+use App\Models\Message;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PDO;
-use PhpParser\Node\Stmt\Return_;
+use Monolog\Handler\Slack\SlackRecord;
+use stdClass;
 
-use function PHPUnit\Framework\returnSelf;
 
 class LoanController extends Controller
 {
@@ -28,6 +29,9 @@ class LoanController extends Controller
         if ($user->id == auth()->user()->id || !$user->can('active')) {
             return response()->json("guarantor is not worthy");
         }
+        if (!$user) {
+            return response()->json("guarantor not found");
+        }
         return response()->json(['id' => $user->id, 'name' => $user->first_name . ' ' . $user->last_name]);
     }
 
@@ -36,7 +40,6 @@ class LoanController extends Controller
         $loan = Loan::find($request->loan_id);
         $loan_guarantor = DB::table('loan_guarantor')
             ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->user()->id)->first();
-
         if (!$loan_guarantor || !$loan) {
             return response()->json('loan_id not valid ');
         }
@@ -49,8 +52,7 @@ class LoanController extends Controller
         }
 
         $loan_guarantor = DB::table('loan_guarantor')
-            ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->guarantor_id)
-            ->update(["guarantor_accept" => $request->guarantor_accept]);
+            ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->user()->id)->update(["guarantor_accept" => $request->guarantor_accept]);
 
         $guarnators_accept = DB::table('loan_guarantor')
             ->select('guarantor_accept')->where('loan_id', $request->loan_id)->get();
@@ -76,9 +78,14 @@ class LoanController extends Controller
         }
         if ($temp == 'faild') {
             // yek payam baraye sahebe loan ke in rad karde update kon
+            $message = new MessageRequest();
+            $message->user_id = $loan->user_id;
+            $message->type = "systemic";
+            $message->title = "درخواست شما از سمت ضامن رد شد";
+            $message->description = "با سلام با درخواست شما از سمت ضامن رد شد ";
+            app(MessageController::class)->storeAdmin($message);
         }
         $loan->save();
-
 
         return response()->json('succsseded');
     }
@@ -129,6 +136,11 @@ class LoanController extends Controller
                     'user_id' => $loan->user_id,
                 ]);
             }
+            $reqloans = Loan::where([['user_id', $loan->user_id], ['admin_accept', 'pending']])->get();
+            foreach ($reqloans as $reqloan) {
+                $reqloan->count++;
+                $reqloan->save();
+            }
         }
         $loan->save();
         return response()->json($loan);
@@ -154,11 +166,17 @@ class LoanController extends Controller
             "type" => $request->type,
             "user_id" => $user_id,
         ]);
-
+        $user = User::find($user_id);
         foreach ($guarantors_id as $guarantor_id) {
 
             DB::table("loan_guarantor")->insert(["loan_id" => $loan->id, "guarantor_id" => $guarantor_id]);
             //yek massage sakhte beshe baraye on user :
+            $message = new MessageRequest();
+            $message->user_id = $guarantor_id;
+            $message->type = "systemic";
+            $message->title = "درخواست ضمانت";
+            $message->description = "$request->price برای وام به مبلغ  $user->first_name.' '. $user->last_name درخواست ضمانت از طرف ";
+            app(MessageController::class)->storeAdmin($message);
         }
 
         return response()->json($loan);

@@ -22,8 +22,12 @@ class MessageRequest extends FormRequest
     public function rules(): array
     {
         return [
+<<<<<<< HEAD
             "discription" => "required",
             "status" =>"required|in:read,unread"
+=======
+            "description" => "required",
+>>>>>>> 3d60a1d31f0ef12fdf35ccc4412995b39d8fe7f4
         ];
     }
 }
