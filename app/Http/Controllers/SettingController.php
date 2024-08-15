@@ -32,7 +32,7 @@ class SettingController extends Controller
     public function addmedia(Request $request)
     {
         $setting = Setting::find(1);
-        $setting = $setting->addMediaFromRequest('media')->collection('logo', 'local');
+        $setting = $setting->addMediaFromRequest('media')->toMediaCollection('logo', 'local');
         return response()->json($setting);
     }
 

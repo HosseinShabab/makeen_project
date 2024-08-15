@@ -81,7 +81,7 @@ class FactorController extends Controller
         $factor->description = $request->description;
         $factor->accept_status = null;
         $factor->save();
-        $factor->addMediaFromRequest('factor')->toMediaCollection('factor');
+        $factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
         return response()->json($factor);
     }
 }
