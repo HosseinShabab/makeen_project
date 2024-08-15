@@ -19,20 +19,16 @@ class MediaController extends Controller
     {
         $type = $request->type;
         $typable_id = $request->typable_id;
-
+        $collection = $request->collection;
         if ($type == 'users') {
             $typable_id = $request->user()->id;
-            $collection = $request->collection;
             $media = User::find($typable_id);
         } else if ($type == 'factors') {
             $media = Factor::find($typable_id);
         } else if ($type == 'messages') {
             $media = Message::find($typable_id);
         }
-        if ($collection != null)
-            $media = $media->getMedia("$collection");
-        else
-            $media = $media->getMedia();
+        $media = $media->getMedia("$collection");
         return response()->json($media);
     }
 

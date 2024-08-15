@@ -77,10 +77,12 @@ class FactorController extends Controller
     }
     public function update(Request $request){
         $factor =  Factor::where([['user_id',auth()->user()->id],['id',$request->factor_id]])->first();
+        if(!$factor)return response()->json(['error'=>"factor not found"]);
         $factor->paid_price+=$request->paid_price;
         $factor->description = $request->description;
         $factor->accept_status = null;
         $factor->save();
+        if($request->factor)$factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
         return response()->json($factor);
     }
 }
