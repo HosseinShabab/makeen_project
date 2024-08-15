@@ -26,7 +26,7 @@ class UserController extends Controller
         if ($id)
             $user = User::find($id);
         else
-            $user = User::role('user')->permission("$permission")->get();
+            $user = User::role('user')->permission("$permission")->paginate(7);
         return response()->json($user);
     }
 
@@ -81,7 +81,7 @@ class UserController extends Controller
 
     public function deactiveShow()
     {
-        $user = User::permission('deactive_req')->get();
+        $user = User::permission('deactive_req')->paginate(4);
         return response()->json($user);
     }
     public function deactive(Request $request)
