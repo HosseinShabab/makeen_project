@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
     Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
-    Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.create.ad")->name('create.admin');
+    Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.createAdmin")->name('create.admin');
     Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show')->name('show');
     Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission::message.unread')->name('unreadmessage');
 
@@ -44,8 +44,20 @@ Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:s
 
 Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanctum'], function () {
 
-    Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->name('showGuarantors');
+    Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->middleware("permission:loan.showGuarantors")->name('showGuarantors');
     Route::get('requestCnt', [LoanController::class, 'requestCnt'])->name('requestCnt');
+    Route::post('show/admin', [LoanController::class, 'showAdmin'])->middleware("permission:loan.showAdmin")->name('showAdmin');
+    Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->middleware("permission:loan.acceptAdmin")->name('acceptAdmin');
+    Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->middleware("permission:loan.acceptGuarantor")->name('acceptGuarantor');
+    Route::post('show', [LoanController::class, 'show'])->middleware("permission:loan.show")->name('show');
+    Route::post('store', [LoanController::class, 'store'])->middleware("permission:loan.create")->name('create');
+    Route::post('update', [LoanController::class, 'updateGuarantor'])->middleware("permission:loan.updateGuarantor")->name('update');
+});
+
+Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('last', [InstallmentController::class, 'last'])->middleware("permission:installment.last")->name('last');
+    Route::get('show', [InstallmentController::class, 'show'])->middleware("permission:installment.show")->name('show');
+    Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->middleware("permission:installment.showAdmin")->name('showAdmin');
     Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');
     Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
     Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
@@ -79,8 +91,8 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('forgetPass', [AuthController::class, 'forgetPasswrod'])->name('forgetPass');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:update.profile'])->name('edit');
+    Route::post('forgetPass', [AuthController::class, 'forgetPasswrod'])->middleware('permission:forgetPasswrod')->name('forgetPass');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:updateprofile'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });
@@ -88,17 +100,17 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('factorCnt', [FactorController::class, 'factorCnt'])->name('factorCnt');
-    Route::put('index/{id?}', [FactorController::class, 'index'])->name('index');
-    Route::post('store', [FactorController::class, 'store'])->name('create');
-    Route::post('accept', [FactorController::class, 'accept'])->name('accept');
-    Route::post('update', [FactorController::class, 'update'])->name('edit');
+    Route::put('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
+    Route::post('accept', [FactorController::class, 'accept'])->middleware('permission:factor.accept')->name('accept');
+    Route::post('update', [FactorController::class, 'update'])->middleware('permission:factor.update')->name('edit');
 });
 
 //media controller
 Route::group(['prefix' => 'media', 'as' => 'media.', 'middleware' => 'auth:sanctum'], function () {
-    Route::post('show', [MediaController::class, 'show'])->middleware('auth:sanctum')->name('index');
-    Route::post('create', [MediaController::class, 'store'])->middleware('auth:sanctum')->name('create');
-    Route::post('delete', [MediaController::class, 'delete'])->middleware("auth:sanctum")->name('delete');
+    Route::post('show', [MediaController::class, 'show'])->middleware('permission:media.index')->name('index');
+    Route::post('create', [MediaController::class, 'store'])->middleware('permission:media.create')->name('create');
+    Route::post('delete', [MediaController::class, 'delete'])->middleware('permission:media.delete')->name('delete');
 });
 
 Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(function () {
@@ -110,5 +122,5 @@ Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(f
 });
 
 Route::group(['prefix'=> 'inventory','as'=> 'inventory.','middleware'=> 'auth:sanctum'], function () {
-    Route::get('index',[InventoryController::class,'index'])->name('index');
+    Route::get('index',[InventoryController::class,'index'])->middleware('permission:inventory.index')->name('index');
 });

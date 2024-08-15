@@ -15,9 +15,10 @@ class Message extends Model implements HasMedia
     protected $fillable = [
         "description",
         "status",
-        "ticket_id",
+        "user_id",
         "title",
-        "priority"
+        "priority",
+        "message"
 
     ];
 

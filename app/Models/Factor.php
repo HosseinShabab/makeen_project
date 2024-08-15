@@ -19,7 +19,8 @@ class Factor extends Model implements HasMedia
         'discription',
         'paid_price',
         'accept_status',
-        'user_id'
+        'user_id',
+        'factor'
     ];
 
     public function user(): BelongsTo

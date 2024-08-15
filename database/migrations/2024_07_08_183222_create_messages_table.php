@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->enum('status',['read','unread'])->default('unread');
             $table->unsignedBigInteger('ticket_id');
-            $table->enum('priority', ['low', 'medium', 'necessary'])->nullable();
+            $table->enum('priority', ['low','medium','necessary'])->nullable();
             $table->timestamps();
         });
     }
