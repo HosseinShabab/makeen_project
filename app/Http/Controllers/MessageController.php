@@ -67,7 +67,7 @@ class MessageController extends Controller
         $this->pendTicket($isTicket, 'responded');
         return response()->json($message);
     }
-
+//
     public function show($type)
     {
         $user_id = auth()->user()->id;
