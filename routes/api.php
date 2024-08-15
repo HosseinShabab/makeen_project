@@ -52,19 +52,7 @@ Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanct
     Route::post('show', [LoanController::class, 'show'])->middleware("permission:loan.show")->name('show');
     Route::post('store', [LoanController::class, 'store'])->middleware("permission:loan.create")->name('create');
     Route::post('update', [LoanController::class, 'updateGuarantor'])->middleware("permission:loan.updateGuarantor")->name('update');
-});
-
-Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('last', [InstallmentController::class, 'last'])->middleware("permission:installment.last")->name('last');
-    Route::get('show', [InstallmentController::class, 'show'])->middleware("permission:installment.show")->name('show');
-    Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->middleware("permission:installment.showAdmin")->name('showAdmin');
-    Route::post('show/admin', [LoanController::class, 'showAdmin'])->name('showAdmin');
-    Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->name('acceptAdmin');
-    Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->name('acceptGuarantor');
-    Route::post('show', [LoanController::class, 'show'])->name('show');
     Route::get('loanDetails',[LoanController::class,'loanDetails'])->name('loand.details');
-    Route::post('store', [LoanController::class, 'store'])->name('create');
-    Route::post('update', [LoanController::class, 'updateGuarantor'])->name('update');
 });
 
 Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' => 'auth:sanctum'], function () {
