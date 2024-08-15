@@ -46,7 +46,7 @@ class MessageController extends Controller
             "status" => "read",
             'priority' => $request->priority,
         ]);
-        $message->addMediaFromRequest('message')->toMediaCollection('message', 'local');
+        if($request->message) $message->addMediaFromRequest('message')->toMediaCollection('message', 'local');
         $this->pendTicket($isTicket, 'pending');
         return response()->json($message);
     }

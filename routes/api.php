@@ -37,7 +37,7 @@ Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:s
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
     Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.createAdmin")->name('create.admin');
     Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show')->name('show');
-    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission::message.unread')->name('unreadmessage');
+    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission:message.unread')->name('unreadmessage');
 
 });
 

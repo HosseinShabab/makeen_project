@@ -24,7 +24,6 @@ class MessageRequest extends FormRequest
         return [
             'title' => 'nullable|string|max:255',
             "description" => "required|string",
-            'status' => 'required|in:read,unread',
             'priority' => 'nullable|in:low,medium,necessary',
         ];
     }
