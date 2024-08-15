@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             FactorySeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

@@ -22,10 +22,11 @@ class UserController extends Controller
     public function index(Request $request, $id = null)
     {
         $permission = $request->permission;
-        if ($id){
-            $user = User::with('media')->find($id);
-        }else
-            $user = User::with('media')->permission("$permission")->get();
+        if(!$id && !$permission) return response()->json(['error'=>'permision cant be null']);
+        if ($id)
+            $user = User::find($id);
+        else
+            $user = User::role('user')->permission("$permission")->paginate(7);
         return response()->json($user);
     }
 
@@ -80,7 +81,7 @@ class UserController extends Controller
 
     public function deactiveShow()
     {
-        $user = User::permission('deactive_req')->get();
+        $user = User::permission('deactive_req')->paginate(4);
         return response()->json($user);
     }
     public function deactive(Request $request)

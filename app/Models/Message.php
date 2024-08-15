@@ -18,7 +18,8 @@ class Message extends Model implements HasMedia
         "user_id",
         "title",
         "priority",
-        "message"
+        "message",
+        "ticket_id",
 
     ];
 

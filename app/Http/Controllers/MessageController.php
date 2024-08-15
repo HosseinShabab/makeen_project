@@ -46,7 +46,7 @@ class MessageController extends Controller
             "status" => "read",
             'priority' => $request->priority,
         ]);
-        $message->addMediaFromRequest('message')->toMediaCollection('message', 'local');
+        if($request->message) $message->addMediaFromRequest('message')->toMediaCollection('message', 'local');
         $this->pendTicket($isTicket, 'pending');
         return response()->json($message);
     }
@@ -77,7 +77,7 @@ class MessageController extends Controller
         Message::where([['ticket_id', $ticket->id], ['status', 'unread']])->update([
             'status' => 'read',
         ]);
-        $messages = Message::where('ticket_id', $ticket->id)->get();
+        $messages = Message::where('ticket_id', $ticket->id)->paginate(3);
         if (!$ticket || !$messages)
             return response()->json("no massage for $type");
         return response()->json($messages);
@@ -91,7 +91,7 @@ class MessageController extends Controller
             $user = new User();
             $ticket = $user->with('media','tickets','messages')->whereHas('tickets', function ($query) {
                 $query->where([['type','unsystematic'],['response_status','pending']]);
-            })->paginate(10);
+            })->paginate(4);
         }
         return response()->json($ticket);
     }

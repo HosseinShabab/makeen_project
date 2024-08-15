@@ -45,7 +45,7 @@ class FactorController extends Controller
         if ($id) {
             $factors = Factor::with('media', 'installments')->where('id', $id)->first();
         } else
-            $factors = Factor::orderBy('accept_status','desc')->get();
+            $factors = Factor::orderByRaw('FIELD(accept_status,"error","unpaid","paid") ASC')->paginate(8);
         return response()->json($factors);
     }
 
@@ -77,11 +77,12 @@ class FactorController extends Controller
     }
     public function update(Request $request){
         $factor =  Factor::where([['user_id',auth()->user()->id],['id',$request->factor_id]])->first();
+        if(!$factor)return response()->json(['error'=>"factor not found"]);
         $factor->paid_price+=$request->paid_price;
         $factor->description = $request->description;
         $factor->accept_status = null;
         $factor->save();
-        $factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
+        if($request->factor)$factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
         return response()->json($factor);
     }
 }

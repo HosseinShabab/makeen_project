@@ -37,7 +37,7 @@ Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:s
     Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
     Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.createAdmin")->name('create.admin');
     Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show')->name('show');
-    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission::message.unread')->name('unreadmessage');
+    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission:message.unread')->name('unreadmessage');
 
 });
 
@@ -59,10 +59,10 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' 
     Route::get('last', [InstallmentController::class, 'last'])->name('last');
     Route::get('show', [InstallmentController::class, 'show'])->name('show');
     Route::post('sum', [InstallmentController::class,'sum'])->name('sum');
-    Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
+    Route::get('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 
-//users route
+//users routee
 Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
     Route::get('memberCnt', [UserController::class, 'MemberCnt'])->name('MemberCnt');
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
@@ -79,8 +79,8 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('forgetPass', [AuthController::class, 'forgetPasswrod'])->middleware('permission:forgetPasswrod')->name('forgetPass');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:updateprofile'])->name('edit');
+    Route::post('forgetPass', [AuthController::class, 'forgetPassword'])->name('forgetPass');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });
@@ -88,7 +88,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('factorCnt', [FactorController::class, 'factorCnt'])->name('factorCnt');
-    Route::put('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::get('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
     Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
     Route::post('accept', [FactorController::class, 'accept'])->middleware('permission:factor.accept')->name('accept');
     Route::post('update', [FactorController::class, 'update'])->middleware('permission:factor.update')->name('edit');

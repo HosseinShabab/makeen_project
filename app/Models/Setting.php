@@ -19,7 +19,7 @@ class Setting extends Model implements HasMedia
         'fund_name',
         'phone_number',
         'card_number',
-        'subscription'
+        'subscription',
     ];
 
 }
