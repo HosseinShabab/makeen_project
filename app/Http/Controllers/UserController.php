@@ -9,7 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use PDO;
+
 
 class UserController extends Controller
 {
@@ -58,13 +58,19 @@ class UserController extends Controller
     }
 
 
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $user = User::find($request->id);
+        $user = User::find($id);
         $user->syncPermissions("deleted");
         return "successfull";
     }
 
+    public function active($id){
+        $user = User::find($id);
+        $user->syncRoles("user");
+        $user->givePermissionTo('active');
+        $user->revokePermissionTo('update.profile');
+    }
     public function deactiveReq()
     {
         $user = User::find(auth()->user()->id);
@@ -77,8 +83,10 @@ class UserController extends Controller
         $user = User::permission('deactive_req')->get();
         return response()->json($user);
     }
-    public function deactive($id, $operation)
+    public function deactive(Request $request)
     {
+        $id = $request->user_id;
+        $operation =$request->operation;
         $user = User::find($id);
         $user->revokePermissionTo("deactive_req");
         if ($operation == "accept") $user->revokePermissionTo("active");

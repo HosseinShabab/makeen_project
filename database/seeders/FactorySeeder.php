@@ -26,7 +26,7 @@ class FactorySeeder extends Seeder
                 "type" => "subscription",
                 "count" => 1,
                 "price" =>"850000",
-                "due_date" => Carbon::now()->subMonth(3)->toDateString(),
+                "due_date" => Carbon::now()->subMonths(3)->toDateString(),
                 "user_id" => $user->id,
             ]);
         });

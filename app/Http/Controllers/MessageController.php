@@ -86,9 +86,13 @@ class MessageController extends Controller
     public function index($id = null)
     {
         if ($id)
-            $ticket = Ticket::with("messages")->find($id);
-        else
-            $ticket = Ticket::with('messages')->where([['type', 'unsystematic'], ['response_status', 'pending']])->get();
+            $ticket = Ticket::with("messages")->findOrFail($id);
+        else{
+            $user = new User();
+            $ticket = $user->with('media','tickets','messages')->whereHas('tickets', function ($query) {
+                $query->where([['type','unsystematic'],['response_status','pending']]);
+            })->paginate(10);
+        }
         return response()->json($ticket);
     }
 
