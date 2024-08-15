@@ -34,7 +34,9 @@ class UpdateProfileRequest extends FormRequest
             'address.plaque' => 'required|string',
             'address.description' => 'required|string',
             'sheba_number' => 'required|string|size:24|regex:/^[0-9]+$/',
-            'card_number' => 'required|string|size:16|regex:/^[0-9]+$/'
+            'card_number' => 'required|string|size:16|regex:/^[0-9]+$/',
+            'profile' => 'required|image|max:2048',
+            'card' => 'required|image|max:2048'
         ];
     }
 }

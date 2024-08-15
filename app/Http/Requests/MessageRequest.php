@@ -22,7 +22,9 @@ class MessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "description" => "required",
+            'title' => 'nullable|string|max:255',
+            "description" => "required|string",
+            'priority' => 'nullable|in:low,medium,necessary',
         ];
     }
 }

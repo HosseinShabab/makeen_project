@@ -37,13 +37,14 @@ class InstallmentController extends Controller
     }
     public function last(){
         $installment = Installment::where([['user_id', auth()->user()->id],['status','!=','accepted']])->first();
+        if(empty($installment))return response()->json($installment);
         $installment->user_inventory = Installment::where([['user_id', auth()->user()->id],['status','accepted'],['type','subscription ']])->sum('price');
         return response()->json($installment);
     }
     public function show()
     {
         $this->storeSub(auth()->user()->id);
-        $installments = Installment::where('user_id',auth()->user()->id)->orderBy('due_date', 'asc')->orderBy("status")->get();
+        $installments = Installment::where('user_id',auth()->user()->id)->orderBy('due_date', 'asc')->orderBy("status")->paginate(12);
         return response()->json($installments);
     }
 // master branch;
@@ -71,7 +72,7 @@ class InstallmentController extends Controller
                 $user->debt = Installment::where([['user_id',$user->id],['due_date','<',Carbon::now()->toDateString()],['status','!=','paid']])->sum('price');
                 $user->save();
             }
-            $users = User::role('user')->permission('active')->where('debt',">",0)->get();
+            $users = User::role('user')->permission('active')->where('debt',">",0)->paginate(8);
             return response()->json($users);
         }
     }

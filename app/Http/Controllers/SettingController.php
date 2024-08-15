@@ -31,10 +31,8 @@ class SettingController extends Controller
 
     public function addmedia(Request $request)
     {
-        // $typable_id = $request->user()->id;
-
         $setting = Setting::find(1);
-        $setting = $setting->addMediaFromRequest('media')->collection('logo', 'local');
+        $setting = $setting->addMediaFromRequest('media')->toMediaCollection('logo', 'local');
         return response()->json($setting);
     }
 
@@ -47,7 +45,7 @@ class SettingController extends Controller
 
     public function index()
     {
-        $setting = Setting::first();
+        $setting = Setting::with("media")->first();
         return response()->json($setting);
     }
 }

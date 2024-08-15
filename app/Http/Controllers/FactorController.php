@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FactorStoreRequest;
 use App\Models\Factor;
 use App\Models\Installment;
 use App\Models\Loan;
@@ -16,7 +17,7 @@ class FactorController extends Controller
         return response()->json($factors);
     }
 
-    public function store(Request $request)
+    public function store(FactorStoreRequest $request)
     {
         $user = User::find($request->user()->id);
         $name = $user->first_name . ' ' . $user->last_name;
@@ -34,6 +35,7 @@ class FactorController extends Controller
             'description' => $request->description,
             'user_id' => $user->id,
         ]);
+        $factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
         $factor->installments()->attach($installments_id);
         return response()->json($factor);
     }
@@ -43,7 +45,7 @@ class FactorController extends Controller
         if ($id) {
             $factors = Factor::with('media', 'installments')->where('id', $id)->first();
         } else
-            $factors = Factor::orderBy('accept_status','desc')->get();
+            $factors = Factor::orderByRaw('FIELD(accept_status,"error","unpaid","paid") ASC')->paginate(8);
         return response()->json($factors);
     }
 
@@ -75,10 +77,12 @@ class FactorController extends Controller
     }
     public function update(Request $request){
         $factor =  Factor::where([['user_id',auth()->user()->id],['id',$request->factor_id]])->first();
+        if(!$factor)return response()->json(['error'=>"factor not found"]);
         $factor->paid_price+=$request->paid_price;
         $factor->description = $request->description;
         $factor->accept_status = null;
         $factor->save();
+        if($request->factor)$factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
         return response()->json($factor);
     }
 }

@@ -17,8 +17,10 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
+            'title' => fake()->word(),
             'description' => fake()->text(),
             'status' => fake()->randomElement(['read' , 'unread']),
+            'priority' => fake()->randomElement(['low' , 'medium','necessary']),
         ];
     }
 }
