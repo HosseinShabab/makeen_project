@@ -62,7 +62,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' 
     Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 
-//users route
+//users routee
 Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
     Route::get('memberCnt', [UserController::class, 'MemberCnt'])->name('MemberCnt');
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
