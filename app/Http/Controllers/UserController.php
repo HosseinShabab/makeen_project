@@ -22,10 +22,10 @@ class UserController extends Controller
     public function index(Request $request, $id = null)
     {
         $permission = $request->permission;
-        if ($id)
-            $user = User::find($id);
-        else
-            $user = User::permission("$permission")->get();
+        if ($id){
+            $user = User::with('media')->find($id);
+        }else
+            $user = User::with('media')->permission("$permission")->get();
         return response()->json($user);
     }
 
