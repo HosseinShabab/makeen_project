@@ -59,7 +59,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' 
     Route::get('last', [InstallmentController::class, 'last'])->name('last');
     Route::get('show', [InstallmentController::class, 'show'])->name('show');
     Route::post('sum', [InstallmentController::class,'sum'])->name('sum');
-    Route::put('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
+    Route::get('show/admin/{id?}', [InstallmentController::class, 'showAdmin'])->name('showAdmin');
 });
 
 //users routee
@@ -88,7 +88,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('factorCnt', [FactorController::class, 'factorCnt'])->name('factorCnt');
-    Route::put('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::get('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
     Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
     Route::post('accept', [FactorController::class, 'accept'])->middleware('permission:factor.accept')->name('accept');
     Route::post('update', [FactorController::class, 'update'])->middleware('permission:factor.update')->name('edit');

@@ -37,6 +37,7 @@ class InstallmentController extends Controller
     }
     public function last(){
         $installment = Installment::where([['user_id', auth()->user()->id],['status','!=','accepted']])->first();
+        if(empty($installment))return response()->json($installment);
         $installment->user_inventory = Installment::where([['user_id', auth()->user()->id],['status','accepted'],['type','subscription ']])->sum('price');
         return response()->json($installment);
     }

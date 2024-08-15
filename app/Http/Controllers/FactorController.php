@@ -45,7 +45,7 @@ class FactorController extends Controller
         if ($id) {
             $factors = Factor::with('media', 'installments')->where('id', $id)->first();
         } else
-            $factors = Factor::orderBy('accept_status','desc')->get();
+            $factors = Factor::orderByRaw('FIELD(accept_status,"error","unpaid","paid") ASC')->get();
         return response()->json($factors);
     }
 

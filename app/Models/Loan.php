@@ -17,7 +17,8 @@ class Loan extends Model
         'price',
         'user_description',
         'type',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
     public function user(): BelongsTo
