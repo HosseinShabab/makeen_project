@@ -79,8 +79,8 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('forgetPass', [AuthController::class, 'forgetPasswrod'])->middleware('permission:forgetPasswrod')->name('forgetPass');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum', 'permission:updateprofile'])->name('edit');
+    Route::post('forgetPass', [AuthController::class, 'forgetPassword'])->name('forgetPass');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });

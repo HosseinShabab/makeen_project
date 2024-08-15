@@ -30,7 +30,7 @@ class AuthController extends Controller
         $user = User::select('id', 'national_code', 'password')->where('national_code', $request->user_name)->first();
 
         if (!$user  || $user->hasRole('user')) {
-            return response()->json('username not exist');
+            return response()->json('admin not exist');
         }
         if (!Hash::check($request->password, $user->password)) {
             return response()->json('password wrong');
@@ -42,14 +42,13 @@ class AuthController extends Controller
     public function forgetPassword(Request $request)
     {
         $user = User::where('phone_number', $request->phone_number)->first();
-
         if (!$user || $user->hasRole('user')) {
             return response()->json(['error','user not found']);
         }
         $otp_code = Str::random(8);
         $password = $otp_code;
         $user_name = $user->national_code;
-        $user = User::where('phone_nubmer' , $request->phone_number)->update([
+        $user = User::where('phone_number' , $request->phone_number)->update([
             "password" => Hash::make($otp_code)
         ]);
         $patternValues = [
@@ -65,6 +64,7 @@ class AuthController extends Controller
             $request->phone_number,  // recipient
             $patternValues,  // pattern values
         );
+        return response()->json(["success"=>"successfully changed "]);
 }
 
     public function logout(Request $request)

@@ -22,10 +22,11 @@ class UserController extends Controller
     public function index(Request $request, $id = null)
     {
         $permission = $request->permission;
+        if(!$id && !$permission) return response()->json(['error'=>'permision cant be null']);
         if ($id)
             $user = User::find($id);
         else
-            $user = User::permission("$permission")->get();
+            $user = User::role('user')->permission("$permission")->get();
         return response()->json($user);
     }
 
