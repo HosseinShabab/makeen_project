@@ -33,25 +33,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route Messages
 Route::group(['prefix' => 'messages', 'as' => 'messages.','middleware'=> 'auth:sanctum'], function () {
-    Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index")->name('index');
-    Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create")->name('create');
-    Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.createAdmin")->name('create.admin');
-    Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show')->name('show');
-    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission:message.unread')->name('unreadmessage');
+    Route::get('index/{id?}', [MessageController::class, 'index'])->middleware("permission:message.index,active")->name('index');
+    Route::post('create', [MessageController::class, 'store'])->middleware("permission:message.create,active")->name('create');
+    Route::post('create/admin', [MessageController::class, 'storeAdmin'])->middleware("permission:message.createAdmin,active")->name('create.admin');
+    Route::get('show/{type}', [MessageController::class, 'show'])->middleware('permission:message.show,active')->name('show');
+    Route::get('unreadmessage', [MessageController::class, 'unreadmessage'])->middleware('permission:message.unread,active')->name('unreadmessage');
 
 });
 
 
 Route::group(['prefix' => 'loans', 'as' => 'loans.', 'middleware' => 'auth:sanctum'], function () {
 
-    Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->middleware("permission:loan.showGuarantors")->name('showGuarantors');
+    Route::post('show/guarantors', [LoanController::class, 'showGuarantors'])->middleware("permission:loan.showGuarantors,active")->name('showGuarantors');
     Route::get('requestCnt', [LoanController::class, 'requestCnt'])->name('requestCnt');
-    Route::post('show/admin', [LoanController::class, 'showAdmin'])->middleware("permission:loan.showAdmin")->name('showAdmin');
-    Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->middleware("permission:loan.acceptAdmin")->name('acceptAdmin');
-    Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->middleware("permission:loan.acceptGuarantor")->name('acceptGuarantor');
+    Route::post('show/admin', [LoanController::class, 'showAdmin'])->middleware("permission:loan.showAdmin,active")->name('showAdmin');
+    Route::post('accept/admin', [LoanController::class, 'acceptAdmin'])->middleware("permission:loan.acceptAdmin,active")->name('acceptAdmin');
+    Route::post('accept/guarantor', [LoanController::class, 'acceptGuarantor'])->middleware("permission:loan.acceptGuarantor,active")->name('acceptGuarantor');
     Route::post('show', [LoanController::class, 'show'])->middleware("permission:loan.show")->name('show');
-    Route::post('store', [LoanController::class, 'store'])->middleware("permission:loan.create")->name('create');
-    Route::post('update', [LoanController::class, 'updateGuarantor'])->middleware("permission:loan.updateGuarantor")->name('update');
+    Route::post('store', [LoanController::class, 'store'])->middleware("permission:loan.create,active")->name('create');
+    Route::post('update', [LoanController::class, 'updateGuarantor'])->middleware("permission:loan.updateGuarantor,active")->name('update');
     Route::get('loanDetails',[LoanController::class,'loanDetails'])->name('loand.details');
 });
 
@@ -80,7 +80,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('login/admin', [AuthController::class, 'loginAdmin'])->name('login.admin');
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('forgetPass', [AuthController::class, 'forgetPassword'])->name('forgetPass');
-    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum'])->name('edit');
+    Route::post('edit', [AuthController::class, 'updateprofile'])->middleware(['auth:sanctum','permission:update.profile'])->name('edit');
     Route::post('me', [AuthController::class, 'me'])->middleware('auth:sanctum')->name('me');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });
@@ -104,7 +104,7 @@ Route::group(['prefix' => 'media', 'as' => 'media.', 'middleware' => 'auth:sanct
 Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(function () {
     Route::post('create', [SettingController::class, 'store'])->middleware('permission:setting.create')->name('create');
     Route::get('index', [SettingController::class, 'index'])->middleware('permission:setting.index')->name('index');
-    Route::post('addmedia', [SettingController::class, 'addmedia'])->middleware('permission:addmedia')->name('addmedia');
+    Route::post('addmedia', [SettingController::class, 'addmedia'])->name('addmedia');
     Route::post('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
     Route::post('edit', [SettingController::class, 'update'])->middleware('permission:setting.update')->name('edit');
 });
