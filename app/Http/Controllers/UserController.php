@@ -52,7 +52,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $user = User::where('id', $request->user_id)->update($request->merge([
+        $user = User::where('id', $request->id)->update($request->merge([
             "password" => Hash::make($request->password)
         ])->toArray());
         return response()->json(['user'=>$user]);
