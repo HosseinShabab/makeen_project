@@ -37,17 +37,17 @@ class LoanController extends Controller
     public function requestCnt()
     {
         $loans = Loan::where([['guarantors_accept', 'accepted'], ['admin_accept', 'pending']])->count();
-        return response()->json($loans);
+        return response()->json(['loans'=>$loans]);
     }
 
     public function showGuarantors(Request $request)
     {
         $user = User::select('id', 'first_name', 'last_name')->where('national_code', $request->national_code)->first();
         if ($user->id == auth()->user()->id || !$user->can('active')) {
-            return response()->json("guarantor is not worthy");
+            return response()->json(["error"=>"guarantor is not worthy"]);
         }
         if (!$user) {
-            return response()->json("guarantor not found");
+            return response()->json(["error"=>"guarantor not found"]);
         }
         return response()->json(['id' => $user->id, 'name' => $user->first_name . ' ' . $user->last_name]);
     }
@@ -58,10 +58,10 @@ class LoanController extends Controller
         $loan_guarantor = DB::table('loan_guarantor')
             ->where("loan_id", $request->loan_id)->where('guarantor_id', $request->user()->id)->first();
         if (!$loan_guarantor || !$loan) {
-            return response()->json('loan_id not valid ');
+            return response()->json(['error'=>"loan_id not valid "]);
         }
         if ($loan_guarantor->guarantor_accept != "pending") {
-            return response()->json("you have already voted");
+            return response()->json(['error'=>"you have already voted"]);
         }
 
         $loan_guarantor = DB::table('loan_guarantor')
@@ -96,7 +96,7 @@ class LoanController extends Controller
         }
         $loan->save();
 
-        return response()->json('succsseded');
+        return response()->json(['success'=>'succsseded']);
     }
 
     public function showAdmin(Request $request)
@@ -108,7 +108,8 @@ class LoanController extends Controller
 
             $loans = Loan::with('user:id,first_name,last_name','guarantors')->where('admin_accept', "pending")->where('type', $request->type)->get();
         }
-        return response()->json($loans);
+        if(!$request->count) return response()->json(["error"=>'count can not be null ']);
+        return response()->json(['loans'=>$loans]);
     }
 
     public function show(Request $request)
@@ -116,7 +117,7 @@ class LoanController extends Controller
         $user_id = $request->user()->id;
         $loans = Loan::with('guarantors')->where([['user_id', $user_id],['admin_accept',$request->admin_accept]])->get();
 
-        return response()->json($loans);
+        return response()->json(['loans'=>$loans]);
     }
 
     public function acceptAdmin(Request $request)
@@ -152,7 +153,7 @@ class LoanController extends Controller
             }
         }
         $loan->save();
-        return response()->json($loan);
+        return response()->json(['loan'=>$loan]);
     }
 
     public function loanDetails()
@@ -190,7 +191,7 @@ class LoanController extends Controller
             app(MessageController::class)->storeAdmin($message);
         }
 
-        return response()->json($loan);
+        return response()->json(['loan'=>$loan]);
     }
 
     public function updateGuarantor(Request $request)
@@ -206,6 +207,6 @@ class LoanController extends Controller
             'loan_id' => $request->loan_id,
         ]);
         //yek payam besas;
-        return response()->json($new_guarantor);
+        return response()->json(['new_guarantor'=>$new_guarantor]);
     }
 }

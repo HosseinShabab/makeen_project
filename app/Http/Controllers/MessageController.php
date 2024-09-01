@@ -48,7 +48,7 @@ class MessageController extends Controller
         ]);
         if($request->message) $message->addMediaFromRequest('message')->toMediaCollection('message', 'local');
         $this->pendTicket($isTicket, 'pending');
-        return response()->json($message);
+        return response()->json(['message'=>$message]);
     }
 
     public function storeAdmin(MessageRequest $request)
@@ -65,7 +65,7 @@ class MessageController extends Controller
             'status' => "unread",
         ]);
         $this->pendTicket($isTicket, 'responded');
-        return response()->json($message);
+        return response()->json(['message'=>$message]);
     }
 //
     public function show($type)
@@ -80,7 +80,7 @@ class MessageController extends Controller
         $messages = Message::where('ticket_id', $ticket->id)->paginate(3);
         if (!$ticket || !$messages)
             return response()->json("no massage for $type");
-        return response()->json($messages);
+        return response()->json(['messages'=>$messages]);
     }
 
     public function index($id = null)
@@ -93,7 +93,7 @@ class MessageController extends Controller
                 $query->where([['type','unsystematic'],['response_status','pending']]);
             })->paginate(4);
         }
-        return response()->json($ticket);
+        return response()->json(['ticket'=>$ticket]);
     }
 
     public function unreadmessage()
@@ -103,6 +103,6 @@ class MessageController extends Controller
         foreach ($tickets as $ticket) {
             $unreadmessage += Message::where('ticket_id', $ticket->id)->where('status', 'unread')->count();
         }
-        return response()->json($unreadmessage);
+        return response()->json(['unreadmessage'=>$unreadmessage]);
     }
 }

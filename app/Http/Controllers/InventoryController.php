@@ -28,6 +28,6 @@ class InventoryController extends Controller
             }
             $index++;
         }
-        return response()->json($inventory);
+        return response()->json(['inventor'=>$inventory]);
     }
 }

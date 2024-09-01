@@ -39,13 +39,13 @@ class InstallmentController extends Controller
         $installment = Installment::where([['user_id', auth()->user()->id],['status','!=','accepted']])->first();
         if(empty($installment))return response()->json($installment);
         $installment->user_inventory = Installment::where([['user_id', auth()->user()->id],['status','accepted'],['type','subscription ']])->sum('price');
-        return response()->json($installment);
+        return response()->json(['installment'=>$installment]);
     }
     public function show()
     {
         $this->storeSub(auth()->user()->id);
         $installments = Installment::where('user_id',auth()->user()->id)->orderBy('due_date', 'asc')->orderBy("status")->paginate(12);
-        return response()->json($installments);
+        return response()->json(['installments'=>$installments]);
     }
 // master branch;
     public function sum(Request $request){
@@ -73,7 +73,7 @@ class InstallmentController extends Controller
                 $user->save();
             }
             $users = User::role('user')->permission('active')->where('debt',">",0)->paginate(8);
-            return response()->json($users);
+            return response()->json(['users'=>$users]);
         }
     }
 }

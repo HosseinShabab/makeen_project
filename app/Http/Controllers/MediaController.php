@@ -29,7 +29,7 @@ class MediaController extends Controller
             $media = Message::find($typable_id);
         }
         $media = $media->getMedia("$collection");
-        return response()->json($media);
+        return response()->json(['media'=>$media]);
     }
 
     public function store(MediaRequest $request)
@@ -53,16 +53,16 @@ class MediaController extends Controller
 
         $model = $model->addMediaFromRequest('media')->toMediaCollection("$collection", 'local');
 
-        return response()->json($model);
+        return response()->json(['model'=>$model]);
     }
 
     public function delete(Request $request)
     {
         if (!$request->user()->hasRole("user")) {
             $media = Media::destroy($request->id);
-            return response()->json($media);
+            return response()->json(['media'=>$media]);
         }
         $media = $request->user()->clearMediaCollection('profile');
-        return response()->json($media);
+        return response()->json(['media'=>$media]);
     }
 }

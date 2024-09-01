@@ -71,7 +71,7 @@ class AuthController extends Controller
     {
 
         $request->user()->currentAccessToken()->delete();
-        return ['message' => 'successfully logged out have fun'];
+        return response()->json(['message' => 'successfully logged out have fun']);
     }
 
 
@@ -90,7 +90,7 @@ class AuthController extends Controller
         $user->addMediaFromRequest('profile')->toMediaCollection('profile', 'local');
         $user->givePermissionTo('active');
         $user->revokePermissionTo('update.profile');
-        return response()->json($user);
+        return response()->json(['user'=>$user]);
     }
 
 
@@ -98,7 +98,7 @@ class AuthController extends Controller
     {
         if (Auth()->check()) {
             $user= User::with('media')->find(Auth::id());
-            return response()->json( $user );
+            return response()->json(['user'=>$user]);
         } else {
             return response()->json(null, status: 401);
         }

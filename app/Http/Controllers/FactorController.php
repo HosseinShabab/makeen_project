@@ -14,7 +14,7 @@ class FactorController extends Controller
 {
     public function factorCnt(){
         $factors = Factor::where('accept_status',null)->count();
-        return response()->json($factors);
+        return response()->json(['factors'=>$factors]);
     }
 
     public function store(FactorStoreRequest $request)
@@ -37,7 +37,7 @@ class FactorController extends Controller
         ]);
         $factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
         $factor->installments()->attach($installments_id);
-        return response()->json($factor);
+        return response()->json(['factor'=>$factor]);
     }
 
     public function index($id = null)
@@ -46,14 +46,14 @@ class FactorController extends Controller
             $factors = Factor::with('media', 'installments')->where('id', $id)->first();
         } else
             $factors = Factor::orderByRaw('FIELD(accept_status,"error","unpaid","paid") ASC')->paginate(8);
-        return response()->json($factors);
+        return response()->json(['factors'=>$factors]);
     }
 
     public function accept(Request $request)
     {
         $factor = Factor::find($request->factor_id);
         if(!$factor){
-            return response()->json("your factor not found");
+            return response()->json(['error'=>"your factor not found"]);
         }
         $factor->accept_status = $request->accept_status;
         $factor->save();
@@ -73,7 +73,7 @@ class FactorController extends Controller
                 }
             }
         }
-        return response()->json($installments, $status = 200);
+        return response()->json(['installments'=>$installments], $status = 200);
     }
     public function update(Request $request){
         $factor =  Factor::where([['user_id',auth()->user()->id],['id',$request->factor_id]])->first();
@@ -83,6 +83,6 @@ class FactorController extends Controller
         $factor->accept_status = null;
         $factor->save();
         if($request->factor)$factor->addMediaFromRequest('factor')->toMediaCollection('factor', 'local');
-        return response()->json($factor);
+        return response()->json(['factor'=>$factor]);
     }
 }

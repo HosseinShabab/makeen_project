@@ -12,7 +12,7 @@ class SettingController extends Controller
     public function store(SettingStoreRequest $request)
     {
         $setting = Setting::create($request->toArray());
-        return response()->json($setting);
+        return response()->json(['setting'=>$setting]);
     }
 
     public function update(SettingUpdateRequest $request)
@@ -26,26 +26,26 @@ class SettingController extends Controller
         $setting->description = $request->input('description', $setting->description);
         $setting->subscription = $request->input('subscription', $setting->subscription);
         $setting->save();
-        return response()->json($setting);
+        return response()->json(['setting'=>$setting]);
     }
 
     public function addmedia(Request $request)
     {
         $setting = Setting::find(1);
         $setting = $setting->addMediaFromRequest('media')->toMediaCollection('logo', 'local');
-        return response()->json($setting);
+        return response()->json(['setting'=>$setting]);
     }
 
     public function removemedia()
     {
         $setting = Setting::find(1);
         $setting = $setting->clearMediaCollection('logo');
-        return response()->json($setting);
+        return response()->json(['setting'=>$setting]);
     }
 
     public function index()
     {
         $setting = Setting::with("media")->first();
-        return response()->json($setting);
+        return response()->json(['setting'=>$setting]);
     }
 }

@@ -16,7 +16,7 @@ class UserController extends Controller
     public function memberCnt()
     {
         $users = User::role('user')->permission('active')->count();
-        return response()->json($users);
+        return response()->json(['users'=>$users]);
     }
 
     public function index(Request $request, $id = null)
@@ -27,7 +27,7 @@ class UserController extends Controller
             $user = User::find($id);
         else
             $user = User::role('user')->permission("$permission")->paginate(7);
-        return response()->json($user);
+        return response()->json(['user'=>$user]);
     }
 
     public function store(UserStoreRequest $request)
@@ -47,7 +47,7 @@ class UserController extends Controller
             "user_id" => $user->id,
         ]);
         $user->assignRole('user');
-        return response()->json($user);
+        return response()->json(['user'=>$user]);
     }
 
     public function update(Request $request)
@@ -55,7 +55,7 @@ class UserController extends Controller
         $user = User::where('id', $request->user_id)->update($request->merge([
             "password" => Hash::make($request->password)
         ])->toArray());
-        return response()->json($user);
+        return response()->json(['user'=>$user]);
     }
 
 
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->syncPermissions("deleted");
-        return "successfull";
+        return response()->json(['success'=>'successfully deleted']);
     }
 
     public function active($id){
@@ -71,6 +71,7 @@ class UserController extends Controller
         $user->syncRoles("user");
         $user->givePermissionTo('active');
         $user->revokePermissionTo('update.profile');
+        return response()->json(['success'=> 'profile activated']);
     }
     public function deactiveReq()
     {
@@ -82,7 +83,7 @@ class UserController extends Controller
     public function deactiveShow()
     {
         $user = User::permission('deactive_req')->paginate(4);
-        return response()->json($user);
+        return response()->json(['user'=>$user]);
     }
     public function deactive(Request $request)
     {
@@ -91,6 +92,6 @@ class UserController extends Controller
         $user = User::find($id);
         $user->revokePermissionTo("deactive_req");
         if ($operation == "accept") $user->revokePermissionTo("active");
-        return response()->json('success');
+        return response()->json(['success'  => 'deactivated']);
     }
 }

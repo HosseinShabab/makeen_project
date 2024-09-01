@@ -68,8 +68,8 @@ Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update")->name('edit');
-    Route::get('delete{id}', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');
-    Route::get('active{id}', [UserController::class, 'active'])->middleware('permission:user.delete')->name('active');
+    Route::get('delete/{id}', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');
+    Route::get('active/{id}', [UserController::class, 'active'])->middleware('permission:user.delete')->name('active');
     Route::get('deactiveReq', [UserController::class, 'deactiveReq'])->name('deactiveReq');
     Route::get('deactiveShow', [UserController::class, 'deactiveShow'])->middleware('permission:user.deactive')->name('deactiveShow');
     Route::post('deactive', [UserController::class, 'deactive'])->middleware('permission:user.deactive')->name('deactive');
