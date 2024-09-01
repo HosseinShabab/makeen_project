@@ -106,6 +106,8 @@ class PermissionSeeder extends Seeder
 
         //create  Admin
         $Admin = User::create([
+            'first_name'=>"mehdi",
+            "last_name"=> "haghollahi",
             'national_code' => '41212556999',
             'phone_number' => '9359184767',
             'password' => "adminQrz8786",
