@@ -44,8 +44,8 @@ class SettingController extends Controller
     }
 
     public function index()
-    {
-        $setting = Setting::with("media")->first();
+    {   
+        $setting = Setting::with("media")->find(1);
         return response()->json(['setting'=>$setting]);
     }
 }

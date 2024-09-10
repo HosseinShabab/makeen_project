@@ -43,11 +43,11 @@ class LoanController extends Controller
     public function showGuarantors(Request $request)
     {
         $user = User::select('id', 'first_name', 'last_name')->where('national_code', $request->national_code)->first();
-        if ($user->id == auth()->user()->id || !$user->can('active')) {
-            return response()->json(["error"=>"guarantor is not worthy"]);
-        }
         if (!$user) {
             return response()->json(["error"=>"guarantor not found"]);
+        }
+        if ($user->id == auth()->user()->id || !$user->can('active')) {
+            return response()->json(["error"=>"guarantor is not worthy"]);
         }
         return response()->json(['id' => $user->id, 'name' => $user->first_name . ' ' . $user->last_name]);
     }
