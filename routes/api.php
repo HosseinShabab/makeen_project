@@ -89,7 +89,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('factorCnt', [FactorController::class, 'factorCnt'])->name('factorCnt');
-    Route::get('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::get('index/type/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
     Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
     Route::post('accept', [FactorController::class, 'accept'])->middleware('permission:factor.accept')->name('accept');
     Route::post('update', [FactorController::class, 'update'])->middleware('permission:factor.update')->name('edit');
