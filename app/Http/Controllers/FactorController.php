@@ -76,6 +76,7 @@ class FactorController extends Controller
                 if(!$isPaid){
                     $loan = Loan::find($installment->loan_id);
                     $loan->status = 'paid';
+                    $loan->save();
                 }
             }
         }

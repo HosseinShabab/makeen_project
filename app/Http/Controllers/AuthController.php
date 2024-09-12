@@ -80,6 +80,7 @@ class AuthController extends Controller
         $user = $request->user();
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
+        $user->full_name = $request->first_name.' '.$request->last_name;
         $user->father_name = $request->father_name;
         $user->home_number = $request->home_number;
         $user->emergency_number = $request->emergency_number;

@@ -24,8 +24,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
+            'first_name' => $first_name = fake()->firstName(),
+            'last_name' => $last_name = fake()->lastName(),
+            'full_name' => $first_name." ".$last_name,
             'father_name' => fake()->firstName(),
             'phone_number' => $phone_number=fake()->unique()->regexify("[0-9]{11}"),
             'password' => $phone_number,

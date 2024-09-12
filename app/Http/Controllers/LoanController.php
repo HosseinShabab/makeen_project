@@ -149,7 +149,7 @@ class LoanController extends Controller
             }
             $reqloans = Loan::where([['user_id', $loan->user_id], ['admin_accept', 'pending']])->get();
             foreach ($reqloans as $reqloan) {
-                $reqloan->count++;
+                $reqloan->loan_number++;
                 $reqloan->save();
             }
         }
