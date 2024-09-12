@@ -20,14 +20,10 @@ class UserController extends Controller
         return response()->json(['users' => $users]);
     }
 
-    public function show(Request $request)
+    public function filter($name)
     {
-        $filter_key = $request->filter_key;
-        $filter_value = $request->filter_value;
-        if (!$filter_key || !$filter_value) return response()->json(['error' => 'filter can not be null'], status: 422);
-        $user = User::where($filter_key,$filter_value)->first();
-        if(!$user) return response()->json(['error'=> 'user not excist']);
-        return response()->json(['user'=>$user]);
+        $users = QueryBuilder::for(User::class)->allowedFilters([$name])->get();
+        return response()->json(['users'=>$users]);
     }
     public function index(Request $request, $id = null)
     {

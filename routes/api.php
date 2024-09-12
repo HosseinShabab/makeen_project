@@ -66,7 +66,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' 
 Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
     Route::get('memberCnt', [UserController::class, 'MemberCnt'])->name('MemberCnt');
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
-    Route::post('show', [UserController::class,'show'])->middleware('role:admin')->name('show');
+    Route::post('filter/{name}', [UserController::class,'filter'])->middleware('role:admin')->name('filter');
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update|active")->name('edit');
     Route::get('delete/{id}', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');
@@ -89,7 +89,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('factorCnt', [FactorController::class, 'factorCnt'])->name('factorCnt');
-    Route::get('index/type/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::get('index/{type}/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
     Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
     Route::post('accept', [FactorController::class, 'accept'])->middleware('permission:factor.accept')->name('accept');
     Route::post('update', [FactorController::class, 'update'])->middleware('permission:factor.update')->name('edit');
