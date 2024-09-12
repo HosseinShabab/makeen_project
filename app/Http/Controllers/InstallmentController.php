@@ -44,7 +44,7 @@ class InstallmentController extends Controller
     public function show()
     {
         $this->storeSub(auth()->user()->id);
-        $installments = Installment::where('user_id',auth()->user()->id)->orderBy('due_date', 'asc')->orderBy("status")->paginate(12);
+        $installments = Installment::where('user_id',auth()->user()->id)->orderByRaw('FIELD(status,"pending","error","unpaid","paid") ASC')->paginate(12);
         return response()->json(['installments'=>$installments]);
     }
 // master branch;

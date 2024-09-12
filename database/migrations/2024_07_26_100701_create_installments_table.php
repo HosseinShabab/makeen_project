@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('count');
             $table->unsignedBigInteger('price');
             $table->date("due_date");
-            $table->enum('status',['paid','unpaid','error'])->default("unpaid");
+            $table->enum('status',['paid','unpaid','error','pending'])->default("unpaid");
             $table->text("admin_description")->nullable();
             $table->unsignedBigInteger("loan_id")->nullable();
             $table->unsignedBigInteger("user_id");

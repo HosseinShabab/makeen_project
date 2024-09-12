@@ -66,6 +66,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' 
 Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
     Route::get('memberCnt', [UserController::class, 'MemberCnt'])->name('MemberCnt');
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
+    Route::post('filter/{name}', [UserController::class,'filter'])->middleware('role:admin')->name('filter');
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update|active")->name('edit');
     Route::get('delete/{id}', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');
@@ -88,7 +89,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 // factor controller
 Route::group(['prefix' => 'factors', 'as' => 'factors.', 'middleware' => 'auth:sanctum'], function () {
     Route::get('factorCnt', [FactorController::class, 'factorCnt'])->name('factorCnt');
-    Route::get('index/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
+    Route::get('index/{type}/{id?}', [FactorController::class, 'index'])->middleware('permission:factor.index')->name('index');
     Route::post('store', [FactorController::class, 'store'])->middleware('permission:factor.create')->name('create');
     Route::post('accept', [FactorController::class, 'accept'])->middleware('permission:factor.accept')->name('accept');
     Route::post('update', [FactorController::class, 'update'])->middleware('permission:factor.update')->name('edit');
@@ -103,7 +104,7 @@ Route::group(['prefix' => 'media', 'as' => 'media.', 'middleware' => 'auth:sanct
 
 Route::prefix('settings/')->as('settings.')->middleware('auth:sanctum')->group(function () {
     Route::post('create', [SettingController::class, 'store'])->middleware('permission:setting.create')->name('create');
-    Route::get('index', [SettingController::class, 'index'])->middleware('permission:setting.index')->name('index');
+    Route::get('index', [SettingController::class, 'index'])->name('index');
     Route::post('addmedia', [SettingController::class, 'addmedia'])->name('addmedia');
     Route::post('removemedia', [SettingController::class, 'removemedia'])->middleware('permission:removemedia')->name('removemedia');
     Route::post('edit', [SettingController::class, 'update'])->middleware('permission:setting.update')->name('edit');

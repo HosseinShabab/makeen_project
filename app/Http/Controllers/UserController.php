@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Models\Installment;
+use App\Models\Loan;
 use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
@@ -16,18 +17,30 @@ class UserController extends Controller
     public function memberCnt()
     {
         $users = User::role('user')->permission('active')->count();
-        return response()->json(['users'=>$users]);
+        return response()->json(['users' => $users]);
     }
 
+    public function filter($name)
+    {
+        $users = QueryBuilder::for(User::class)->allowedFilters([$name])->get();
+        return response()->json(['users'=>$users]);
+    }
     public function index(Request $request, $id = null)
     {
         $permission = $request->permission;
-        if(!$id && !$permission) return response()->json(['error'=>'permision cant be null']);
-        if ($id)
-            $user = User::find($id);
+        if (!$id && !$permission) return response()->json(['error' => 'permision cant be null']);
+        if ($id){
+            $users = User::find($id);
+            $users->debt =  Installment::where([['user_id',$id],['due_date','<',Carbon::now()->toDateString()],['status','!=','paid']])->sum('price');
+            $users->inventory = Installment::where([['user_id', $id],['status','accepted'],['type','subscription ']])->sum('price');
+            $users->loans = Loan::where('user_id',$id)->count();
+            $users->paid_loans =Loan::where([['user_id',$id],['status','paid']])->count();
+            $users->unpaid_loans =Loan::wher([['user_id',$id],['status','unpaid']])->count();
+        }
         else
-            $user = User::role('user')->permission("$permission")->paginate(7);
-        return response()->json(['user'=>$user]);
+            $users = User::role('user')->permission("$permission")->paginate(7);//paginate 7
+
+        return response()->json(['user' => $users]);
     }
 
     public function store(UserStoreRequest $request)
@@ -47,7 +60,7 @@ class UserController extends Controller
             "user_id" => $user->id,
         ]);
         $user->assignRole('user');
-        return response()->json(['user'=>$user]);
+        return response()->json(['user' => $user]);
     }
 
     public function update(Request $request)
@@ -55,7 +68,7 @@ class UserController extends Controller
         $user = User::where('id', $request->id)->update($request->merge([
             "password" => Hash::make($request->password)
         ])->toArray());
-        return response()->json(['user'=>$user]);
+        return response()->json(['user' => $user]);
     }
 
 
@@ -63,15 +76,16 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->syncPermissions("deleted");
-        return response()->json(['success'=>'successfully deleted']);
+        return response()->json(['success' => 'successfully deleted']);
     }
 
-    public function active($id){
+    public function active($id)
+    {
         $user = User::find($id);
         $user->syncRoles("user");
         $user->givePermissionTo('active');
         $user->revokePermissionTo('update.profile');
-        return response()->json(['success'=> 'profile activated']);
+        return response()->json(['success' => 'profile activated']);
     }
     public function deactiveReq()
     {
@@ -82,13 +96,18 @@ class UserController extends Controller
 
     public function deactiveShow()
     {
-        $user = User::permission('deactive_req')->paginate(4);
-        return response()->json(['user'=>$user]);
+        $users = User::permission('deactive_req')->get();
+        foreach($users as $user){
+            $user->debt =  Installment::where([['user_id',$user->id],['due_date','<',Carbon::now()->toDateString()],['status','!=','paid']])->sum('price');
+            $user->inventory =  Installment::where([['user_id', $user->id],['status','accepted'],['type','subscription ']])->sum('price');
+        }
+        $users = $users->paginate(4);
+        return response()->json(['users' => $users]);
     }
     public function deactive(Request $request)
     {
         $id = $request->user_id;
-        $operation =$request->operation;
+        $operation = $request->operation;
         $user = User::find($id);
         $user->revokePermissionTo("deactive_req");
         if ($operation == "accept") $user->revokePermissionTo("active");

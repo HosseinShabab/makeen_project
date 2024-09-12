@@ -27,6 +27,8 @@ class FactorController extends Controller
             $installment = Installment::find($installment_id);
             if(!$installment || $installment->status == 'paid') return response()->json(['error'=>'installment not valid']);
             $installment_price += $installment->price;
+            $installment->status = "pending";
+            $installment->save();
         }
         $factor = Factor::create([
             'name' => $name,
@@ -40,12 +42,16 @@ class FactorController extends Controller
         return response()->json(['factor'=>$factor]);
     }
 
-    public function index($id = null)
+    public function index($type,$id = null)
     {
         if ($id) {
             $factors = Factor::with('media', 'installments')->where('id', $id)->first();
-        } else
-            $factors = Factor::orderByRaw('FIELD(accept_status,"error","unpaid","paid") ASC')->paginate(8);
+        } else{
+            if($type == "pending")
+                $factors = Factor::where('accept_status','pending')->paginate(8);
+            else
+                $factors = Factor::where('accept_status','accepted')->paginate(8);
+        }
         return response()->json(['factors'=>$factors]);
     }
 

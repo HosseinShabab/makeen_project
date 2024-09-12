@@ -26,6 +26,7 @@ class UserFactory extends Factory
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
+            'father_name' => fake()->firstName(),
             'phone_number' => $phone_number=fake()->unique()->regexify("[0-9]{11}"),
             'password' => $phone_number,
             'emergency_number' => fake()->regexify('[0-9]{11}'),
