@@ -66,7 +66,7 @@ Route::group(['prefix' => 'installments', 'as' => 'installments.', 'middleware' 
 Route::prefix('users')->as('users.')->middleware('auth:sanctum')->group(function () {
     Route::get('memberCnt', [UserController::class, 'MemberCnt'])->name('MemberCnt');
     Route::put('index/{id?}', [UserController::class, 'index'])->middleware("permission:user.index")->name('index');
-    Route::post('filter/{name}', [UserController::class,'filter'])->middleware('role:admin')->name('filter');
+    Route::get('filter', [UserController::class,'filter'])->middleware('role:admin')->name('filter');
     Route::post('create', [UserController::class, 'store'])->middleware("permission:user.create")->name('create');
     Route::post('edit', [UserController::class, 'update'])->middleware("permission:user.update|active")->name('edit');
     Route::get('delete/{id}', [UserController::class, 'delete'])->middleware('permission:user.delete')->name('delete');

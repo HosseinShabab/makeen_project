@@ -10,7 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
@@ -20,9 +20,9 @@ class UserController extends Controller
         return response()->json(['users' => $users]);
     }
 
-    public function filter($name)
+    public function filter()
     {
-        $users = QueryBuilder::for(User::class)->allowedFilters([$name])->get();
+        $users = QueryBuilder::for(User::class)->allowedFilters(['full_name'])->get();
         return response()->json(['users'=>$users]);
     }
     public function index(Request $request, $id = null)
@@ -35,7 +35,7 @@ class UserController extends Controller
             $users->inventory = Installment::where([['user_id', $id],['status','accepted'],['type','subscription ']])->sum('price');
             $users->loans = Loan::where('user_id',$id)->count();
             $users->paid_loans =Loan::where([['user_id',$id],['status','paid']])->count();
-            $users->unpaid_loans =Loan::wher([['user_id',$id],['status','unpaid']])->count();
+            $users->unpaid_loans =Loan::where([['user_id',$id],['status','unpaid']])->count();
         }
         else
             $users = User::role('user')->permission("$permission")->paginate(7);//paginate 7
@@ -96,12 +96,11 @@ class UserController extends Controller
 
     public function deactiveShow()
     {
-        $users = User::permission('deactive_req')->get();
+        $users = User::permission('deactive_req')->paginate(4);
         foreach($users as $user){
             $user->debt =  Installment::where([['user_id',$user->id],['due_date','<',Carbon::now()->toDateString()],['status','!=','paid']])->sum('price');
             $user->inventory =  Installment::where([['user_id', $user->id],['status','accepted'],['type','subscription ']])->sum('price');
         }
-        $users = $users->paginate(4);
         return response()->json(['users' => $users]);
     }
     public function deactive(Request $request)

@@ -25,7 +25,7 @@ class LoanReqeust extends FormRequest
             'price' => 'required',
             'user_description' => 'required|string',
             'type' => 'required',
-            'guarantors_id' => 'required|array'
+            // 'guarantors_id' => 'required|array'
         ];
     }
 }

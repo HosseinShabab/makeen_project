@@ -97,7 +97,7 @@ class PermissionSeeder extends Seeder
            "auth.updateprofile",
            "factor.create","factor.update",
            "installment.show",
-           "loan.updateGuarantor","loan.show","loan.create","loan.showGuarantors","update.profile","deactive_req"
+           "loan.updateGuarantor","loan.show","loan.create","loan.showGuarantors","update.profile"
 
 
         ]);
