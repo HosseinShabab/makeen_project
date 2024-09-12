@@ -123,6 +123,7 @@ class LoanController extends Controller
     public function acceptAdmin(Request $request)
     {
         $loan = Loan::find($request->loan_id);
+        if(!$loan) return response()->json(['error'=>'loan doesnt exist']);
         if ($loan->admin_accept != "pending") {
             return response()->json(['error' => 'you have arlready voted']);
         }
@@ -197,10 +198,10 @@ class LoanController extends Controller
     public function updateGuarantor(Request $request)
     {
 
-        $last_guarantor = DB::table('loan_guarantor')->where('guarantor_id', $request->last_guarantor_id)->delete();
         $guarantor = User::find($request->new_guarantor_id);
         if (!$guarantor || !$guarantor->can('active') || $guarantor->id == $request->user()->id) return  response()->json(['error' => 'guarantor not worthy']);
         $guarantor_name = $guarantor->first_name . ' ' . $guarantor->last_name;
+        $last_guarantor = DB::table('loan_guarantor')->where('guarantor_id', $request->last_guarantor_id)->delete();
         $new_guarantor = DB::table('loan_guarantor')->insert([
             'guarantor_id' => $request->new_guarantor_id,
             'guarantor_name' => $guarantor_name,

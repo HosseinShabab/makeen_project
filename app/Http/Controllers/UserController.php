@@ -92,8 +92,13 @@ class UserController extends Controller
 
     public function deactiveShow()
     {
-        $user = User::permission('deactive_req')->paginate(4);
-        return response()->json(['user' => $user]);
+        $users = User::permission('deactive_req')->get();
+        foreach($users as $user){
+            $user->debt =  Installment::where([['user_id',$user->id],['due_date','<',Carbon::now()->toDateString()],['status','!=','paid']])->sum('price');
+            $user->inventory =  Installment::where([['user_id', $user->id],['status','accepted'],['type','subscription ']])->sum('price');
+        }
+        $users = $users->paginate(4);
+        return response()->json(['users' => $users]);
     }
     public function deactive(Request $request)
     {
