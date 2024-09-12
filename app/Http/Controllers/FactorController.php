@@ -42,12 +42,12 @@ class FactorController extends Controller
         return response()->json(['factor'=>$factor]);
     }
 
-    public function index($type,$id = null)
+    public function index(Request $request,$id = null)
     {
         if ($id) {
             $factors = Factor::with('media', 'installments')->where('id', $id)->first();
         } else{
-            if($type == "pending")
+            if($request->type == "pending")
                 $factors = Factor::where('accept_status','pending')->paginate(8);
             else
                 $factors = Factor::where('accept_status','accepted')->paginate(8);
@@ -76,6 +76,7 @@ class FactorController extends Controller
                 if(!$isPaid){
                     $loan = Loan::find($installment->loan_id);
                     $loan->status = 'paid';
+                    $loan->save();
                 }
             }
         }
