@@ -50,7 +50,7 @@ class FactorController extends Controller
             if($request->type == "pending")
                 $factors = Factor::where('accept_status','pending')->paginate(8);
             else
-                $factors = Factor::where('accept_status', null)->paginate(8);
+                $factors = Factor::where('accept_status',null)->paginate(8);
         }
         return response()->json(['factors'=>$factors]);
     }

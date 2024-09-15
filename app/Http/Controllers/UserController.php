@@ -30,7 +30,7 @@ class UserController extends Controller
         $permission = $request->permission;
         if (!$id && !$permission) return response()->json(['error' => 'permision cant be null']);
         if ($id){
-            $users = User::find($id);
+            $users = User::with('media')->find($id);
             $users->debt =  Installment::where([['user_id',$id],['due_date','<',Carbon::now()->toDateString()],['status','!=','paid']])->sum('price');
             $users->inventory = Installment::where([['user_id', $id],['status','accepted'],['type','subscription ']])->sum('price');
             $users->loans = Loan::where('user_id',$id)->count();
@@ -38,7 +38,7 @@ class UserController extends Controller
             $users->unpaid_loans =Loan::where([['user_id',$id],['status','unpaid']])->count();
         }
         else
-            $users = User::role('user')->permission("$permission")->paginate(7);//paginate 7
+            $users = User::with('media')->role('user')->permission("$permission")->paginate(7);//paginate 7
 
         return response()->json(['user' => $users]);
     }
