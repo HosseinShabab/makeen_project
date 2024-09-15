@@ -96,7 +96,7 @@ class MessageController extends Controller
                 $query->where([['type','unsystematic'],['response_status','pending']]);
             })->paginate(4);
         }
-        return response()->json(['ticket'=>$ticket]);
+        return response()->json(['ticket'=>$ticket]);//s
     }
 
     public function unreadmessage()
