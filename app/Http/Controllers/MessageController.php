@@ -86,7 +86,7 @@ class MessageController extends Controller
     public function index($id = null)
     {
         if ($id){
-            $ticket = Message::with("media")->where('ticket_id',$id)->paginate(4);
+            $ticket = Message::with("media")->where('ticket_id',$id)->get();
             $user= Ticket::find($id);
             $user = $user->user_id;
             $user =User::with('media')->find($user);
