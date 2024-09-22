@@ -109,4 +109,9 @@ class MessageController extends Controller
         }
         return response()->json(['unreadmessage'=>$unreadmessage]);
     }
+
+    public function sentMessages(){
+        $messages=Message::where('title','!=', null)->orderBy("desc")->get();
+        return response()->json(['messages'=>$messages]);
+    }
 }
