@@ -32,7 +32,7 @@ class LoanController extends Controller
             $guarantor = User::find($guarantor_id);
             if (!$guarantor || !$guarantor->can('active') || $guarantor_id == $user_id) return false;
         }
-        return $user_loans;
+        return $user_loans+1;
     }
     public function requestCnt()
     {
@@ -172,7 +172,7 @@ class LoanController extends Controller
 
         $loan = new Loan();
         $loan = $loan->create([
-            "loan_number" => $count + 1,
+            "loan_number" => $count,
             "price" => $request->price,
             "user_description" => $request->user_description,
             "type" => $request->type,

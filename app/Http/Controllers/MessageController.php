@@ -111,7 +111,7 @@ class MessageController extends Controller
     }
 
     public function sentMessages(){
-        $messages=Message::where('title','!=', null)->orderBy("desc")->get();
+        $messages=Message::where('title','!=', null)->orderBy('id' ,"DESC")->get();
         return response()->json(['messages'=>$messages]);
     }
 }
