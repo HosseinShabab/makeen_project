@@ -161,7 +161,7 @@ class LoanController extends Controller
     {
         $user = auth()->user();
         $user_loans = Loan::where([['user_id', $user->id], ['status', 'unpaid'], ['admin_accept', "!=", 'faild']])->count();
-        return response()->json(['count' => $user_loans, 'date' => Carbon::now()->toDateString()]);
+        return response()->json(['count' => $user_loans + 1, 'date' => Carbon::now()->toDateString()]);
     }
     public function store(LoanReqeust $request)
     {
