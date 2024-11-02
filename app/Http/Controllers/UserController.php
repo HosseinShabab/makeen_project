@@ -86,7 +86,7 @@ class UserController extends Controller
         $user->syncRoles("user");
         $user->givePermissionTo('active');
         $user->revokePermissionTo('update.profile');
-        $user->reveokPermissionTo("deleted");
+        $user->revokePermissionTo("deleted");
         return response()->json(['success' => 'profile activated']);
     }
     public function deactiveReq()
