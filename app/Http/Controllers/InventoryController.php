@@ -13,27 +13,20 @@ class InventoryController extends Controller
 {
     public function index(){
 
-        $start_date = User::role('admin')->first();
+        $start_date = Loan::first();
         $start_date = $start_date->created_at;
         $end_date = Carbon::now();
         $index = 0;
         $inventory[] = [];
-        while($start_date < $end_date){
-            $till_date = $start_date->addMonth();
-            $inventory[$index]["income"] = Factor::where([['updated_at','<=',$till_date],['updated_at','>=',$start_date],['accept_status','accepted']])->sum('paid_price');
-            $inventory[$index]['outcome'] = Loan::where([['updated_at','<=',$till_date],['updated_at','>=',$start_date],['admin_accept','accepted']])->sum('price');
+        while($start_date <= $end_date){
+            $start_date = $start_date->addMonth();
+            $inventory[$index]["income"] = Factor::where([['created_at','<',$start_date],['accept_status','accepted']])->sum('paid_price');
+            $inventory[$index]['outcome'] = Loan::where([['created_at','<',$start_date],['admin_accept','accepted']])->sum('price');
             $inventory[$index]["inventory"] =$inventory[$index]["income"] - $inventory[$index]["outcome"];
             if($index != 0){
-                $inventory[$index]["inventory"] +=$inventory[$index-1]["inventory"];
+                $inventory[$index]["inventory"] += $inventory[$index-1]["inventory"];
             }
-            $start_date = $till_date;
             $index++;
-        }
-        $inventory[$index]["income"] = Factor::where([['updated_at','>=',$start_date],['accept_status','accepted']])->sum('paid_price');
-        $inventory[$index]['outcome'] = Loan::where([['updated_at','>=',$start_date],['admin_accept','accepted']])->sum('price');
-        $inventory[$index]["inventory"] =$inventory[$index]["income"] - $inventory[$index]["outcome"];
-        if($index != 0){
-            $inventory[$index]["inventory"] +=$inventory[$index-1]["inventory"];
         }
         return response()->json(['inventor'=>$inventory]);
     }
