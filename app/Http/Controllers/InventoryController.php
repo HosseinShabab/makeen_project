@@ -20,12 +20,13 @@ class InventoryController extends Controller
         $inventory[] = [];
         while($start_date < $end_date){
             $till_date = $start_date->addMonth();
-            $inventory[$index]["income"] = Factor::where([['updated_at','<',$till_date],['updated_at','>',$start_date],['accept_status','accepted']])->sum('paid_price');
-            $inventory[$index]['outcome'] = Loan::where([['updated_at','<',$till_date],['updated_at','>',$start_date],['admin_accept','accepted']])->sum('price');
+            $inventory[$index]["income"] = Factor::where([['updated_at','<=',$till_date],['updated_at','>=',$start_date],['accept_status','accepted']])->sum('paid_price');
+            $inventory[$index]['outcome'] = Loan::where([['updated_at','<=',$till_date],['updated_at','>=',$start_date],['admin_accept','accepted']])->sum('price');
             $inventory[$index]["inventory"] =$inventory[$index]["income"] - $inventory[$index]["outcome"];
             if($index != 0){
                 $inventory[$index]["inventory"] +=$inventory[$index-1]["inventory"];
             }
+            $start_date = $till_date;
             $index++;
         }
         return response()->json(['inventor'=>$inventory]);
