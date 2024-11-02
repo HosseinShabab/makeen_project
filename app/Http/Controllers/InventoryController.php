@@ -18,6 +18,7 @@ class InventoryController extends Controller
         $end_date = Carbon::now();
         $index = 0;
         $inventory[] = [];
+        $const = 0;
         while($start_date < $end_date){
             $till_date = $start_date->addMonth();
             $inventory[$index]["income"] = Factor::where([['updated_at','<=',$till_date],['updated_at','>=',$start_date],['accept_status','accepted']])->sum('paid_price');
@@ -26,9 +27,11 @@ class InventoryController extends Controller
             if($index != 0){
                 $inventory[$index]["inventory"] +=$inventory[$index-1]["inventory"];
             }
+            $const += $inventory[$index]["income"];
+            $const -= $inventory[$index]["outcome"];
             $start_date = $till_date;
             $index++;
         }
-        return response()->json(['inventor'=>$inventory]);
+        return response()->json(['inventor'=>$const]);
     }
 }
