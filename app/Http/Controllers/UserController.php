@@ -39,7 +39,7 @@ class UserController extends Controller
             $users->unpaid_loans =Loan::where([['user_id',$id],['status','unpaid']])->count();
         }
         else
-            $users = User::with('media')->role('user')->permission("$permission")->orderBy('desc')->paginate(7);//paginate 7
+            $users = User::with('media')->role('user')->permission("$permission")->orderBy('id',"desc")->paginate(7);//paginate 7
 
         return response()->json(['user' => $users]);
     }
