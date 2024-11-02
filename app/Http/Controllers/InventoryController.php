@@ -19,7 +19,6 @@ class InventoryController extends Controller
         $index = 0;
         $inventory[] = [];
         $const = 0;
-        return response()->json([ "shoro"=>$start_date, "payan" =>$end_date]);
         while($start_date < $end_date){
             $till_date = $start_date->addMonth();
             $inventory[$index]["income"] = Factor::where([['updated_at','<=',$till_date],['updated_at','>=',$start_date],['accept_status','accepted']])->sum('paid_price');
@@ -33,6 +32,6 @@ class InventoryController extends Controller
             $start_date = $till_date;
             $index++;
         }
-        return response()->json(['inventor'=>$const]);
+        return response()->json(['inventor'=>$index]);
     }
 }
