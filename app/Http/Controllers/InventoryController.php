@@ -26,6 +26,7 @@ class InventoryController extends Controller
             if($index != 0){
                 $inventory[$index]["inventory"] += $inventory[$index-1]["inventory"];
             }
+            $inventory[$index]["till_date"] = $start_date;
             $index++;
         }
         return response()->json(['inventor'=>$inventory]);
