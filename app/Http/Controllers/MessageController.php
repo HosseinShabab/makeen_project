@@ -77,7 +77,7 @@ class MessageController extends Controller
         Message::where([['ticket_id', $ticket->id], ['status', 'unread']])->update([
             'status' => 'read',
         ]);
-        $messages = Message::where('ticket_id', $ticket->id)->paginate(3);
+        $messages = Message::with('media')->where('ticket_id', $ticket->id)->paginate(3);
         if (!$ticket || !$messages)
             return response()->json("no massage for $type");
         return response()->json(['messages'=>$messages]);

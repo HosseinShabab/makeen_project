@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditUserRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Models\Installment;
 use App\Models\Loan;
@@ -63,7 +64,7 @@ class UserController extends Controller
         return response()->json(['user' => $user]);
     }
 
-    public function update(Request $request)
+    public function update(EditUserRequest $request)
     {
         $user = User::where('id', $request->id)->update($request->merge([
             "password" => Hash::make($request->password)
