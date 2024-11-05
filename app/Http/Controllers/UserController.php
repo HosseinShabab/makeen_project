@@ -70,9 +70,9 @@ class UserController extends Controller
             $user = User::where('id', $request->id)->update($request->toArray());
             return response()->json(['user' => $user]);
         }
-        if($request->password){
+        if($request->phone_number){
             $user = User::where('id', $request->id)->update($request->merge([
-                "password" => Hash::make($request->password)
+                "password" => Hash::make($request->phone_number)
             ])->toArray());
         }else
             $user = User::where('id', $request->id)->update($request->toArray());
