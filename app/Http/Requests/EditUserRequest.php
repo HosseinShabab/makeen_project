@@ -32,7 +32,9 @@ class EditUserRequest extends FormRequest
             'sheba_number' => 'string|size:24|regex:/^[0-9]+$/',
             'card_number' => 'string|size:16|regex:/^[0-9]+$/',
             'profile' => 'image|max:2048',
-            'card' => 'image|max:2048'
+            'card' => 'image|max:2048',
+            'national_code' => 'string|size:10|unique:users,national_code|regex:/^[0-9]+$/',
+            'phone_number' => 'string|size:11|unique:users,phone_number|regex:/^[0-9]+$/'
         ];
     }
 }
