@@ -66,9 +66,17 @@ class UserController extends Controller
 
     public function update(EditUserRequest $request)
     {
-        $user = User::where('id', $request->id)->update($request->merge([
-            "password" => Hash::make($request->password)
-        ])->toArray());
+        if($request->id == 1){
+            $user = User::where('id', $request->id)->update($request->toArray());
+            return response()->json(['user' => $user]);
+        }
+        if($request->password){
+            $user = User::where('id', $request->id)->update($request->merge([
+                "password" => Hash::make($request->password)
+            ])->toArray());
+        }else
+            $user = User::where('id', $request->id)->update($request->toArray());
+
         return response()->json(['user' => $user]);
     }
 
