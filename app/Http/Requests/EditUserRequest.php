@@ -12,7 +12,7 @@ class EditUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -33,8 +33,8 @@ class EditUserRequest extends FormRequest
             'card_number' => 'string|size:16|regex:/^[0-9]+$/',
             'profile' => 'image|max:2048',
             'card' => 'image|max:2048',
-            'national_code' => "string|size:10|regex:/^[0-9]+$/|unique:users,national_code".$this->national_code,
-            'phone_number' => "string|size:11|regex:/^[0-9]+$/|unique:users,phone_number".$this->phone_number
+            'national_code' => "string|size:10|regex:/^[0-9]+$/|unique:users,national_code,".$this->national_code,
+            'phone_number' => "string|size:11|regex:/^[0-9]+$/|unique:users,phone_number,".$this->phone_number
         ];
     }
 }
