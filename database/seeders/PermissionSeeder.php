@@ -109,7 +109,7 @@ class PermissionSeeder extends Seeder
             'first_name'=>"mehdi",
             "last_name"=> "haghollahi",
             'national_code' => '41212556999',
-            'phone_number' => '9359184767',
+            'phone_number' => '09359184767',
             'password' => "adminQrz8786",
 
         ])->assignRole($admin);
