@@ -99,7 +99,7 @@ class AuthController extends Controller
     public function me()
     {
         if (Auth()->check()) {
-            $user= User::with('media')->find(Auth::id());
+            $user= User::with('media')->where('id',Auth::id())->first();
             return response()->json(['user'=>$user]);
         } else {
             return response()->json(null, status: 401);
