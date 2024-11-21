@@ -28,7 +28,6 @@ class EditUserRequest extends FormRequest
             'father_name'=>'string',
             'home_number' => 'string|size:11|regex:/^[0-9]+$/',
             'emergency_number' => 'string|size:11|regex:/^[0-9]+$/',
-            'address' => 'string',
             'sheba_number' => 'string|size:24|regex:/^[0-9]+$/',
             'card_number' => 'string|size:16|regex:/^[0-9]+$/',
             'profile' => 'image|max:2048',
