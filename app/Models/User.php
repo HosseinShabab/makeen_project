@@ -54,7 +54,6 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'password' => "hashed",
-        "address"=> "object",
     ];
 
     public function tickets(): HasMany
